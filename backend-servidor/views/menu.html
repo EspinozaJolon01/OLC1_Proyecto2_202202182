@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <nav>
+        <label class="logo">CompiScript+</label>
+        <ul>
+            <li><a href="#" onclick="agregarPestana()">Crear archivos</a></li>
+            <li><a href="#" onclick="arbirArchivos()">Abrir archivos</a></li>
+            <li><a href="#" onclick="guardarArchivos()">Guardar archivos</a></li>
+            <li><a href="#" onclick="ejecutar()">Ejecutar</a></li>
+            <li><a href="#" onclick="reportes()">Reportes</a></li>
+        </ul>
+    </nav>
+
+    <h1>Entrada</h1>
+    <!-- Contenedor de pestañas -->
+    <div class="tabs">
+        <div class="tab-container" id="tab-container">
+            <!-- Pestaña 1 -->
+            <div id="tab1" class="tab active">
+                <a href="#tab1">Pestaña 1</a>
+                <div class="tab-content">
+                    <h2>Editor</h2>
+                    <div class="editor">
+                        <textarea class="code-editor" placeholder="Escribe tu código aquí..." style="height: 300px;"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h1>Consola</h1>
+    <div class="editor-consola">
+        <textarea id="code-editor-consola" placeholder="" readonly style="height: 200px;"></textarea>
+    </div>
+
+    <script src="manejo.js"></script>
+    
+</body>
+</html>
