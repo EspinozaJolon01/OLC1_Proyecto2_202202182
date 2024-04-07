@@ -1,11 +1,11 @@
-import { Request, Response } from 'express'
-import Arbol from './analisis/simbolo/Arbol'
-import tablaSimbolo from './analisis/simbolo/tablaSimbolos'
+import { Request, Response } from 'express';
+import Arbol from './analisis/simbolo/Arbol';
+import tablaSimbolo from './analisis/simbolo/tablaSimbolos';
 
 
 class controller {
     public prueba(req: Request, res: Response) {
-        res.json({ message: 'Hola mundo' })
+        res.json({ "funciona": "la api" });
     }
 
     public interpretar(req: Request, res: Response) {
@@ -17,16 +17,19 @@ class controller {
             ast.setTablaGlobal(tabla)
             ast.setConsola("")
             for (let i of ast.getInstrucciones()) {
-                console.log(i)
+                //console.log(i)
                 var resultado = i.interpretar(ast, tabla)
-                console.log(resultado)
+                //console.log(resultado)
             }
-            res.send({ "Respuesta": "Si sale compi1" })
+            console.log(tabla)
+            res.send({ "Respuesta": ast.getConsola() })
         } catch (err: any) {
             console.log(err)
             res.send({ "Error": "Ya no sale compi1" })
         }
     }
+
 }
+
 
 export const indexController = new controller();

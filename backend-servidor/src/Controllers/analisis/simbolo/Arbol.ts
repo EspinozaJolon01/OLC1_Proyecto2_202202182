@@ -1,5 +1,5 @@
 import tablaSimbolo from "./tablaSimbolos";
-import { Instruccion } from "../abstracto/Instruccion"; 
+import { Instruccion } from "../abstracto/Instruccion";
 import Errores from "../excepcicones/Errores";
 
 export default class Arbol {
@@ -13,6 +13,10 @@ export default class Arbol {
         this.consola = ""
         this.tablaGlobal = new tablaSimbolo()
         this.errores = new Array<Errores>
+    }
+
+    public Print(contenido: any) {
+        this.consola = `${this.consola}${contenido}\n`;
     }
 
     public getConsola(): string {
@@ -38,7 +42,7 @@ export default class Arbol {
     public setTablaGlobal(tabla: tablaSimbolo) {
         this.tablaGlobal = tabla
     }
-    
+
     public getErrores(): any {
         return this.errores
     }
