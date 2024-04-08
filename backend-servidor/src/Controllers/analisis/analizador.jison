@@ -5,10 +5,9 @@ const Nativo = require('./expresiones/Nativo')
 const Aritmeticas = require('./expresiones/Aritmeticas')
 const AccesoVar = require('./expresiones/AccesoVar')
 
-
 const Print = require('./instrucciones/Print')
 const Declaracion = require('./instrucciones/Declaracion')
-//const AsignacionVar = require('./instrucciones/AsignacionVar')
+const AsignacionVar = require('./instrucciones/AsignacionVar')
 %}
 
 // analizador lexico
@@ -17,6 +16,9 @@ const Declaracion = require('./instrucciones/Declaracion')
 %options case-insensitive
 
 %%
+
+"//".*     //comentario de una linea
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]    //multilinea
 
 //palabras reservadas
 "imprimir"              return 'IMPRIMIR'
@@ -68,7 +70,7 @@ INSTRUCCIONES : INSTRUCCIONES INSTRUCCION   {$1.push($2); $$=$1;}
 
 INSTRUCCION : IMPRESION PUNTOCOMA            {$$=$1;}
             | DECLARACION PUNTOCOMA          {$$=$1;}
-
+            | ASIGNACION PUNTOCOMA           {$$=$1;}
 ;
 
 IMPRESION : IMPRIMIR PAR1 EXPRESION PAR2    {$$= new Print.default($3, @1.first_line, @1.first_column);}
@@ -77,7 +79,8 @@ IMPRESION : IMPRIMIR PAR1 EXPRESION PAR2    {$$= new Print.default($3, @1.first_
 DECLARACION : TIPOS ID IGUAL EXPRESION      {$$ = new Declaracion.default($1, @1.first_line, @1.first_column, $2, $4);}
 ;
 
-
+ASIGNACION : ID IGUAL EXPRESION             {$$ = new AsignacionVar.default($1, $3, @1.first_line, @1.first_column);}
+;
 
 EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritmeticas.Operadores.SUMA, @1.first_line, @1.first_column, $1, $3);}
           | EXPRESION MENOS EXPRESION        {$$ = new Aritmeticas.default(Aritmeticas.Operadores.RESTA, @1.first_line, @1.first_column, $1, $3);}
