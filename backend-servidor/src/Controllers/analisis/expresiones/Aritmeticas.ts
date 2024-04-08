@@ -4,6 +4,7 @@ import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 
+
 export default class Aritmeticas extends Instruccion {
     private operando1: Instruccion | undefined
     private operando2: Instruccion | undefined
@@ -56,6 +57,21 @@ export default class Aritmeticas extends Instruccion {
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
                         return parseFloat(op1) + parseFloat(op2)
+                    case tipoDato.CADENA:
+                        this.tipoDato = new Tipo(tipoDato.CADENA)
+                        return op1 + op2;
+                    case tipoDato.CARACTER:
+                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                        console.log(op2.charCodeAt(0))
+                        return parseInt(op1) + parseInt(op2.charCodeAt(0))
+                    case tipoDato.BOOL:
+                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                        if(op2 == 'true'){
+                            return parseInt(op1) + 1;
+                        }else{
+                            return parseInt(op1) + 0;
+                        }
+                        
                     default:
                         return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
                 }
@@ -66,7 +82,92 @@ export default class Aritmeticas extends Instruccion {
                         return parseFloat(op1) + parseFloat(op2)
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                        
                         return parseFloat(op1) + parseFloat(op2)
+                    case tipoDato.BOOL:
+                            this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                            if(op2 == 'true'){
+                                return parseFloat(op1) + 1
+                            }else{
+                                return parseFloat(op1) + 0
+                            }
+                    case tipoDato.CARACTER:
+                                this.tipoDato = new Tipo(tipoDato.ENTERO)
+                                console.log(op2.charCodeAt(0))
+                                return parseFloat(op1) + parseFloat(op2.charCodeAt(0))
+                    case tipoDato.CADENA:
+                            this.tipoDato = new Tipo(tipoDato.CADENA)
+                            return op1 + op2;
+                            
+                    default:
+                        return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
+                }
+            case tipoDato.BOOL:
+                switch (tipo2) {
+                    case tipoDato.ENTERO:
+                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                        if(op1 == 'true'){
+                            return 1 + parseInt(op2)
+                        }else{
+                            return 0 + parseInt(op2)
+                        }
+                        
+                    case tipoDato.DECIMAL:
+                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                        if(op1 == 'true'){
+                            return 1 + parseFloat(op2)
+                        }else{
+                            return 0 + parseFloat(op2)
+                        }    
+                    case tipoDato.CADENA:
+                            this.tipoDato = new Tipo(tipoDato.CADENA)
+                            if(op1 == 'true'){
+                                return 1 + op2
+                            }else{
+                                return 0 + op2
+                            }
+                            
+                    default:
+                        return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
+                }
+            case tipoDato.CARACTER:
+                switch (tipo2) {
+                    case tipoDato.ENTERO:
+                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                        return parseInt(op1.charCodeAt(0)) + parseInt(op2)
+                        
+                    case tipoDato.DECIMAL:
+                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                        return parseFloat(op1.parseFloat(0)) + parseFloat(op2)
+                    case tipoDato.CARACTER:    
+                        this.tipoDato = new Tipo(tipoDato.CADENA)
+                        return op1 + op2
+                    case tipoDato.CADENA:
+                            this.tipoDato = new Tipo(tipoDato.CADENA)
+                            return op1 + op2
+                            
+                    default:
+                        return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
+                }
+            case tipoDato.CADENA:
+                switch (tipo2) {
+                    case tipoDato.ENTERO:
+                        this.tipoDato = new Tipo(tipoDato.CADENA)
+                        return op1 + op2
+                        
+                    case tipoDato.DECIMAL:
+                        this.tipoDato = new Tipo(tipoDato.CADENA)
+                        return op1 + op2
+                    case tipoDato.BOOL:    
+                        this.tipoDato = new Tipo(tipoDato.CADENA)
+                        return op1 + op2
+                    case tipoDato.CARACTER:    
+                        this.tipoDato = new Tipo(tipoDato.CADENA)
+                        return op1 + op2
+                    case tipoDato.CADENA:
+                            this.tipoDato = new Tipo(tipoDato.CADENA)
+                            return op1 + op2
+                            
                     default:
                         return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
                 }

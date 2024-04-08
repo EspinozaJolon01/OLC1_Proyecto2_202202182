@@ -25,6 +25,8 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 "int"                   return 'INT'
 "double"                return 'DOUBLE'
 "string"                return 'STRING'
+"true"                  return 'TRUE'
+"false"                 return 'FALSE'
 
 // simbolos del sistema
 ";"                     return "PUNTOCOMA"
@@ -35,8 +37,13 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 "="                     return "IGUAL"
 [0-9]+"."[0-9]+         return "DECIMAL"
 [0-9]+                  return "ENTERO"
-[a-z][a-z0-9_]*         return "ID"
+
+
 [\"][^\"]*[\"]          {yytext=yytext.substr(1,yyleng-2); return 'CADENA'}
+
+
+([a-zA-Z])([a-zA-Z0-9_])* return 'ID'
+[']\\\\[']|[']\\\"[']|[']\\\'[']|[']\\n[']|[']\\t[']|[']\\r[']|['].?[']	return 'CARACTER'
 
 //blancos
 [\ \r\t\f\t]+           {}
@@ -89,7 +96,10 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
           | ENTERO                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.ENTERO), $1, @1.first_line, @1.first_column );}
           | DECIMAL                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.DECIMAL), $1, @1.first_line, @1.first_column );}
           | CADENA                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CADENA), $1, @1.first_line, @1.first_column );}
-          | ID                               {$$ = new AccesoVar.default($1, @1.first_line, @1.first_column);}      
+          |TRUE                              {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOL), $1, @1.first_line, @1.first_column );}
+          |FALSE                             {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOL), $1, @1.first_line, @1.first_column );}
+          |CARACTER                              {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CARACTER), $1, @1.first_line, @1.first_column );}
+          |ID                               {$$ = new AccesoVar.default($1, @1.first_line, @1.first_column);}      
 ;
 
 TIPOS : INT             {$$ = new Tipo.default(Tipo.tipoDato.ENTERO);}
