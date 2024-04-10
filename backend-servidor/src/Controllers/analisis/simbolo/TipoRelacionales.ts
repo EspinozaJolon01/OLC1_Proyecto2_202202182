@@ -1,4 +1,4 @@
-export default class Tipo {
+export default class TipoRelacionales {
     private tipo: tipoDato
     
 
@@ -19,11 +19,12 @@ export default class Tipo {
 }
 
 export enum tipoDato {
-    ENTERO,
-    DECIMAL,
-    BOOL,
-    CARACTER,
-    CADENA,
+    IGUAL,
+    DISTINTO,
+    MENOR,
+    MENORIGUAL,
+    MAYOR,
+    MAYORIGUAL,
     VOID
 }
 
