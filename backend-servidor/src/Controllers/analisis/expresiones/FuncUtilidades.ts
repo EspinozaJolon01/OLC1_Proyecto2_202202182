@@ -42,7 +42,7 @@ export default class FuncUtilidades extends Instruccion{
             case Operadores.ToString:
                 //return this.toSTRING(unico)
             case Operadores.toupper:
-                //return this.TOUPPER(unico)
+                return this.TOUPPER(unico)
             case Operadores.round:
                // return this.ROUND(unico)
             default:
@@ -61,6 +61,20 @@ export default class FuncUtilidades extends Instruccion{
                 
             default:
                 return new Errores("Semantico", "TOLOWER invalida", this.linea, this.col)
+        }
+        
+    }
+
+    TOUPPER(op1: any){
+
+        let opU = this.operandoUnido?.tipoDato.getTipo()
+        switch (opU) {
+            case tipoDato.CADENA:
+                this.tipoDato = new Tipo(tipoDato.CADENA)
+                return op1.toUpperCase()
+                
+            default:
+                return new Errores("Semantico", "TOUPPER invalida", this.linea, this.col)
         }
         
     }
