@@ -29,25 +29,26 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 "false"                 return 'FALSE'
 "char"                  return 'CHAR'
 "bool"                  return 'BOOLEAN'
+"pow"                   return 'POW'
 
 
 // simbolos del sistema
 ";"                     return "PUNTOCOMA"
+","                     return "COMA"
 "+"                     return "MAS"
 "-"                     return "MENOS"
+"%"                     return "MODULO"
 "*"                     return "MULTI"
 "/"                     return "DIV"
 "("                     return "PAR1"
 ")"                     return "PAR2"
 ">="                     return "MAYORIGUAL"
 ">"                     return "MAYOR"
-
 "'"                     return "COMILLAS"
 "<="                     return "MENORIGUAL"
 "=="                     return "IGUALRE"
 "!="                    return "DIFERENTE"
 "<"                     return "MENORQUE"
-
 "="                     return "IGUAL"
 
 [0-9]+"."[0-9]+         return "DECIMAL"
@@ -76,7 +77,7 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 
 //precedencias
 %left 'IGUALRE', 'DIFERENTE','MENORQUE','MENORIGUAL','MAYOR','MAYORIGUAL'
-%left 'MAS' 'MENOS'
+%left 'MAS' 'MENOS' 'MODULO'
 %left 'MULTI' 'DIV'
 %right 'UMENOS'
 
@@ -101,11 +102,16 @@ INSTRUCCION : IMPRESION PUNTOCOMA            {$$=$1;}
 IMPRESION : IMPRIMIR PAR1 EXPRESION PAR2    {$$= new Print.default($3, @1.first_line, @1.first_column);}
 ;
 
-DECLARACION : TIPOS ID IGUAL EXPRESION      {$$ = new Declaracion.default($1, @1.first_line, @1.first_column, $2, $4);}
+DECLARACION : TIPOS DECLA IGUAL EXPRESION      {$$ = new Declaracion.default($1, @1.first_line, @1.first_column, $2, $4);}
 ;
 
 ASIGNACION : ID IGUAL EXPRESION             {$$ = new AsignacionVar.default($1, $3, @1.first_line, @1.first_column);}
 ;
+
+
+DECLA: DECLA COMA ID   {$1.push($3); $$=$1;}
+                        | ID {$$=[$1];}
+                        ;
 
 
 EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritmeticas.Operadores.SUMA, @1.first_line, @1.first_column, $1, $3);}
@@ -118,7 +124,9 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
             | EXPRESION MENORIGUAL EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.MENORIGUALES, @1.first_line, @1.first_column, $1, $3);}
             | EXPRESION MAYOR EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.MAYOR, @1.first_line, @1.first_column, $1, $3);}
             | EXPRESION MAYORIGUAL EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.MAYORIGUAL, @1.first_line, @1.first_column, $1, $3);}
-            | PAR1 EXPRESION PAR2              {$$ = $2;}
+            | EXPRESION MODULO EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.MODUL, @1.first_line, @1.first_column, $1, $3);}
+            | POW PAR1 EXPRESION COMA EXPRESION PAR2       {$$ = new Aritmeticas.default(Aritmeticas.Operadores.POT, @1.first_line, @1.first_column, $3, $5);}
+            | PAR1  EXPRESION PAR2              {$$ = $2;}
             | MENOS EXPRESION %prec UMENOS     {$$ = new Aritmeticas.default(Aritmeticas.Operadores.NEG, @1.first_line, @1.first_column, $2);}
             | ENTERO                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.ENTERO), $1, @1.first_line, @1.first_column );}
             | DECIMAL                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.DECIMAL), $1, @1.first_line, @1.first_column );}

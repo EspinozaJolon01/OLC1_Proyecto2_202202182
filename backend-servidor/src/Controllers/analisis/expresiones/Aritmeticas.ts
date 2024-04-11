@@ -42,8 +42,12 @@ export default class Aritmeticas extends Instruccion {
                 return this.mult(opIzq, opDer)
             case Operadores.DIVI:
                 return this.div(opIzq, opDer)
+            case Operadores.POT:
+                return this.potencia(opIzq, opDer)
             case Operadores.NEG:
                 return this.negacion(Unico)
+            case Operadores.MODUL:
+                return this.modulo(opIzq, opDer)
             default:
                 return new Errores("Semantico", "Operador Aritmetico Invalido", this.linea, this.col)
         }
@@ -536,6 +540,72 @@ export default class Aritmeticas extends Instruccion {
         }
 
     }
+    modulo(op1: any, op2: any) {
+        let tipo1 = this.operando1?.tipoDato.getTipo()
+        let tipo2 = this.operando2?.tipoDato.getTipo()
+        switch (tipo1) {
+            case tipoDato.ENTERO:
+                switch (tipo2) {
+                    case tipoDato.ENTERO:
+                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                        return parseFloat(op1) % parseFloat(op2)
+                        
+                    case tipoDato.DECIMAL:
+                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                        return parseFloat(op1) % parseFloat(op2)
+                    default:
+                        return new Errores("Semantico", "Modulo Invalida", this.linea, this.col)
+                }
+            case tipoDato.DECIMAL:
+                switch (tipo2) {
+                    case tipoDato.ENTERO:
+                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                        return parseFloat(op1) % parseFloat(op2)
+                    case tipoDato.DECIMAL:
+                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                        return parseFloat(op1) % parseFloat(op2)
+                    default:
+                        return new Errores("Semantico", "Modulo Invalida", this.linea, this.col)
+                }
+            default:
+                return new Errores("Semantico", "Modulo Invalida", this.linea, this.col)
+        }
+
+    }
+
+
+    potencia(op1: any, op2: any) {
+        let tipo1 = this.operando1?.tipoDato.getTipo()
+        let tipo2 = this.operando2?.tipoDato.getTipo()
+        switch (tipo1) {
+            case tipoDato.ENTERO:
+                switch (tipo2) {
+                    case tipoDato.ENTERO:
+                        this.tipoDato = new Tipo(tipoDato.ENTERO)
+                        return Math.pow(parseInt(op1),parseInt(op2))
+                        
+                    case tipoDato.DECIMAL:
+                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                        return Math.pow(parseFloat(op1),parseFloat(op2)) 
+                    default:
+                        return new Errores("Semantico", "POTENCIA Invalida", this.linea, this.col)
+                }
+            case tipoDato.DECIMAL:
+                switch (tipo2) {
+                    case tipoDato.ENTERO:
+                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                        return Math.pow(parseFloat(op1),parseFloat(op2)) 
+                    case tipoDato.DECIMAL:
+                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                        return Math.pow(parseFloat(op1),parseFloat(op2)) 
+                    default:
+                        return new Errores("Semantico", "POTENCIA Invalida", this.linea, this.col)
+                }
+            default:
+                return new Errores("Semantico", "POTENCIA Invalida", this.linea, this.col)
+        }
+
+    }
 
     negacion(op1: any) {
         let opU = this.operandoUnico?.tipoDato.getTipo()
@@ -558,5 +628,7 @@ export enum Operadores {
     RESTA,
     MULT,
     DIVI,
+    MODUL,
+    POT,
     NEG
 }

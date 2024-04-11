@@ -24,6 +24,7 @@ export enum tipoDato {
     BOOL,
     CARACTER,
     CADENA,
+    POTENCIA,
     VOID
 }
 
