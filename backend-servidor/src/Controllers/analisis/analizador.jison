@@ -3,6 +3,7 @@
 const Tipo = require('./simbolo/Tipo')
 const Logicos = require('./expresiones/Logicos')
 const Nativo = require('./expresiones/Nativo')
+const FuncUtilidades = require('./expresiones/FuncUtilidades')
 const Aritmeticas = require('./expresiones/Aritmeticas')
 const AccesoVar = require('./expresiones/AccesoVar')
 const OpeRelacionales = require('./expresiones/OpeRelacionales')
@@ -22,7 +23,7 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 [/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]    //multilinea
 
 //palabras reservadas
-"imprimir"              return 'IMPRIMIR'
+"cout"              return 'IMPRIMIR'
 "int"                   return 'INT'
 "double"                return 'DOUBLE'
 "string"                return 'STRING'
@@ -31,6 +32,7 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 "char"                  return 'CHAR'
 "bool"                  return 'BOOLEAN'
 "pow"                   return 'POW'
+"tolower"               return 'TOLOWER'
 
 
 // simbolos del sistema
@@ -104,6 +106,7 @@ INSTRUCCIONES : INSTRUCCIONES INSTRUCCION   {$1.push($2); $$=$1;}
 INSTRUCCION : IMPRESION PUNTOCOMA            {$$=$1;}
             | DECLARACION PUNTOCOMA          {$$=$1;}
             | ASIGNACION PUNTOCOMA           {$$=$1;}
+            
 ;
 
 IMPRESION : IMPRIMIR PAR1 EXPRESION PAR2    {$$= new Print.default($3, @1.first_line, @1.first_column);}
@@ -145,10 +148,14 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
             |FALSE                             {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOL), $1, @1.first_line, @1.first_column );}
             |ID                               {$$ = new AccesoVar.default($1, @1.first_line, @1.first_column);} 
             |CHARCOMILLAS                              {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CARACTER), $1, @1.first_line, @1.first_column );}
+            | FUNCIONUTIL       {$$=$1;}
 ;
 
 CHARCOMILLAS : COMILLAS ID COMILLAS {$$ = $2;}
 
+;
+
+FUNCIONUTIL : TOLOWER PAR1 EXPRESION PAR2 {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.tolower, @1.first_line, @1.first_column, $3);}
 ;
 
 TIPOS : INT             {$$ = new Tipo.default(Tipo.tipoDato.ENTERO);}
