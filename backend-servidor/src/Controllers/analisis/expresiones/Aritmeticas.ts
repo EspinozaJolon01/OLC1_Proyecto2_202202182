@@ -146,7 +146,7 @@ export default class Aritmeticas extends Instruccion {
                         
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
-                        return parseFloat(op1.parseFloat(0)) + parseFloat(op2)
+                        return parseFloat(op1.charCodeAt(0)) + parseFloat(op2)
                     case tipoDato.BOOL:
                         return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
                     case tipoDato.CARACTER:    
@@ -431,6 +431,7 @@ export default class Aritmeticas extends Instruccion {
     div(op1: any, op2: any) {
         let tipo1 = this.operando1?.tipoDato.getTipo()
         let tipo2 = this.operando2?.tipoDato.getTipo()
+        
         switch (tipo1) {
             case tipoDato.ENTERO:
                 switch (tipo2) {

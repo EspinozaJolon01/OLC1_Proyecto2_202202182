@@ -19,13 +19,14 @@ class controller {
             for (let i of ast.getInstrucciones()) {
                 //console.log(i)
                 var resultado = i.interpretar(ast, tabla)
-                //console.log(resultado)
+                console.log(resultado)
             }
             console.log(tabla)
             res.send({ "Respuesta": ast.getConsola() })
         } catch (err: any) {
-            console.log(err)
+            
             res.send({ "Error": "Ya no sale compi1" })
+            console.log(err)
         }
     }
 

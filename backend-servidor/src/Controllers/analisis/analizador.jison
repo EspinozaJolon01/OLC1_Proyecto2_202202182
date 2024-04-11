@@ -27,6 +27,9 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 "string"                return 'STRING'
 "true"                  return 'TRUE'
 "false"                 return 'FALSE'
+"char"                  return 'CHAR'
+"bool"                  return 'BOOLEAN'
+
 
 // simbolos del sistema
 ";"                     return "PUNTOCOMA"
@@ -36,8 +39,15 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 "/"                     return "DIV"
 "("                     return "PAR1"
 ")"                     return "PAR2"
+">="                     return "MAYORIGUAL"
+">"                     return "MAYOR"
+
 "'"                     return "COMILLAS"
+"<="                     return "MENORIGUAL"
 "=="                     return "IGUALRE"
+"!="                    return "DIFERENTE"
+"<"                     return "MENORQUE"
+
 "="                     return "IGUAL"
 
 [0-9]+"."[0-9]+         return "DECIMAL"
@@ -65,7 +75,7 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 /lex
 
 //precedencias
-%left 'IGUALRE'
+%left 'IGUALRE', 'DIFERENTE','MENORQUE','MENORIGUAL','MAYOR','MAYORIGUAL'
 %left 'MAS' 'MENOS'
 %left 'MULTI' 'DIV'
 %right 'UMENOS'
@@ -103,6 +113,11 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
             | EXPRESION DIV EXPRESION        {$$ = new Aritmeticas.default(Aritmeticas.Operadores.DIVI, @1.first_line, @1.first_column, $1, $3);}
             | EXPRESION MULTI EXPRESION        {$$ = new Aritmeticas.default(Aritmeticas.Operadores.MULT, @1.first_line, @1.first_column, $1, $3);}
             | EXPRESION IGUALRE EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.IGUAL, @1.first_line, @1.first_column, $1, $3);}
+            | EXPRESION DIFERENTE EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.DISTINTO, @1.first_line, @1.first_column, $1, $3);}
+            | EXPRESION MENORQUE EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.MENOR, @1.first_line, @1.first_column, $1, $3);}
+            | EXPRESION MENORIGUAL EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.MENORIGUALES, @1.first_line, @1.first_column, $1, $3);}
+            | EXPRESION MAYOR EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.MAYOR, @1.first_line, @1.first_column, $1, $3);}
+            | EXPRESION MAYORIGUAL EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.MAYORIGUAL, @1.first_line, @1.first_column, $1, $3);}
             | PAR1 EXPRESION PAR2              {$$ = $2;}
             | MENOS EXPRESION %prec UMENOS     {$$ = new Aritmeticas.default(Aritmeticas.Operadores.NEG, @1.first_line, @1.first_column, $2);}
             | ENTERO                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.ENTERO), $1, @1.first_line, @1.first_column );}
@@ -121,4 +136,6 @@ CHARCOMILLAS : COMILLAS ID COMILLAS {$$ = $2;}
 TIPOS : INT             {$$ = new Tipo.default(Tipo.tipoDato.ENTERO);}
         | DOUBLE          {$$ = new Tipo.default(Tipo.tipoDato.DECIMAL);}
         | STRING          {$$ = new Tipo.default(Tipo.tipoDato.CADENA);}
+        | CHAR          {$$ = new Tipo.default(Tipo.tipoDato.CARACTER);}
+        | BOOLEAN          {$$ = new Tipo.default(Tipo.tipoDato.BOOL);}
 ;

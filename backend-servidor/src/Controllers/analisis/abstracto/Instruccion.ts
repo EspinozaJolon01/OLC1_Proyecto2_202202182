@@ -1,7 +1,7 @@
 import Arbol from "../simbolo/Arbol";
 import tablaSimbolos from "../simbolo/tablaSimbolos";
 import Tipo from "../simbolo/Tipo";
-import TipoRelacionales from "../simbolo/TipoRelacionales";
+
 
 export abstract class Instruccion {
     public tipoDato: Tipo
