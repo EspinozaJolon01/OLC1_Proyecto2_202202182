@@ -41,7 +41,7 @@ export default class FuncUtilidades extends Instruccion{
             case Operadores.tolower:
                 return this.TOLOWER(unico)
             case Operadores.ToString:
-                //return this.toSTRING(unico)
+                return this.toSTRING(unico)
             case Operadores.toupper:
                 return this.TOUPPER(unico)
             case Operadores.round:
@@ -87,6 +87,26 @@ export default class FuncUtilidades extends Instruccion{
             case tipoDato.DECIMAL:
                 this.tipoDato = new Tipo(tipoDato.ENTERO)
                 return Math.round(op1)
+                
+            default:
+                return new Errores("Semantico", "ROUND invalida", this.linea, this.col)
+        }
+        
+    }
+
+    toSTRING(op1: any){
+
+        let opU = this.operandoUnido?.tipoDato.getTipo()
+        switch (opU) {
+            case tipoDato.ENTERO:
+                this.tipoDato = new Tipo(tipoDato.CADENA)
+                return op1.toString()
+            case tipoDato.DECIMAL:
+                this.tipoDato = new Tipo(tipoDato.CADENA)
+                return op1.toString()
+            case tipoDato.BOOL:
+                this.tipoDato = new Tipo(tipoDato.CADENA)
+                return op1.toString()
                 
             default:
                 return new Errores("Semantico", "ROUND invalida", this.linea, this.col)

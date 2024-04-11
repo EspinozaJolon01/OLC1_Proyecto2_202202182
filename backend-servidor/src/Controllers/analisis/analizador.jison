@@ -35,6 +35,8 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 "tolower"               return 'TOLOWER'
 "toupper"               return 'TOUPPER'
 "round"                 return 'ROUND'
+"std"                   return 'STD'
+"toString"              return 'TOSTRING'
 
 
 // simbolos del sistema
@@ -42,6 +44,7 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 ","                     return "COMA"
 "+"                     return "MAS"
 "-"                     return "MENOS"
+"::"                    return "DOSPUNTOS"
 "%"                     return "MODULO"
 "||"                    return "OR"
 "&&"                    return "AND"
@@ -160,6 +163,8 @@ CHARCOMILLAS : COMILLAS ID COMILLAS {$$ = $2;}
 FUNCIONUTIL : TOLOWER PAR1 EXPRESION PAR2 {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.tolower, @1.first_line, @1.first_column, $3);}
             | TOUPPER PAR1 EXPRESION PAR2 {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.toupper, @1.first_line, @1.first_column, $3);}
             | ROUND PAR1 EXPRESION PAR2 {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.round, @1.first_line, @1.first_column, $3);}
+            | TOSTRING PAR1 EXPRESION PAR2 {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.ToString, @1.first_line, @1.first_column, $3);}
+
 ;
 
 TIPOS : INT             {$$ = new Tipo.default(Tipo.tipoDato.ENTERO);}
