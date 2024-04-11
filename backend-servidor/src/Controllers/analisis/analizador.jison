@@ -34,6 +34,7 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 "pow"                   return 'POW'
 "tolower"               return 'TOLOWER'
 "toupper"               return 'TOUPPER'
+"round"                 return 'ROUND'
 
 
 // simbolos del sistema
@@ -158,6 +159,7 @@ CHARCOMILLAS : COMILLAS ID COMILLAS {$$ = $2;}
 
 FUNCIONUTIL : TOLOWER PAR1 EXPRESION PAR2 {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.tolower, @1.first_line, @1.first_column, $3);}
             | TOUPPER PAR1 EXPRESION PAR2 {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.toupper, @1.first_line, @1.first_column, $3);}
+            | ROUND PAR1 EXPRESION PAR2 {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.round, @1.first_line, @1.first_column, $3);}
 ;
 
 TIPOS : INT             {$$ = new Tipo.default(Tipo.tipoDato.ENTERO);}

@@ -15,7 +15,6 @@ export default class Declaracion extends Instruccion {
         this.valor = valor
     }
     
-
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         let valorFinal = this.valor.interpretar(arbol, tabla)
         if (valorFinal instanceof Errores) return valorFinal

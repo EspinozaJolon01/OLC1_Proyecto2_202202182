@@ -4,6 +4,7 @@ import Errores from "../excepcicones/Errores";
 import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
+import { Router } from 'express';
 
 
 
@@ -44,7 +45,7 @@ export default class FuncUtilidades extends Instruccion{
             case Operadores.toupper:
                 return this.TOUPPER(unico)
             case Operadores.round:
-               // return this.ROUND(unico)
+                return this.ROUND(unico)
             default:
                 return new Errores("Semantico", "Funcion Invalido", this.linea, this.col)
 
@@ -75,6 +76,20 @@ export default class FuncUtilidades extends Instruccion{
                 
             default:
                 return new Errores("Semantico", "TOUPPER invalida", this.linea, this.col)
+        }
+        
+    }
+
+    ROUND(op1: any){
+
+        let opU = this.operandoUnido?.tipoDato.getTipo()
+        switch (opU) {
+            case tipoDato.DECIMAL:
+                this.tipoDato = new Tipo(tipoDato.ENTERO)
+                return Math.round(op1)
+                
+            default:
+                return new Errores("Semantico", "ROUND invalida", this.linea, this.col)
         }
         
     }
