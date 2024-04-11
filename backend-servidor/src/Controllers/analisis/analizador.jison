@@ -1,6 +1,7 @@
 %{
 // codigo de JS si fuese necesario
 const Tipo = require('./simbolo/Tipo')
+const Logicos = require('./expresiones/Logicos')
 const Nativo = require('./expresiones/Nativo')
 const Aritmeticas = require('./expresiones/Aritmeticas')
 const AccesoVar = require('./expresiones/AccesoVar')
@@ -38,6 +39,9 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 "+"                     return "MAS"
 "-"                     return "MENOS"
 "%"                     return "MODULO"
+"||"                    return "OR"
+"&&"                    return "AND"
+"!"                     return "NOT"
 "*"                     return "MULTI"
 "/"                     return "DIV"
 "("                     return "PAR1"
@@ -76,6 +80,9 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 /lex
 
 //precedencias
+%left 'AND'
+%left 'OR'
+%left 'NOT'
 %left 'IGUALRE', 'DIFERENTE','MENORQUE','MENORIGUAL','MAYOR','MAYORIGUAL'
 %left 'MAS' 'MENOS' 'MODULO'
 %left 'MULTI' 'DIV'
@@ -125,9 +132,12 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
             | EXPRESION MAYOR EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.MAYOR, @1.first_line, @1.first_column, $1, $3);}
             | EXPRESION MAYORIGUAL EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.MAYORIGUAL, @1.first_line, @1.first_column, $1, $3);}
             | EXPRESION MODULO EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.MODUL, @1.first_line, @1.first_column, $1, $3);}
+            | EXPRESION OR EXPRESION        {$$ = new Logicos.default(Logicos.Operadores.OR, @1.first_line, @1.first_column, $1, $3);}
+            | EXPRESION AND EXPRESION        {$$ = new Logicos.default(Logicos.Operadores.AND, @1.first_line, @1.first_column, $1, $3);}
             | POW PAR1 EXPRESION COMA EXPRESION PAR2       {$$ = new Aritmeticas.default(Aritmeticas.Operadores.POT, @1.first_line, @1.first_column, $3, $5);}
             | PAR1  EXPRESION PAR2              {$$ = $2;}
             | MENOS EXPRESION %prec UMENOS     {$$ = new Aritmeticas.default(Aritmeticas.Operadores.NEG, @1.first_line, @1.first_column, $2);}
+            | NOT EXPRESION      {$$ = new Logicos.default(Logicos.Operadores.NOT, @1.first_line, @1.first_column, $2);}
             | ENTERO                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.ENTERO), $1, @1.first_line, @1.first_column );}
             | DECIMAL                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.DECIMAL), $1, @1.first_line, @1.first_column );}
             | CADENA                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CADENA), $1, @1.first_line, @1.first_column );}
