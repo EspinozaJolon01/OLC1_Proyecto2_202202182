@@ -41,11 +41,12 @@ var cadena = '';
 "tolower"               return 'TOLOWER'
 "toupper"               return 'TOUPPER'
 "round"                 return 'ROUND'
-"toString"              return 'TOSTRING'
+"std::toString"              return 'TOSTRING'
 "if"                    return 'IF'
 "while"                 return 'WHILE'
 "break"                 return 'BREAK'
 "typeof"                return 'TYPEOF'
+"length"                return 'LENGTH'
 
 
 // simbolos del sistema
