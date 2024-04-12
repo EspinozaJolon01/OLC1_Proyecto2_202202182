@@ -13,6 +13,7 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 const funcIf = require('./instrucciones/funcIf')
 const funcWhile = require('./instrucciones/funcWhile')
 const Break = require('./instrucciones/funBreak')
+const Casteos = require('./expresiones/Casteos')
 var cadena = '';
 %}
 
@@ -161,6 +162,7 @@ DECLA: DECLA COMA ID   {$1.push($3); $$=$1;}
                         | ID {$$=[$1];}
                         ;
 
+
 FUNIF :  IF PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2 {$$ = new funcIf.default($3,$6, @1.first_line, @1.first_column);}
 ;
 
@@ -171,7 +173,7 @@ FUNWHILE : WHILE PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2  {$$ = new func
 FUNBREAK : BREAK PUNTOCOMA {$$ = new Break.default(@1.first_line, @1.first_column);}
 ;
 
-FUNCASTEO : PAR1 TIPOS PAR2 EXPRESION
+FUNCASTEO : PAR1 TIPOS PAR2 EXPRESION {$$ = new Casteos.default($2,@1.first_line, @1.first_column,$4);}
 
 ;
 
