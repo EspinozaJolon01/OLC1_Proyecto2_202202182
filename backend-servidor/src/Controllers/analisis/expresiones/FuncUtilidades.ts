@@ -46,6 +46,8 @@ export default class FuncUtilidades extends Instruccion{
                 return this.TOUPPER(unico)
             case Operadores.round:
                 return this.ROUND(unico)
+            case Operadores.Typeof:
+                return this.typeof(unico)
             default:
                 return new Errores("Semantico", "Funcion Invalido", this.linea, this.col)
 
@@ -115,12 +117,40 @@ export default class FuncUtilidades extends Instruccion{
     }
 
 
+    typeof(op1: any){
+
+        let opU = this.operandoUnido?.tipoDato.getTipo()
+        switch (opU) {
+            case tipoDato.ENTERO:
+                this.tipoDato = new Tipo(tipoDato.CADENA)
+                return "int"
+            case tipoDato.DECIMAL:
+                this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                return "double"
+            case tipoDato.BOOL:
+                this.tipoDato = new Tipo(tipoDato.BOOL)
+                return "bool"
+            case tipoDato.CADENA:
+                this.tipoDato = new Tipo(tipoDato.CADENA)
+                return "cadena"
+            case tipoDato.CARACTER:
+                this.tipoDato = new Tipo(tipoDato.CADENA)
+                return "char"
+                
+            default:
+                return new Errores("Semantico", "typeof invalida", this.linea, this.col)
+        }
+        
+    }
+
+
 }
 
 export enum Operadores{
     tolower,
     toupper,
     round,
-    ToString
+    ToString,
+    Typeof
 
 }

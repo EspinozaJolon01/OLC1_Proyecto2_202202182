@@ -45,6 +45,7 @@ var cadena = '';
 "if"                    return 'IF'
 "while"                 return 'WHILE'
 "break"                 return 'BREAK'
+"typeof"                return 'TYPEOF'
 
 
 // simbolos del sistema
@@ -213,6 +214,7 @@ FUNCIONUTIL : TOLOWER PAR1 EXPRESION PAR2 {$$ = new FuncUtilidades.default(FuncU
             | TOUPPER PAR1 EXPRESION PAR2 {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.toupper, @1.first_line, @1.first_column, $3);}
             | ROUND PAR1 EXPRESION PAR2 {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.round, @1.first_line, @1.first_column, $3);}
             | TOSTRING PAR1 EXPRESION PAR2 {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.ToString, @1.first_line, @1.first_column, $3);}
+            | TYPEOF PAR1 EXPRESION PAR2  {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.Typeof, @1.first_line, @1.first_column, $3);}
 
 ;
 

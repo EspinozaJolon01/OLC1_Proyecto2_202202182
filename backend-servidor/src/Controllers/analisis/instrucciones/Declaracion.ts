@@ -19,9 +19,18 @@ export default class Declaracion extends Instruccion {
         let valorFinal = this.valor.interpretar(arbol, tabla)
         if (valorFinal instanceof Errores) return valorFinal
 
-        // if (this.valor.tipoDato.getTipo() != this.tipoDato.getTipo()) {
-        //     return new Errores("SEMANTICO", "No se puede declarar variable", this.linea, this.col)
-        // }
+        if(this.valor.tipoDato.getTipo() == tipoDato.ENTERO && this.tipoDato.getTipo() == tipoDato.DECIMAL){
+            this.identificador.forEach(identificador => {
+                valorFinal = parseFloat(valorFinal);
+                if (!tabla.setVariable(new Simbolo(this.tipoDato, identificador, valorFinal))){
+                    return new Errores("Semantico", "No se puede declarar variable que ya existe", this.linea, this.col)
+                }   
+            });
+        }
+
+        if (this.valor.tipoDato.getTipo() != this.tipoDato.getTipo()) {
+            return new Errores("SEMANTICO", "No se puede declarar variable", this.linea, this.col)
+        }
         
         this.identificador.forEach(elemento => {
             if (!tabla.setVariable(new Simbolo(this.tipoDato, elemento, valorFinal))){
