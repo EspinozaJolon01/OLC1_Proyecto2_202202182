@@ -523,17 +523,17 @@ export default class OpeRelacionales extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1 <= op2  
+                        return parseInt(op1) <= parseInt(op2)  
                             
                         
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1 <= op2  
+                        return parseFloat(op1) <= parseFloat(op2)  
                     case tipoDato.CADENA:
                         return new Errores("Semantico", "MENOR QUE Invalida", this.linea, this.col)
                     case tipoDato.CARACTER:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1 <= op2.charCodeAt(1) 
+                        return parseInt(op1) <= parseInt(op2.charCodeAt(1)) 
                             
                     case tipoDato.BOOL:
                         return new Errores("Semantico", "MENOR QUE Invalida", this.linea, this.col)
@@ -635,18 +635,18 @@ export default class OpeRelacionales extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1 > op2
+                        return parseInt(op1) > parseInt(op2)
                         
                         
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1 > op2
+                        return parseFloat(op1) > parseFloat(op2)
                         
                     case tipoDato.CADENA:
                         return new Errores("Semantico", "mayor Invalida", this.linea, this.col)
                     case tipoDato.CARACTER:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1 > op2.charCodeAt(1)
+                        return parseInt(op1) > parseInt(op2.charCodeAt(1))
                         
                     case tipoDato.BOOL:
                         return new Errores("Semantico", "mayor Invalida", this.linea, this.col)
@@ -658,17 +658,17 @@ export default class OpeRelacionales extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1 > op2
+                        return parseFloat(op1) > parseFloat(op2)
                         
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1 > op2
+                        return parseFloat(op1) > parseFloat(op2)
                     case tipoDato.BOOL:
                         return new Errores("Semantico", "mayor Invalida", this.linea, this.col)
 
                     case tipoDato.CARACTER:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1 > op2.charCodeAt(1)
+                        return parseFloat(op1) > parseInt(op2.charCodeAt(1))
                             
                     case tipoDato.CADENA:
                         return new Errores("Semantico", "mayor Invalida", this.linea, this.col)
@@ -698,18 +698,18 @@ export default class OpeRelacionales extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1.charCodeAt(1) > op2
+                        return parseInt(op1.charCodeAt(1)) > parseInt(op2)
                         
                         
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1.charCodeAt(1) > op2
+                        return parseInt(op1.charCodeAt(1)) > (op2)
                         
                     case tipoDato.BOOL:
                         return new Errores("Semantico", "mayor Invalida", this.linea, this.col)
                     case tipoDato.CARACTER:    
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1.charCodeAt(1) > op2.charCodeAt(1)
+                        return parseInt(op1.charCodeAt(1)) > parseInt(op2.charCodeAt(1))
                         
                     case tipoDato.CADENA:
                         return new Errores("Semantico", "mayor Invalida", this.linea, this.col)
@@ -748,18 +748,18 @@ export default class OpeRelacionales extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1 >= op2
+                        return parseInt(op1) >= parseInt(op2)
                         
                         
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1 >= op2
+                        return parseFloat(op1) >= parseFloat(op2)
                         
                     case tipoDato.CADENA:
                         return new Errores("Semantico", "Mayor Igual Invalida", this.linea, this.col)
                     case tipoDato.CARACTER:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1 >= op2.charCodeAt(1)
+                        return parseInt(op1) >= parseInt(op2.charCodeAt(1))
                         
                     case tipoDato.BOOL:
                         return new Errores("Semantico", "Mayor Igual Invalida", this.linea, this.col)
@@ -771,18 +771,18 @@ export default class OpeRelacionales extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1 >= op2
+                        return parseFloat(op1) >= parseInt(op2)
                         
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1 >= op2
+                        return parseFloat(op1) >= parseFloat(op2)
                         
                     case tipoDato.BOOL:
                         return new Errores("Semantico", "Mayor Igual Invalida", this.linea, this.col)
 
                     case tipoDato.CARACTER:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1 >= op2.charCodeAt(1)
+                        return parseFloat(op1) >= parseInt(op2.charCodeAt(1))
                         
                     case tipoDato.CADENA:
                         return new Errores("Semantico", "Mayor Igual Invalida", this.linea, this.col)
@@ -812,18 +812,18 @@ export default class OpeRelacionales extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1.charCodeAt(1) >= op2
+                        return parseInt(op1.charCodeAt(1)) >= parseInt(op2)
                         
                         
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1.charCodeAt(1) >= op2
+                        return parseInt(op1.charCodeAt(1)) >= parseFloat(op2)
                         
                     case tipoDato.BOOL:
                         return new Errores("Semantico", "Mayor Igual Invalida", this.linea, this.col)
                     case tipoDato.CARACTER:    
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1.charCodeAt(1) >= op2.charCodeAt(1)
+                        return parseInt(op1.charCodeAt(1)) >= parseInt(op2.charCodeAt(1))
                         
                     case tipoDato.CADENA:
                         return new Errores("Semantico", "Mayor Igual Invalida", this.linea, this.col)
