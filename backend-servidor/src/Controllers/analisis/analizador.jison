@@ -11,6 +11,8 @@ const Print = require('./instrucciones/Print')
 const Declaracion = require('./instrucciones/Declaracion')
 const AsignacionVar = require('./instrucciones/AsignacionVar')
 const funcIf = require('./instrucciones/funcIf')
+const funcWhile = require('./instrucciones/funcWhile')
+const Break = require('./instrucciones/funBreak')
 var cadena = '';
 %}
 
@@ -40,6 +42,8 @@ var cadena = '';
 "round"                 return 'ROUND'
 "toString"              return 'TOSTRING'
 "if"                    return 'IF'
+"while"                 return 'WHILE'
+"break"                 return 'BREAK'
 
 
 // simbolos del sistema
@@ -129,6 +133,8 @@ INSTRUCCION : IMPRESION             {$$=$1;}
             | DECLARACION PUNTOCOMA          {$$=$1;}
             | ASIGNACION PUNTOCOMA           {$$=$1;}
             | FUNIF                         {$$=$1;}
+            | FUNWHILE                       {$$=$1;}
+            | FUNBREAK                       {$$=$1;}
             
 ;
 
@@ -136,7 +142,7 @@ IMPRESION : IMPRIMIR DOBLEMAYOR EXPRESION VERIFAR   { if($4 == true){
                                                         $$= new Print.default($3, @1.first_line, @1.first_column);
                                                         }
                                                         $$= new Print.default($3, @1.first_line, @1.first_column,"\n");
-                                                    }
+                                                }
 ;
 
 VERIFAR : PUNTOCOMA     {$$ = true;}
@@ -156,6 +162,17 @@ DECLA: DECLA COMA ID   {$1.push($3); $$=$1;}
 
 FUNIF :  IF PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2 {$$ = new funcIf.default($3,$6, @1.first_line, @1.first_column);}
 ;
+
+FUNWHILE : WHILE PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2  {$$ = new funcWhile.default($3,$6, @1.first_line, @1.first_column);}
+;
+
+
+FUNBREAK : BREAK PUNTOCOMA {$$ = new Break.default(@1.first_line, @1.first_column);}
+;
+
+
+
+
 
 
 EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritmeticas.Operadores.SUMA, @1.first_line, @1.first_column, $1, $3);}

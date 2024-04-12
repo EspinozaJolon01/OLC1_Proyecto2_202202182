@@ -30,9 +30,9 @@ export default class tablaSimbolo {
     }
 
     public getVariable(id: string) {
-        for(let i: tablaSimbolo = this; i != null; i=i.getAnterior()){
-            let buscar:Simbolo = <Simbolo> i.getTabla().get(id.toLocaleLowerCase())
-            if(buscar != null) return buscar
+        for (let i: tablaSimbolo = this; i != null; i = i.getAnterior()) {
+            let busqueda: Simbolo = <Simbolo>i.getTabla().get(id.toLocaleLowerCase())
+            if (busqueda != null) return busqueda
         }
         return null
     }

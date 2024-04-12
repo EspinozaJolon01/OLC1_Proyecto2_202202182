@@ -6,8 +6,12 @@ import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./funBreak";
 
 
-
-export default class funcIf extends Instruccion {
+/*
+while(exp){
+    instrucciones
+}
+*/
+export default class funcWhile extends Instruccion {
     private condicion: Instruccion
     private instrucciones: Instruccion[]
 
@@ -21,21 +25,20 @@ export default class funcIf extends Instruccion {
         let cond = this.condicion.interpretar(arbol, tabla)
         if (cond instanceof Errores) return cond
 
-        // validacion
+        // validaciones
         if (this.condicion.tipoDato.getTipo() != tipoDato.BOOL) {
             return new Errores("SEMANTICO", "La condicion debe ser bool", this.linea, this.col)
         }
 
-        let newTabla = new tablaSimbolo(tabla)
-        newTabla.setNombre("Sentencia IF")
-
-        if (cond) {
+        while (this.condicion.interpretar(arbol, tabla)) {
+            let newTabla = new tablaSimbolo(tabla)
+            newTabla.setNombre("Sentencia While")
             for (let i of this.instrucciones) {
-                if (i instanceof Break) return i;
+                if (i instanceof Break) return;
                 let resultado = i.interpretar(arbol, newTabla)
+                if (resultado instanceof Break) return;
                 // los errores les quedan de tarea
             }
         }
     }
 }
-

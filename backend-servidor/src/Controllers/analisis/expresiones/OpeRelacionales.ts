@@ -14,7 +14,7 @@ export default class OpeRelacionales extends Instruccion {
     
 
     constructor(operador: OpRelacional, fila: number, col: number, op1: Instruccion, op2?: Instruccion) {
-        super(new Tipo(tipoDato.VOID), fila, col)
+        super(new Tipo(tipoDato.BOOL), fila, col)
         this.operacion = operador
         this.operando1 = op1
         this.operando2 = op2
@@ -410,23 +410,17 @@ export default class OpeRelacionales extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        if(op1 < op2){
-                            return true
-                        }else{
-                            return false
-                        }
+                        return parseInt(op1) < parseInt(op2)
                         
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        if(op1 < op2){
-                            return true
-                        }else{
-                            return false
-                        }
+                        return parseFloat(op1)  < parseFloat(op2)
+                        
                     case tipoDato.CADENA:
                         return new Errores("Semantico", "MENOR QUE Invalida", this.linea, this.col)
                     case tipoDato.CARACTER:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
+
                         if(op1 < op2.charCodeAt(1)){
                             return true
                         }else{
