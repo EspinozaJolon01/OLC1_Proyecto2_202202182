@@ -10,6 +10,7 @@ const OpeRelacionales = require('./expresiones/OpeRelacionales')
 const Print = require('./instrucciones/Print')
 const Declaracion = require('./instrucciones/Declaracion')
 const AsignacionVar = require('./instrucciones/AsignacionVar')
+const funcIf = require('./instrucciones/funcIf')
 var cadena = '';
 %}
 
@@ -38,6 +39,7 @@ var cadena = '';
 "toupper"               return 'TOUPPER'
 "round"                 return 'ROUND'
 "toString"              return 'TOSTRING'
+"if"                    return 'IF'
 
 
 // simbolos del sistema
@@ -56,6 +58,8 @@ var cadena = '';
 "/"                     return "DIV"
 "("                     return "PAR1"
 ")"                     return "PAR2"
+"{"                     return "LLAVE1"
+"}"                     return "LLAVE2"
 ">="                     return "MAYORIGUAL"
 ">"                     return "MAYOR"
 "<="                     return "MENORIGUAL"
@@ -124,6 +128,7 @@ INSTRUCCIONES : INSTRUCCIONES INSTRUCCION   {$1.push($2); $$=$1;}
 INSTRUCCION : IMPRESION             {$$=$1;}
             | DECLARACION PUNTOCOMA          {$$=$1;}
             | ASIGNACION PUNTOCOMA           {$$=$1;}
+            | FUNIF                         {$$=$1;}
             
 ;
 
@@ -149,6 +154,9 @@ DECLA: DECLA COMA ID   {$1.push($3); $$=$1;}
                         | ID {$$=[$1];}
                         ;
 
+FUNIF :  IF PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2 {$$ = new funcIf.default($3,$6, @1.first_line, @1.first_column);}
+;
+
 
 EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritmeticas.Operadores.SUMA, @1.first_line, @1.first_column, $1, $3);}
             | EXPRESION MENOS EXPRESION        {$$ = new Aritmeticas.default(Aritmeticas.Operadores.RESTA, @1.first_line, @1.first_column, $1, $3);}
@@ -170,8 +178,8 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
             | ENTERO                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.ENTERO), $1, @1.first_line, @1.first_column );}
             | DECIMAL                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.DECIMAL), $1, @1.first_line, @1.first_column );}
             | CADENA                           {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CADENA), $1, @1.first_line, @1.first_column );}
-            |TRUE                              {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOL), $1, @1.first_line, @1.first_column );}
-            |FALSE                             {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOL), $1, @1.first_line, @1.first_column );}
+            |TRUE                              {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOL), true, @1.first_line, @1.first_column );}
+            |FALSE                             {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOL), false, @1.first_line, @1.first_column );}
             |ID                               {$$ = new AccesoVar.default($1, @1.first_line, @1.first_column);} 
             |CHARACTER                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CARACTER), $1, @1.first_line, @1.first_column );}
             | FUNCIONUTIL       {$$=$1;}

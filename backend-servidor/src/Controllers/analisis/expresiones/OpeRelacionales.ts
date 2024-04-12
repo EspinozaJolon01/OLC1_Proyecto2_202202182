@@ -24,7 +24,10 @@ export default class OpeRelacionales extends Instruccion {
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         let opIzq, opDer = null
         opIzq = this.operando1?.interpretar(arbol, tabla)
+        if(opIzq instanceof Errores) return opIzq
+        
         opDer = this.operando2?.interpretar(arbol, tabla)
+        if(opDer instanceof Errores) return opDer
             
         
 

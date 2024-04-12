@@ -94,12 +94,7 @@ export default class Logicos extends Instruccion{
         switch (opU) {
             case tipoDato.BOOL:
                 this.tipoDato = new Tipo(tipoDato.BOOL)
-                console.log(op1)
-                if (op1.toLowerCase() == 'false'){
-                    return true
-                }else{
-                    return false
-                }
+                return !op1
                 
             default:
                 return new Errores("Semantico", "NOT invalida", this.linea, this.col)
