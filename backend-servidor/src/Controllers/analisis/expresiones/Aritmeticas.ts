@@ -70,8 +70,8 @@ export default class Aritmeticas extends Instruccion {
                         return op1 + op2;
                     case tipoDato.CARACTER:
                         this.tipoDato = new Tipo(tipoDato.ENTERO)
-                        console.log(op2.charCodeAt(0))
-                        return parseInt(op1) + parseInt(op2.charCodeAt(0))
+                        console.log(op2.charCodeAt(1))
+                        return parseInt(op1) + parseInt(op2.charCodeAt(1))
                     case tipoDato.BOOL:
                         this.tipoDato = new Tipo(tipoDato.ENTERO)
                         if(op2 == 'true'){
@@ -101,8 +101,8 @@ export default class Aritmeticas extends Instruccion {
                             }
                     case tipoDato.CARACTER:
                                 this.tipoDato = new Tipo(tipoDato.ENTERO)
-                                console.log(op2.charCodeAt(0))
-                                return parseFloat(op1) + parseFloat(op2.charCodeAt(0))
+                                console.log(op2.charCodeAt(1))
+                                return parseFloat(op1) + parseFloat(op2.charCodeAt(1))
                     case tipoDato.CADENA:
                             this.tipoDato = new Tipo(tipoDato.CADENA)
                             return op1 + op2;
@@ -146,11 +146,11 @@ export default class Aritmeticas extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO:
                         this.tipoDato = new Tipo(tipoDato.ENTERO)
-                        return parseInt(op1.charCodeAt(0)) + parseInt(op2)
+                        return parseInt(op1.charCodeAt(1)) + parseInt(op2)
                         
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
-                        return parseFloat(op1.charCodeAt(0)) + parseFloat(op2)
+                        return parseFloat(op1.charCodeAt(1)) + parseFloat(op2)
                     case tipoDato.BOOL:
                         return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
                     case tipoDato.CARACTER:    
@@ -212,7 +212,7 @@ export default class Aritmeticas extends Instruccion {
                         }
                     case tipoDato.CARACTER:
                         this.tipoDato = new Tipo(tipoDato.ENTERO)
-                        return parseFloat(op1) - parseInt(op2.charCodeAt(0))
+                        return parseFloat(op1) - parseInt(op2.charCodeAt(1))
                     case tipoDato.CADENA:
                         console.log("ERROR SEMANTICO")
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
@@ -236,7 +236,7 @@ export default class Aritmeticas extends Instruccion {
                         }
                     case tipoDato.CARACTER:
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
-                        return parseFloat(op1) - parseFloat(op2.charCodeAt(0))
+                        return parseFloat(op1) - parseFloat(op2.charCodeAt(1))
                     case tipoDato.CADENA:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                     default:
@@ -271,10 +271,10 @@ export default class Aritmeticas extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO:
                         this.tipoDato = new Tipo(tipoDato.ENTERO)
-                        return parseInt(op1.charCodeAt(0)) - parseInt(op2)
+                        return parseInt(op1.charCodeAt(1)) - parseInt(op2)
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
-                        return parseFloat(op1.charCodeAt(0)) - parseFloat(op2)   
+                        return parseFloat(op1.charCodeAt(1)) - parseFloat(op2)   
                     case tipoDato.BOOL:
                         return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                     case tipoDato.CARACTER:
@@ -288,10 +288,10 @@ export default class Aritmeticas extends Instruccion {
                     switch (tipo2) {
                         case tipoDato.ENTERO:
                             this.tipoDato = new Tipo(tipoDato.ENTERO)
-                            return parseInt(op1.charCodeAt(0)) - parseInt(op2)
+                            return parseInt(op1.charCodeAt(1)) - parseInt(op2)
                         case tipoDato.DECIMAL:
                             this.tipoDato = new Tipo(tipoDato.DECIMAL)
-                            return parseFloat(op1.charCodeAt(0)) - parseFloat(op2)   
+                            return parseFloat(op1.charCodeAt(1)) - parseFloat(op2)   
                         case tipoDato.BOOL:
                             return new Errores("Semantico", "Resta Invalida", this.linea, this.col)
                         case tipoDato.CARACTER:
@@ -339,7 +339,7 @@ export default class Aritmeticas extends Instruccion {
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                     case tipoDato.CARACTER:
                         this.tipoDato = new Tipo(tipoDato.ENTERO)
-                        return parseFloat(op1) * parseInt(op2.charCodeAt(0))
+                        return parseFloat(op1) * parseInt(op2.charCodeAt(1))
                     case tipoDato.CADENA:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                     default:
@@ -357,7 +357,7 @@ export default class Aritmeticas extends Instruccion {
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                     case tipoDato.CARACTER:
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
-                        return parseFloat(op1) * parseFloat(op2.charCodeAt(0))
+                        return parseFloat(op1) * parseFloat(op2.charCodeAt(1))
                     case tipoDato.CADENA:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                     default:
@@ -382,10 +382,10 @@ export default class Aritmeticas extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO:
                         this.tipoDato = new Tipo(tipoDato.ENTERO)
-                        return parseInt(op1.charCodeAt(0)) * parseInt(op2)
+                        return parseInt(op1.charCodeAt(1)) * parseInt(op2)
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
-                        return parseFloat(op1.charCodeAt(0)) * parseFloat(op2)   
+                        return parseFloat(op1.charCodeAt(1)) * parseFloat(op2)   
                     case tipoDato.BOOL:
                         return new Errores("Semantico", "MULTIPLICACION Invalida", this.linea, this.col)
                     case tipoDato.CARACTER:
@@ -449,7 +449,7 @@ export default class Aritmeticas extends Instruccion {
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                     case tipoDato.CARACTER:
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
-                        return parseFloat(op1) / parseInt(op2.charCodeAt(0))
+                        return parseFloat(op1) / parseInt(op2.charCodeAt(1))
                     case tipoDato.CADENA:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                     default:
@@ -467,7 +467,7 @@ export default class Aritmeticas extends Instruccion {
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                     case tipoDato.CARACTER:
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
-                        return parseFloat(op1) / parseFloat(op2.charCodeAt(0))
+                        return parseFloat(op1) / parseFloat(op2.charCodeAt(1))
                     case tipoDato.CADENA:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                     default:
@@ -492,10 +492,10 @@ export default class Aritmeticas extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO:
                         this.tipoDato = new Tipo(tipoDato.ENTERO)
-                        return parseInt(op1.charCodeAt(0)) / parseInt(op2)
+                        return parseInt(op1.charCodeAt(1)) / parseInt(op2)
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
-                        return parseFloat(op1.charCodeAt(0)) / parseFloat(op2)   
+                        return parseFloat(op1.charCodeAt(1)) / parseFloat(op2)   
                     case tipoDato.BOOL:
                         return new Errores("Semantico", "DIVISION Invalida", this.linea, this.col)
                     case tipoDato.CARACTER:

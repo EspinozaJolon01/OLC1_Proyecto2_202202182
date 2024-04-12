@@ -10,12 +10,14 @@ const OpeRelacionales = require('./expresiones/OpeRelacionales')
 const Print = require('./instrucciones/Print')
 const Declaracion = require('./instrucciones/Declaracion')
 const AsignacionVar = require('./instrucciones/AsignacionVar')
+var cadena = '';
 %}
 
 // analizador lexico
 
 %lex
 %options case-insensitive
+%x string
 
 %%
 
@@ -26,7 +28,7 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 "cout"              return 'IMPRIMIR'
 "int"                   return 'INT'
 "double"                return 'DOUBLE'
-"string"                return 'STRING'
+"std::String"                return 'STRING'
 "true"                  return 'TRUE'
 "false"                 return 'FALSE'
 "char"                  return 'CHAR'
@@ -35,7 +37,6 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 "tolower"               return 'TOLOWER'
 "toupper"               return 'TOUPPER'
 "round"                 return 'ROUND'
-"std"                   return 'STD'
 "toString"              return 'TOSTRING'
 
 
@@ -47,15 +48,16 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 "::"                    return "DOSPUNTOS"
 "%"                     return "MODULO"
 "||"                    return "OR"
+"endl"                  return "ENDL"
 "&&"                    return "AND"
 "!"                     return "NOT"
 "*"                     return "MULTI"
+"<<"                    return "DOBLEMAYOR"
 "/"                     return "DIV"
 "("                     return "PAR1"
 ")"                     return "PAR2"
 ">="                     return "MAYORIGUAL"
 ">"                     return "MAYOR"
-"'"                     return "COMILLAS"
 "<="                     return "MENORIGUAL"
 "=="                     return "IGUALRE"
 "!="                    return "DIFERENTE"
@@ -66,10 +68,21 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 [0-9]+                  return "ENTERO"
 [a-z][a-z0-9_]*         return "ID"
 ^[a-zA-Z]$              return 'LETRA';
+[']\\\\[']|[']\\\"[']|[']\\\'[']|[']\\n[']|[']\\t[']|[']\\r[']|['].?['] return 'CHARACTER'
 
 
+["]						{ cadena = ''; this.begin("string"); }
+<string>[^"\\]+			{ cadena += yytext; }
+<string>"\\\""			{ cadena += "\""; }
+<string>"\\n"			{ cadena += "\n"; }
+<string>\s				{ cadena += " ";  }
+<string>"\\t"			{ cadena += "\t"; }
+<string>"\\\\"			{ cadena += "\\"; }
+<string>"\\\'"			{ cadena += "\'"; }
+<string>"\\r"			{ cadena += "\r"; }
+<string>["]				{ yytext = cadena; this.popState(); return 'CADENA'; }
 
-[\"][^\"]*[\"]          {yytext=yytext.substr(1,yyleng-2); return 'CADENA'}
+
 
 
 //blancos
@@ -108,13 +121,21 @@ INSTRUCCIONES : INSTRUCCIONES INSTRUCCION   {$1.push($2); $$=$1;}
             | INSTRUCCION                 {$$=[$1];}
 ;
 
-INSTRUCCION : IMPRESION PUNTOCOMA            {$$=$1;}
+INSTRUCCION : IMPRESION             {$$=$1;}
             | DECLARACION PUNTOCOMA          {$$=$1;}
             | ASIGNACION PUNTOCOMA           {$$=$1;}
             
 ;
 
-IMPRESION : IMPRIMIR PAR1 EXPRESION PAR2    {$$= new Print.default($3, @1.first_line, @1.first_column);}
+IMPRESION : IMPRIMIR DOBLEMAYOR EXPRESION VERIFAR   { if($4 == true){
+                                                        $$= new Print.default($3, @1.first_line, @1.first_column);
+                                                        }
+                                                        $$= new Print.default($3, @1.first_line, @1.first_column,"\n");
+                                                    }
+;
+
+VERIFAR : PUNTOCOMA     {$$ = true;}
+        | DOBLEMAYOR ENDL PUNTOCOMA {$$ = false;}
 ;
 
 DECLARACION : TIPOS DECLA IGUAL EXPRESION      {$$ = new Declaracion.default($1, @1.first_line, @1.first_column, $2, $4);}
@@ -152,13 +173,10 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
             |TRUE                              {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOL), $1, @1.first_line, @1.first_column );}
             |FALSE                             {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.BOOL), $1, @1.first_line, @1.first_column );}
             |ID                               {$$ = new AccesoVar.default($1, @1.first_line, @1.first_column);} 
-            |CHARCOMILLAS                              {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CARACTER), $1, @1.first_line, @1.first_column );}
+            |CHARACTER                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CARACTER), $1, @1.first_line, @1.first_column );}
             | FUNCIONUTIL       {$$=$1;}
 ;
 
-CHARCOMILLAS : COMILLAS ID COMILLAS {$$ = $2;}
-
-;
 
 FUNCIONUTIL : TOLOWER PAR1 EXPRESION PAR2 {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.tolower, @1.first_line, @1.first_column, $3);}
             | TOUPPER PAR1 EXPRESION PAR2 {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.toupper, @1.first_line, @1.first_column, $3);}
