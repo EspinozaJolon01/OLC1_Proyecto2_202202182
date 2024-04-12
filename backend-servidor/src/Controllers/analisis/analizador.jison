@@ -115,6 +115,7 @@ var cadena = '';
 %left 'MAS' 'MENOS' 'MODULO'
 %left 'MULTI' 'DIV'
 %right 'UMENOS'
+%left   'PAR1'
 
 
 // simbolo inicial
@@ -170,7 +171,9 @@ FUNWHILE : WHILE PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2  {$$ = new func
 FUNBREAK : BREAK PUNTOCOMA {$$ = new Break.default(@1.first_line, @1.first_column);}
 ;
 
+FUNCASTEO : PAR1 TIPOS PAR2 EXPRESION
 
+;
 
 
 
@@ -200,6 +203,7 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
             |ID                               {$$ = new AccesoVar.default($1, @1.first_line, @1.first_column);} 
             |CHARACTER                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CARACTER), $1, @1.first_line, @1.first_column );}
             | FUNCIONUTIL       {$$=$1;}
+            | FUNCASTEO         {$$=$1;}
 ;
 
 

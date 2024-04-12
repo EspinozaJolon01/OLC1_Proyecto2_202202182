@@ -4,7 +4,7 @@ import Errores from "../excepcicones/Errores";
 import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
-import { Router } from 'express';
+
 
 
 
