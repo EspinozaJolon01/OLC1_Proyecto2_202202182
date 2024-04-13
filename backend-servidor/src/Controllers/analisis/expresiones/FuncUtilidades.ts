@@ -48,6 +48,8 @@ export default class FuncUtilidades extends Instruccion{
                 return this.ROUND(unico)
             case Operadores.Typeof:
                 return this.typeof(unico)
+            case Operadores.Length:
+                return this.length1(unico)
             default:
                 return new Errores("Semantico", "Funcion Invalido", this.linea, this.col)
 
@@ -144,6 +146,25 @@ export default class FuncUtilidades extends Instruccion{
     }
 
 
+    length1(op1: any){
+
+        let opU = this.operandoUnido?.tipoDato.getTipo()
+        switch (opU) {
+            
+            case tipoDato.CADENA:
+                this.tipoDato = new Tipo(tipoDato.ENTERO)
+                console.log(op1)
+                console.log(opU)
+                return op1.length
+            
+                
+            default:
+                return new Errores("Semantico", "length invalida", this.linea, this.col)
+        }
+        
+    }
+
+
 }
 
 export enum Operadores{
@@ -151,6 +172,7 @@ export enum Operadores{
     toupper,
     round,
     ToString,
-    Typeof
+    Typeof,
+    Length
 
 }

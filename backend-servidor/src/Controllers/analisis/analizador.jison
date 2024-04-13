@@ -74,6 +74,7 @@ var cadena = '';
 "!="                    return "DIFERENTE"
 "<"                     return "MENORQUE"
 "="                     return "IGUAL"
+"."                     return "PUNTO"
 
 [0-9]+"."[0-9]+         return "DECIMAL"
 [0-9]+                  return "ENTERO"
@@ -119,6 +120,7 @@ var cadena = '';
 %left 'MULTI' 'DIV'
 %right 'UMENOS'
 %left   'PAR1'
+%left 'PUNTO'
 
 
 // simbolo inicial
@@ -208,6 +210,7 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
             |CHARACTER                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CARACTER), $1, @1.first_line, @1.first_column );}
             | FUNCIONUTIL       {$$=$1;}
             | FUNCASTEO         {$$=$1;}
+            | EXPRESION PUNTO LENGTH PAR1 PAR2  {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.Length, @1.first_line, @1.first_column, $1);}
 ;
 
 
