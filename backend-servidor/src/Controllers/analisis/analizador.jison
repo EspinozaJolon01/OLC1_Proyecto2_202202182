@@ -14,6 +14,7 @@ const funcIf = require('./instrucciones/funcIf')
 const funcWhile = require('./instrucciones/funcWhile')
 const Break = require('./instrucciones/funBreak')
 const Casteos = require('./expresiones/Casteos')
+const funcIfternario = require('./instrucciones/funcIfternario')
 var cadena = '';
 %}
 
@@ -54,6 +55,8 @@ var cadena = '';
 
 // simbolos del sistema
 ";"                     return "PUNTOCOMA"
+"?"                     return "INTERROGACION"
+":"                     return "PUNTOS"
 ","                     return "COMA"
 "+"                     return "MAS"
 "-"                     return "MENOS"
@@ -115,6 +118,7 @@ var cadena = '';
 /lex
 
 //precedencias
+%left 'INTERROGACION'
 %left 'AND'
 %left 'OR'
 %left 'NOT'
@@ -169,13 +173,15 @@ DECLA: DECLA COMA ID   {$1.push($3); $$=$1;}
                         | ID {$$=[$1];}
                         ;
 
+FUNIFTERNARIO: EXPRESION INTERROGACION EXPRESION PUNTOS EXPRESION {$$ = new funcIfternario.default($1, $3,$5, @1.first_line, @1.first_column);}
+
+;
 
 FUNIF : IF PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2 OTROIF {$$ = new funcIf.default($3, $6, @1.first_line, @1.first_column, $8);
 };
 
 OTROIF : ELSE LLAVE1 INSTRUCCIONES LLAVE2  {$$ = $3}
-        |                       {$$ = ""}
-
+        |            {$$ = ""}
 ;
 
 FUNWHILE : WHILE PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2  {$$ = new funcWhile.default($3,$6, @1.first_line, @1.first_column);}
@@ -218,6 +224,7 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
             |CHARACTER                          {$$ = new Nativo.default(new Tipo.default(Tipo.tipoDato.CARACTER), $1, @1.first_line, @1.first_column );}
             | FUNCIONUTIL       {$$=$1;}
             | FUNCASTEO         {$$=$1;}
+            | FUNIFTERNARIO   {$$=$1;}
             | EXPRESION PUNTO LENGTH PAR1 PAR2  {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.Length, @1.first_line, @1.first_column, $1);}
 ;
 
