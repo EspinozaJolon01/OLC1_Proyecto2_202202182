@@ -8,34 +8,47 @@ import Break from "./funBreak";
 
 
 export default class funcIf extends Instruccion {
-    private condicion: Instruccion
-    private instrucciones: Instruccion[]
+    private condicion: Instruccion;
+    private instrucciones: Instruccion[];
+    private instruccioneselse: Instruccion[] | undefined;
 
-    constructor(cond: Instruccion, ins: Instruccion[], linea: number, col: number) {
-        super(new Tipo(tipoDato.VOID), linea, col)
-        this.condicion = cond
-        this.instrucciones = ins
+    constructor(cond: Instruccion, ins: Instruccion[], linea: number, col: number, inelse?: Instruccion[]) {
+        super(new Tipo(tipoDato.VOID), linea, col);
+        this.condicion = cond;
+        this.instrucciones = ins;
+        this.instruccioneselse = inelse;
     }
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
-        let cond = this.condicion.interpretar(arbol, tabla)
-        if (cond instanceof Errores) return cond
+        let cond = this.condicion.interpretar(arbol, tabla);
+        if (cond instanceof Errores) return cond;
 
-        // validacion
-        if (this.condicion.tipoDato.getTipo() != tipoDato.BOOL) {
-            return new Errores("SEMANTICO", "La condicion debe ser bool", this.linea, this.col)
+        // Validación
+        if (this.condicion.tipoDato.getTipo() !== tipoDato.BOOL) {
+            return new Errores("SEMANTICO", "La condición debe ser booleana", this.linea, this.col);
         }
 
-        let newTabla = new tablaSimbolo(tabla)
-        newTabla.setNombre("Sentencia IF")
+        let newTabla = new tablaSimbolo(tabla);
+        newTabla.setNombre("Sentencia IF");
 
         if (cond) {
             for (let i of this.instrucciones) {
                 if (i instanceof Break) return i;
-                let resultado = i.interpretar(arbol, newTabla)
-                // los errores les quedan de tarea
+                let resultado = i.interpretar(arbol, newTabla);
+                // Los errores quedan pendientes
+            }
+        } else {
+            if (this.instruccioneselse) {
+                let newTabla1 = new tablaSimbolo(tabla);
+                newTabla1.setNombre("Sentencia ELSE");
+                for (let i of this.instruccioneselse) {
+                    if (i instanceof Break) return i;
+                    let resultado1 = i.interpretar(arbol, newTabla1);
+                    // Los errores quedan pendientes
+                }
             }
         }
     }
 }
+
 

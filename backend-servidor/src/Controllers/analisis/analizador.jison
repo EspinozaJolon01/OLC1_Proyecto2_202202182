@@ -47,6 +47,9 @@ var cadena = '';
 "break"                 return 'BREAK'
 "typeof"                return 'TYPEOF'
 "length"                return 'LENGTH'
+"else"                  return 'ELSE'
+"else if"               return 'ELSEIF'
+
 
 
 // simbolos del sistema
@@ -167,7 +170,12 @@ DECLA: DECLA COMA ID   {$1.push($3); $$=$1;}
                         ;
 
 
-FUNIF :  IF PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2 {$$ = new funcIf.default($3,$6, @1.first_line, @1.first_column);}
+FUNIF : IF PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2 OTROIF {$$ = new funcIf.default($3, $6, @1.first_line, @1.first_column, $8);
+};
+
+OTROIF : ELSE LLAVE1 INSTRUCCIONES LLAVE2  {$$ = $3}
+        |                       {$$ = ""}
+
 ;
 
 FUNWHILE : WHILE PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2  {$$ = new funcWhile.default($3,$6, @1.first_line, @1.first_column);}
