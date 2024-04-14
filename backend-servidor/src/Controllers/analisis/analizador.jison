@@ -12,6 +12,7 @@ const Declaracion = require('./instrucciones/Declaracion')
 const AsignacionVar = require('./instrucciones/AsignacionVar')
 const funcIf = require('./instrucciones/funcIf')
 const funcWhile = require('./instrucciones/funcWhile')
+const funDoWhile = require('./instrucciones/funDoWhile')
 const Break = require('./instrucciones/funBreak')
 const Casteos = require('./expresiones/Casteos')
 const funcIfternario = require('./instrucciones/funcIfternario')
@@ -50,6 +51,7 @@ var cadena = '';
 "length"                return 'LENGTH'
 "else"                  return 'ELSE'
 "else if"               return 'ELSEIF'
+"do"                    return 'DO'
 
 
 
@@ -148,6 +150,7 @@ INSTRUCCION : IMPRESION             {$$=$1;}
             | FUNIF                         {$$=$1;}
             | FUNWHILE                       {$$=$1;}
             | FUNBREAK                       {$$=$1;}
+            |FUNDOWHILE    PUNTOCOMA                   {$$=$1;}
             
 ;
 
@@ -185,6 +188,10 @@ OTROIF : ELSE LLAVE1 INSTRUCCIONES LLAVE2  {$$ = $3}
 ;
 
 FUNWHILE : WHILE PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2  {$$ = new funcWhile.default($3,$6, @1.first_line, @1.first_column);}
+;
+
+FUNDOWHILE : DO LLAVE1 INSTRUCCIONES LLAVE2 WHILE PAR1 EXPRESION PAR2 {$$ = new funDoWhile.default($7,$3, @1.first_line, @1.first_column);}
+
 ;
 
 
