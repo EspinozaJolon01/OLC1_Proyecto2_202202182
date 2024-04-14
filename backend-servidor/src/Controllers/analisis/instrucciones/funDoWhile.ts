@@ -35,9 +35,6 @@ export default class funDoWhile extends Instruccion{
             return new Errores("SEMANTICO", "La condicion debe ser bool", this.linea, this.col)
         }
 
-        
-        
-
         //comienza hacer el do while
 
         do{
