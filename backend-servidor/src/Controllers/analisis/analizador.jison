@@ -5,6 +5,7 @@ const Logicos = require('./expresiones/Logicos')
 const Nativo = require('./expresiones/Nativo')
 const FuncUtilidades = require('./expresiones/FuncUtilidades')
 const Aritmeticas = require('./expresiones/Aritmeticas')
+const IncreDecre = require('./expresiones/IncreDecre')
 const AccesoVar = require('./expresiones/AccesoVar')
 const OpeRelacionales = require('./expresiones/OpeRelacionales')
 const Print = require('./instrucciones/Print')
@@ -60,7 +61,10 @@ var cadena = '';
 "?"                     return "INTERROGACION"
 ":"                     return "PUNTOS"
 ","                     return "COMA"
+"++"                    return "INCREMENTO"
 "+"                     return "MAS"
+
+"--"                    return "DECREMIENTO"
 "-"                     return "MENOS"
 "::"                    return "DOSPUNTOS"
 "%"                     return "MODULO"
@@ -125,6 +129,7 @@ var cadena = '';
 %left 'OR'
 %left 'NOT'
 %left 'IGUALRE', 'DIFERENTE','MENORQUE','MENORIGUAL','MAYOR','MAYORIGUAL'
+%left 'INCREMENTO' , 'DECREMIENTO'
 %left 'MAS' 'MENOS' 'MODULO'
 %left 'MULTI' 'DIV'
 %right 'UMENOS'
@@ -150,7 +155,7 @@ INSTRUCCION : IMPRESION             {$$=$1;}
             | FUNIF                         {$$=$1;}
             | FUNWHILE                       {$$=$1;}
             | FUNBREAK                       {$$=$1;}
-            |FUNDOWHILE    PUNTOCOMA                   {$$=$1;}
+            | FUNDOWHILE    PUNTOCOMA                   {$$=$1;}
             
 ;
 
@@ -169,6 +174,7 @@ DECLARACION : TIPOS DECLA IGUAL EXPRESION      {$$ = new Declaracion.default($1,
 ;
 
 ASIGNACION : ID IGUAL EXPRESION             {$$ = new AsignacionVar.default($1, $3, @1.first_line, @1.first_column);}
+        | INCRE {$$ = $1}
 ;
 
 
@@ -183,7 +189,8 @@ FUNIFTERNARIO: EXPRESION INTERROGACION EXPRESION PUNTOS EXPRESION {$$ = new func
 FUNIF : IF PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2 OTROIF {$$ = new funcIf.default($3, $6, @1.first_line, @1.first_column, $8);
 };
 
-OTROIF : ELSE LLAVE1 INSTRUCCIONES LLAVE2  {$$ = $3}
+OTROIF : ELSEIF PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2 {$1.push($3); $$=[$6]; }
+        |ELSE LLAVE1 INSTRUCCIONES LLAVE2  {$$ = $3}
         |            {$$ = ""}
 ;
 
@@ -233,7 +240,12 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
             | FUNCASTEO         {$$=$1;}
             | FUNIFTERNARIO   {$$=$1;}
             | EXPRESION PUNTO LENGTH PAR1 PAR2  {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.Length, @1.first_line, @1.first_column, $1);}
+           
 ;
+INCRE : ID INCREMENTO              {$$ = new IncreDecre.default( @1.first_line, @1.first_column, $1,"INCREMENTO");}
+        | ID DECREMIENTO           {$$ = new IncreDecre.default( @1.first_line, @1.first_column, $1,"DECREMIENTO");}
+;
+
 
 
 FUNCIONUTIL : TOLOWER PAR1 EXPRESION PAR2 {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.tolower, @1.first_line, @1.first_column, $3);}
