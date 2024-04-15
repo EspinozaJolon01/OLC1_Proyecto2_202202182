@@ -14,6 +14,7 @@ const AsignacionVar = require('./instrucciones/AsignacionVar')
 const funcIf = require('./instrucciones/funcIf')
 const funcWhile = require('./instrucciones/funcWhile')
 const funDoWhile = require('./instrucciones/funDoWhile')
+const FuncFor = require('./instrucciones/FuncFor')
 const Break = require('./instrucciones/funBreak')
 const Casteos = require('./expresiones/Casteos')
 const funcIfternario = require('./instrucciones/funcIfternario')
@@ -53,6 +54,7 @@ var cadena = '';
 "else"                  return 'ELSE'
 "else if"               return 'ELSEIF'
 "do"                    return 'DO'
+"for"                   return 'FOR'
 
 
 
@@ -156,6 +158,7 @@ INSTRUCCION : IMPRESION             {$$=$1;}
             | FUNWHILE                       {$$=$1;}
             | FUNBREAK                       {$$=$1;}
             | FUNDOWHILE    PUNTOCOMA                   {$$=$1;}
+            |FUNFOR                             {$$=$1;}
             
 ;
 
@@ -201,6 +204,15 @@ FUNDOWHILE : DO LLAVE1 INSTRUCCIONES LLAVE2 WHILE PAR1 EXPRESION PAR2 {$$ = new 
 
 ;
 
+VEFICACION:     DECLARACION {$$ = $1}
+        |       ASIGNACION  {$$ = $1}
+;
+
+FUNFOR : FOR PAR1 VEFICACION PUNTOCOMA EXPRESION PUNTOCOMA ASIGNACION PAR2 LLAVE1 INSTRUCCIONES LLAVE2 {
+        $$ = new FuncFor.default($3,$5,$7,$10, @1.first_line, @1.first_column);}
+
+;
+
 
 FUNBREAK : BREAK PUNTOCOMA {$$ = new Break.default(@1.first_line, @1.first_column);}
 ;
@@ -242,8 +254,15 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
             | EXPRESION PUNTO LENGTH PAR1 PAR2  {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.Length, @1.first_line, @1.first_column, $1);}
            
 ;
-INCRE : ID INCREMENTO              {$$ = new IncreDecre.default( @1.first_line, @1.first_column, $1,"INCREMENTO");}
-        | ID DECREMIENTO           {$$ = new IncreDecre.default( @1.first_line, @1.first_column, $1,"DECREMIENTO");}
+
+INCRE : ID VALIDARINCRE              {$$ = new IncreDecre.default( @1.first_line, @1.first_column, $1,$2);}
+
+;
+
+
+VALIDARINCRE:   INCREMENTO {$$ = true;}
+        |DECREMIENTO {$$ = false;}
+
 ;
 
 

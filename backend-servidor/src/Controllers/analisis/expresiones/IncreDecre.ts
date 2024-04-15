@@ -6,10 +6,10 @@ import Tipo, { tipoDato } from "../simbolo/Tipo";
 
 export default class IncreDecre extends Instruccion {
     private operando1: string
-    private operando2: string
+    private operando2: boolean
     
 
-    constructor(fila: number, col: number, op1: string, op2: string) {
+    constructor(fila: number, col: number, op1: string, op2: boolean) {
         super(new Tipo(tipoDato.VOID), fila, col)
         this.operando1 = op1
         this.operando2 = op2
@@ -29,7 +29,7 @@ export default class IncreDecre extends Instruccion {
             return new Errores('SEMANTICO', 'NO SE PUEDE', this.linea, this.col);
         }
         
-        if (this.operando2 == "INCREMENTO") {
+        if (this.operando2 == true) {
             if (dato.getTipo().getTipo() == tipoDato.ENTERO) {
                 dato.setValor(parseInt(dato.getValor()) + 1);
             } else {
