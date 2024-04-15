@@ -4,7 +4,7 @@ import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./funBreak";
-
+import funContinue from "./funContinue";
 
 /*
 
@@ -42,8 +42,12 @@ export default class funDoWhile extends Instruccion{
             newTabla.setNombre("Sentencia do while")
             for (let i of this.intrucciones) {
                 if (i instanceof Break) return;
+                if (i instanceof funContinue) break;
+
                 let resultado = i.interpretar(arbol, newTabla)
+                
                 if (resultado instanceof Break) return;
+                if (resultado instanceof funContinue) break;
                 // los errores les quedan de tarea
             }
 

@@ -4,6 +4,8 @@ import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./funBreak";
+import funContinue from "./funContinue";
+
 
 
 
@@ -43,7 +45,9 @@ export default class funcIf extends Instruccion {
                 newTabla1.setNombre("Sentencia ELSE");
                 for (let i of this.instruccioneselse) {
                     if (i instanceof Break) return i;
+                    if (i instanceof funContinue) return i;
                     let resultado1 = i.interpretar(arbol, newTabla1);
+                    if(resultado1 instanceof Errores) return resultado1
                     // Los errores quedan pendientes
                 }
             }

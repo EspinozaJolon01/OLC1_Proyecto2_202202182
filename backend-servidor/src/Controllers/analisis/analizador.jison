@@ -16,6 +16,7 @@ const funcWhile = require('./instrucciones/funcWhile')
 const funDoWhile = require('./instrucciones/funDoWhile')
 const FuncFor = require('./instrucciones/FuncFor')
 const Break = require('./instrucciones/funBreak')
+const funContinue = require('./instrucciones/funContinue')
 const Casteos = require('./expresiones/Casteos')
 const funcIfternario = require('./instrucciones/funcIfternario')
 var cadena = '';
@@ -55,6 +56,7 @@ var cadena = '';
 "else if"               return 'ELSEIF'
 "do"                    return 'DO'
 "for"                   return 'FOR'
+"continue"              return 'CONTINUE'
 
 
 
@@ -157,6 +159,7 @@ INSTRUCCION : IMPRESION             {$$=$1;}
             | FUNIF                         {$$=$1;}
             | FUNWHILE                       {$$=$1;}
             | FUNBREAK                       {$$=$1;}
+            | FUNCONTINUE                       {$$=$1;}
             | FUNDOWHILE    PUNTOCOMA                   {$$=$1;}
             |FUNFOR                             {$$=$1;}
             
@@ -215,6 +218,9 @@ FUNFOR : FOR PAR1 VEFICACION PUNTOCOMA EXPRESION PUNTOCOMA ASIGNACION PAR2 LLAVE
 
 
 FUNBREAK : BREAK PUNTOCOMA {$$ = new Break.default(@1.first_line, @1.first_column);}
+;
+
+FUNCONTINUE : CONTINUE PUNTOCOMA {$$ = new funContinue.default(@1.first_line, @1.first_column);}
 ;
 
 FUNCASTEO : PAR1 TIPOS PAR2 EXPRESION {$$ = new Casteos.default($2,@1.first_line, @1.first_column,$4);}

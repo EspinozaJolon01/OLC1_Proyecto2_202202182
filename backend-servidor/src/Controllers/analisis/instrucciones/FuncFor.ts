@@ -4,6 +4,7 @@ import Arbol from "../simbolo/Arbol";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./funBreak";
+import funContinue from "./funContinue";
 
 
 /*
@@ -55,6 +56,7 @@ export default class FuncFor extends Instruccion{
                 const resultado = instruccion.interpretar(arbol, nuevaTabla);
                 if (resultado instanceof Errores) return resultado;
                 if (resultado instanceof Break) return; // Manejar 'break'
+                if (resultado instanceof funContinue) break; // Manejar 'break'
             }
 
             // Ejecutar actualización
