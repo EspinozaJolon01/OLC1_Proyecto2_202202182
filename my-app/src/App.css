@@ -50,6 +50,19 @@ nav a {
   padding: 7px 10px;
   border-radius: 3px;
 }
+nav label {
+  color: #fffffe;
+  font-size: 18px;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  padding: 7px 10px;
+  border-radius: 3px;
+}
+
+label:hover{
+  border: 1px solid #fffffe;
+  transition: .5s;
+}
 
 a:hover {
   border: 1px solid #fffffe;
