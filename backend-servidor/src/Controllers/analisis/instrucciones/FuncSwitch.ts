@@ -10,10 +10,10 @@ import Break from "./funBreak";
 
 export default class Switch extends Instruccion {
     private expresion: Instruccion;
-    private casesList: Case[];
-    private defaultCase: Default;
+    private casesList: Case[] | undefined;
+    private defaultCase: Default | undefined;
 
-    constructor(expresion: Instruccion,casesList: Case[],defaultCase: Default,linea: number,col: number) {
+    constructor(expresion: Instruccion,linea: number,col: number,casesList?: Case[],defaultCase?: Default) {
         super(new Tipo(tipoDato.VOID), linea, col);
         this.expresion = expresion;
         this.casesList = casesList;
@@ -24,22 +24,26 @@ export default class Switch extends Instruccion {
         const valorExpresion = this.expresion.interpretar(arbol, tabla);
         if (valorExpresion instanceof Errores) return valorExpresion;
 
-        let ejecutado = false;
+        //let ejecutado = false;
 
-        for (const caso of this.casesList) {
-            const valorCaso = caso.expresion1.interpretar(arbol, tabla);
-            if (valorCaso instanceof Errores) return valorCaso;
-
-            if (valorCaso === valorExpresion) {
-                const resultado = caso.interpretar(arbol, tabla);
-                if (resultado instanceof Errores) return resultado;
-                if (resultado instanceof Break) return ; // Manejar 'break'
-                ejecutado = true;
-                
+        if(this.casesList != undefined){
+            for (const caso of this.casesList) {
+                const valorCaso = caso.expresion1.interpretar(arbol, tabla);
+                if (valorCaso instanceof Errores) return valorCaso;
+    
+                if (valorCaso === valorExpresion) {
+                    const resultado = caso.interpretar(arbol, tabla);
+                    if (resultado instanceof Errores) return resultado;
+                    if (resultado instanceof Break) return ; // Manejar 'break'
+                    //ejecutado = true;
+                    
+                }
             }
         }
 
-        if (!ejecutado && this.defaultCase) {
+        
+
+        if (this.defaultCase != undefined) {
             const resultadoDefault = this.defaultCase.interpretar(arbol, tabla);
             if (resultadoDefault instanceof Errores) return resultadoDefault;
             if (resultadoDefault instanceof Break) return ;

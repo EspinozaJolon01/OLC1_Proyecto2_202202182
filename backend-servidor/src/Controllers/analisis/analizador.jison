@@ -237,12 +237,15 @@ FUNCASTEO : PAR1 TIPOS PAR2 EXPRESION {$$ = new Casteos.default($2,@1.first_line
 ;
 
 
-FUNSWITCH : SWITCH PAR1 EXPRESION PAR2 LLAVE1 LISTADOCASE DEFULTO LLAVE2 {$$ = new Switch.default($3,$6,$7, @1.first_line, @1.first_column);}
+FUNSWITCH : SWITCH PAR1 EXPRESION PAR2 LLAVE1 LISTADOCASE DEFULTO LLAVE2 {$$ = new Switch.default($3, @1.first_line, @1.first_column,$6,$7);}
+        |   SWITCH PAR1 EXPRESION PAR2 LLAVE1 LISTADOCASE LLAVE2 {$$ = new Switch.default($3, @1.first_line, @1.first_column,$6,undefined);}
+        |   SWITCH PAR1 EXPRESION PAR2 LLAVE1 DEFULTO LLAVE2 {$$ = new Switch.default($3, @1.first_line, @1.first_column,undefined,$7);}
 
 ;
 
 LISTADOCASE :  LISTADOCASE CASO {$1.push($2); $$=$1;}
                         | CASO {$$=[$1];}
+                        
 
 ;
 
