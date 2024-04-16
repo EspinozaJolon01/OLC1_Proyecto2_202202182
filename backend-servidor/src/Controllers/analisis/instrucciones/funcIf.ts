@@ -13,12 +13,14 @@ export default class funcIf extends Instruccion {
     private condicion: Instruccion;
     private instrucciones: Instruccion[];
     private instruccioneselse: Instruccion[] | undefined;
+    private condicion_ifelse : Instruccion | undefined;
 
-    constructor(cond: Instruccion, ins: Instruccion[], linea: number, col: number, inelse?: Instruccion[]) {
+    constructor(cond: Instruccion, ins: Instruccion[], linea: number, col: number,condielse: Instruccion | undefined, inelse?: Instruccion[] | undefined) {
         super(new Tipo(tipoDato.VOID), linea, col);
         this.condicion = cond;
         this.instrucciones = ins;
         this.instruccioneselse = inelse;
+        this.condicion_ifelse = condielse
     }
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
@@ -30,17 +32,18 @@ export default class funcIf extends Instruccion {
             return new Errores("SEMANTICO", "La condición debe ser booleana", this.linea, this.col);
         }
 
-        let newTabla = new tablaSimbolo(tabla);
-        newTabla.setNombre("Sentencia IF");
+        
 
         if (cond) {
+            let newTabla = new tablaSimbolo(tabla);
+            newTabla.setNombre("Sentencia IF");
             for (let i of this.instrucciones) {
                 if (i instanceof Break) return i;
                 let resultado = i.interpretar(arbol, newTabla);
                 // Los errores quedan pendientes
             }
         } else {
-            if (this.instruccioneselse) {
+            if (this.instruccioneselse != undefined) {
                 let newTabla1 = new tablaSimbolo(tabla);
                 newTabla1.setNombre("Sentencia ELSE");
                 for (let i of this.instruccioneselse) {
@@ -50,6 +53,12 @@ export default class funcIf extends Instruccion {
                     if(resultado1 instanceof Errores) return resultado1
                     // Los errores quedan pendientes
                 }
+            }else if(this.condicion_ifelse != undefined){
+                let ielsi = this.condicion_ifelse?.interpretar(arbol,tabla)
+                if(ielsi instanceof Errores) return ielsi
+                if (ielsi instanceof Break) return ielsi;
+                if (ielsi instanceof funContinue) return ielsi;
+
             }
         }
     }

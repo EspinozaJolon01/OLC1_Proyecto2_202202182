@@ -16,6 +16,9 @@ const funcWhile = require('./instrucciones/funcWhile')
 const funDoWhile = require('./instrucciones/funDoWhile')
 const FuncFor = require('./instrucciones/FuncFor')
 const Break = require('./instrucciones/funBreak')
+const Switch = require('./instrucciones/FuncSwitch')
+const Case = require('./instrucciones/FuncCase')
+const Default = require('./instrucciones/FuncDefault')
 const funContinue = require('./instrucciones/funContinue')
 const Casteos = require('./expresiones/Casteos')
 const funcIfternario = require('./instrucciones/funcIfternario')
@@ -53,10 +56,12 @@ var cadena = '';
 "typeof"                return 'TYPEOF'
 "length"                return 'LENGTH'
 "else"                  return 'ELSE'
-"else if"               return 'ELSEIF'
 "do"                    return 'DO'
 "for"                   return 'FOR'
 "continue"              return 'CONTINUE'
+"switch"                return 'SWITCH'
+"case"                  return 'CASE'
+"default"               return 'DEFAULT'
 
 
 
@@ -75,6 +80,7 @@ var cadena = '';
 "||"                    return "OR"
 "endl"                  return "ENDL"
 "&&"                    return "AND"
+"!="                    return "DIFERENTE"
 "!"                     return "NOT"
 "*"                     return "MULTI"
 "<<"                    return "DOBLEMAYOR"
@@ -87,7 +93,7 @@ var cadena = '';
 ">"                     return "MAYOR"
 "<="                     return "MENORIGUAL"
 "=="                     return "IGUALRE"
-"!="                    return "DIFERENTE"
+
 "<"                     return "MENORQUE"
 "="                     return "IGUAL"
 "."                     return "PUNTO"
@@ -161,7 +167,8 @@ INSTRUCCION : IMPRESION             {$$=$1;}
             | FUNBREAK                       {$$=$1;}
             | FUNCONTINUE                       {$$=$1;}
             | FUNDOWHILE    PUNTOCOMA                   {$$=$1;}
-            |FUNFOR                             {$$=$1;}
+            | FUNFOR                             {$$=$1;}
+            |FUNSWITCH                          {$$=$1;}
             
 ;
 
@@ -192,12 +199,14 @@ FUNIFTERNARIO: EXPRESION INTERROGACION EXPRESION PUNTOS EXPRESION {$$ = new func
 
 ;
 
-FUNIF : IF PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2 OTROIF {$$ = new funcIf.default($3, $6, @1.first_line, @1.first_column, $8);
-};
+FUNIF : IF PAR1 EXPRESION PAR2  OTROIFBLOQUE {$$ = new funcIf.default($3, $4, @1.first_line, @1.first_column, undefined,undefined);}
+        |IF PAR1 EXPRESION PAR2 OTROIFBLOQUE ELSE OTROIFBLOQUE {$$ = new funcIf.default($3, $5, @1.first_line, @1.first_column, undefined,$7);}
+        |IF PAR1 EXPRESION PAR2 OTROIFBLOQUE ELSE FUNIF {$$ = new funcIf.default($3, $5, @1.first_line, @1.first_column, $7,undefined);}
+;
 
-OTROIF : ELSEIF PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2 {$1.push($3); $$=[$6]; }
-        |ELSE LLAVE1 INSTRUCCIONES LLAVE2  {$$ = $3}
-        |            {$$ = ""}
+
+OTROIFBLOQUE : LLAVE1 INSTRUCCIONES LLAVE2 {$$ = $2}
+        |    LLAVE1  LLAVE2 {$$=[]}
 ;
 
 FUNWHILE : WHILE PAR1 EXPRESION PAR2 LLAVE1 INSTRUCCIONES LLAVE2  {$$ = new funcWhile.default($3,$6, @1.first_line, @1.first_column);}
@@ -224,6 +233,26 @@ FUNCONTINUE : CONTINUE PUNTOCOMA {$$ = new funContinue.default(@1.first_line, @1
 ;
 
 FUNCASTEO : PAR1 TIPOS PAR2 EXPRESION {$$ = new Casteos.default($2,@1.first_line, @1.first_column,$4);}
+
+;
+
+
+FUNSWITCH : SWITCH PAR1 EXPRESION PAR2 LLAVE1 LISTADOCASE DEFULTO LLAVE2 {$$ = new Switch.default($3,$6,$7, @1.first_line, @1.first_column);}
+
+;
+
+LISTADOCASE :  LISTADOCASE CASO {$1.push($2); $$=$1;}
+                        | CASO {$$=[$1];}
+
+;
+
+CASO: CASE EXPRESION PUNTOS INSTRUCCIONES {$$ = new Case.default($2,$4 ,@1.first_line, @1.first_column);}
+;
+
+DEFULTO : DEFAULTSWICH {$$ = $1}
+;
+
+DEFAULTSWICH: DEFAULT PUNTOS INSTRUCCIONES {$$ = new Default.default($3, @1.first_line, @1.first_column);}
 
 ;
 

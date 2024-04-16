@@ -107,8 +107,8 @@ export default class Casteos extends Instruccion{
         let opU = this.unicoCasteo?.tipoDato.getTipo()
         switch (opU) {
             case tipoDato.ENTERO:
-                this.tipoDato = new Tipo(tipoDato.DECIMAL)
-                return String.fromCharCode(op1)
+                this.tipoDato = new Tipo(tipoDato.CARACTER)
+                return String.fromCharCode(parseInt(op1))
             
             
             default:

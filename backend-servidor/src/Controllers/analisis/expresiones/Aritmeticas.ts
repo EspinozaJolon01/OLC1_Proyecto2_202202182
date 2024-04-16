@@ -74,7 +74,7 @@ export default class Aritmeticas extends Instruccion {
                         return parseInt(op1) + parseInt(op2.charCodeAt(1))
                     case tipoDato.BOOL:
                         this.tipoDato = new Tipo(tipoDato.ENTERO)
-                        if(op2 == 'true'){
+                        if(op2 == true){
                             return parseInt(op1) + 1;
                         }else{
                             return parseInt(op1) + 0;
@@ -94,7 +94,7 @@ export default class Aritmeticas extends Instruccion {
                         return parseFloat(op1) + parseFloat(op2)
                     case tipoDato.BOOL:
                             this.tipoDato = new Tipo(tipoDato.DECIMAL)
-                            if(op2 == 'true'){
+                            if(op2 == true){
                                 return parseFloat(op1) + 1
                             }else{
                                 return parseFloat(op1) + 0
@@ -114,7 +114,7 @@ export default class Aritmeticas extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO:
                         this.tipoDato = new Tipo(tipoDato.ENTERO)
-                        if(op1 == 'true'){
+                        if(op1 == true){
                             return 1 + parseInt(op2)
                         }else{
                             return 0 + parseInt(op2)
@@ -122,7 +122,7 @@ export default class Aritmeticas extends Instruccion {
                         
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
-                        if(op1 == 'true'){
+                        if(op1 == true){
                             return 1 + parseFloat(op2)
                         }else{
                             return 0 + parseFloat(op2)
@@ -133,7 +133,7 @@ export default class Aritmeticas extends Instruccion {
                         return new Errores("Semantico", "Suma Invalida", this.linea, this.col)
                     case tipoDato.CADENA:
                             this.tipoDato = new Tipo(tipoDato.CADENA)
-                            if(op1 == 'true'){
+                            if(op1 == true){
                                 return 1 + op2
                             }else{
                                 return 0 + op2
@@ -205,7 +205,7 @@ export default class Aritmeticas extends Instruccion {
                         return parseFloat(op1) - parseFloat(op2)
                     case tipoDato.BOOL:
                         this.tipoDato =  new Tipo(tipoDato.ENTERO)
-                        if(op2 == 'true'){
+                        if(op2 == true){
                             return parseInt(op1) - 1
                         }else{
                             return parseInt(op1) - 0
@@ -229,7 +229,7 @@ export default class Aritmeticas extends Instruccion {
                         return parseFloat(op1) - parseFloat(op2)
                     case tipoDato.BOOL:
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
-                        if(op2 == 'true'){
+                        if(op2 == true){
                             return parseFloat(op1) - 1
                         }else{
                             return parseFloat(op1) - 0
@@ -246,14 +246,14 @@ export default class Aritmeticas extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO:
                         this.tipoDato = new Tipo(tipoDato.ENTERO)
-                        if(op1 == 'true'){
+                        if(op1 == true){
                             return 1 - parseInt(op2)
                         }else{
                             return 0 - parseInt(op2)
                         }    
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
-                        if(op1 == 'true'){
+                        if(op1 == true){
                             return 1 - parseFloat(op2)
                         }else{
                             return 0 - parseFloat(op2)

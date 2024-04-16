@@ -214,7 +214,7 @@ export default class OpeRelacionales extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO:
                         this.tipoDato = new Tipo(tipoDato.BOOL)
-                        return op1 != op2
+                        return parseInt(op1) != parseInt(op2)
                         
                         
                     case tipoDato.DECIMAL:
