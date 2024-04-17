@@ -36,10 +36,7 @@ function App() {
         });
     }
 
-    function cargarArchivos() {
-        // Aquí puedes cargar archivos desde una fuente externa si es necesario
-    }
-
+    
     function abrirArchivo(nombre) {
         const archivo = archivos.find(a => a.nombre === nombre);
         if (archivo) {
@@ -92,10 +89,7 @@ function App() {
         editorRef.current.setValue("");
     }
 
-    useEffect(() => {
-        cargarArchivos(); // Llamar a cargarArchivos al inicio
-    }, []);
-
+    
     return (
         <div className="App">
             <nav>
