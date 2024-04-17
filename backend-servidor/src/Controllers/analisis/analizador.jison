@@ -23,6 +23,7 @@ const funContinue = require('./instrucciones/funContinue')
 const Defecto = require('./instrucciones/DeclaDefecto')
 const Casteos = require('./expresiones/Casteos')
 const funcIfternario = require('./instrucciones/funcIfternario')
+const Vectores = require('./instrucciones/VectorUna')
 var cadena = '';
 %}
 
@@ -63,6 +64,7 @@ var cadena = '';
 "switch"                return 'SWITCH'
 "case"                  return 'CASE'
 "default"               return 'DEFAULT'
+"new"                   return 'NEW'
 
 
 
@@ -94,7 +96,8 @@ var cadena = '';
 ">"                     return "MAYOR"
 "<="                     return "MENORIGUAL"
 "=="                     return "IGUALRE"
-
+"["                     return "CORCHETE1"
+"]"                     return "CORCHETE2"
 "<"                     return "MENORQUE"
 "="                     return "IGUAL"
 "."                     return "PUNTO"
@@ -170,6 +173,7 @@ INSTRUCCION : IMPRESION             {$$=$1;}
             | FUNDOWHILE    PUNTOCOMA                   {$$=$1;}
             | FUNFOR                             {$$=$1;}
             |FUNSWITCH                          {$$=$1;}
+            |DECARREGLO   PUNTOCOMA             {$$=$1;}
             
 ;
 
@@ -237,6 +241,13 @@ FUNFOR : FOR PAR1 VEFICACION PUNTOCOMA EXPRESION PUNTOCOMA ASIGNACION PAR2 LLAVE
 
 ;
 
+DECARREGLO: TIPOS ID CORCHETE1 CORCHETE2 IGUAL NEW TIPOS CORCHETE1 EXPRESION CORCHETE2 {$$ = new Vectores.default($1,$2,@1.first_line, @1.first_column,$7,$9,undefined);}
+        | TIPOS ID  CORCHETE1 CORCHETE2 IGUAL CORCHETE1 LISTAVALORES CORCHETE2  {$$ = new Vectores.default($1,$2,@1.first_line, @1.first_column,undefined,undefined,$7);}
+;
+
+LISTAVALORES : LISTAVALORES COMA EXPRESION {$1.push($3); $$=$1;}
+        | EXPRESION     {$$=[$1];}
+;
 
 FUNBREAK : BREAK PUNTOCOMA {$$ = new Break.default(@1.first_line, @1.first_column);}
 ;
