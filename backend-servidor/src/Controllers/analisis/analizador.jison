@@ -20,6 +20,7 @@ const Switch = require('./instrucciones/FuncSwitch')
 const Case = require('./instrucciones/FuncCase')
 const Default = require('./instrucciones/FuncDefault')
 const funContinue = require('./instrucciones/funContinue')
+const Defecto = require('./instrucciones/DeclaDefecto')
 const Casteos = require('./expresiones/Casteos')
 const funcIfternario = require('./instrucciones/funcIfternario')
 var cadena = '';
@@ -183,7 +184,18 @@ VERIFAR : PUNTOCOMA     {$$ = true;}
         | DOBLEMAYOR ENDL PUNTOCOMA {$$ = false;}
 ;
 
-DECLARACION : TIPOS DECLA IGUAL EXPRESION      {$$ = new Declaracion.default($1, @1.first_line, @1.first_column, $2, $4);}
+DECLARACION : TIPOS DECLA VERIFICARDECLARACION    {
+        if($3 == true){
+                $$ = new Defecto.default($1, @1.first_line, @1.first_column, $2);
+        }else{
+                $$ = new Declaracion.default($1, @1.first_line, @1.first_column, $2, $3);
+
+        }
+}
+;
+
+VERIFICARDECLARACION:IGUAL EXPRESION  {$$ = $2;}
+                | {$$ = true;}
 ;
 
 ASIGNACION : ID IGUAL EXPRESION             {$$ = new AsignacionVar.default($1, $3, @1.first_line, @1.first_column);}
