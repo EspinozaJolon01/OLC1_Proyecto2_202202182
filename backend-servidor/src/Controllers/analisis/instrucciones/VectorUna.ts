@@ -50,6 +50,7 @@ export default class Vectores extends Instruccion{
                 arbol.Print("\n Error Semantico:"+"Los tipos no son iguales " + "linea: " + this.linea + "columna:" + (this.col+1))
                 return new Errores("SEMANTICA", "Los tipos no son iguales ", this.linea, this.col);
             }
+            
             let tamanio = this.dimension.interpretar(arbol,tabla)
             if(this.dimension.tipoDato.getTipo() !=  tipoDato.ENTERO) return new Errores("SEMANTICA", "No es un entero", this.linea, this.col);
             let arry: any = [];

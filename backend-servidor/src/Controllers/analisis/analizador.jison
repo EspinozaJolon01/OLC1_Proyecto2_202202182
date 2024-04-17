@@ -25,7 +25,7 @@ const Casteos = require('./expresiones/Casteos')
 const funcIfternario = require('./instrucciones/funcIfternario')
 const Vectores = require('./instrucciones/VectorUna')
 const AccesoVector  = require('./expresiones/AccesoVarU')
-
+const ModVector  = require('./expresiones/ModVector')
 const Errores = require('./excepcicones/Errores')
 
 const indexController =  require('../indexController')
@@ -182,6 +182,7 @@ INSTRUCCION : IMPRESION             {$$=$1;}
             | FUNFOR                             {$$=$1;}
             |FUNSWITCH                          {$$=$1;}
             |DECARREGLO   PUNTOCOMA             {$$=$1;}
+            |MODFVECTOR PUNTOCOMA             {$$=$1;}
             
 ;
 
@@ -326,6 +327,10 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
 ;
 
 BUSCARVECTOR :  ID CORCHETE1  EXPRESION CORCHETE2 {$$ = new AccesoVector.default($1,$3,@1.first_line, @1.first_column);}
+;
+
+MODFVECTOR : ID CORCHETE1  EXPRESION CORCHETE2 IGUAL EXPRESION {$$ =  new ModVector.default($1,$3,$6,@1.first_line, @1.first_column);}
+
 ;
 
 INCRE : ID VALIDARINCRE              {$$ = new IncreDecre.default( @1.first_line, @1.first_column, $1,$2);}
