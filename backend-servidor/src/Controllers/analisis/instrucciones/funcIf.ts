@@ -29,6 +29,7 @@ export default class funcIf extends Instruccion {
 
         // Validación
         if (this.condicion.tipoDato.getTipo() !== tipoDato.BOOL) {
+            arbol.Print("\n Error Semantico:"+"La condicion ser bool" + "linea: " + this.linea + "columna:" + (this.col+1))
             return new Errores("SEMANTICO", "La condición debe ser booleana", this.linea, this.col);
         }
 

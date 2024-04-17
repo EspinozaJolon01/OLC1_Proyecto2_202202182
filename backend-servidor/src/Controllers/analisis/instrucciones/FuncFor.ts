@@ -42,6 +42,7 @@ export default class FuncFor extends Instruccion{
 
         // validaciones
         if (this.codicion.tipoDato.getTipo() !== tipoDato.BOOL) {
+            arbol.Print("\n Error Semantico:"+"La condicion ser bool, " + "linea: " + this.linea + "columna:" + (this.col+1))
             return new Errores("SEMANTICO", "La condicion debe ser bool", this.linea, this.col)
         }
             // Verificar si la condición es falsa

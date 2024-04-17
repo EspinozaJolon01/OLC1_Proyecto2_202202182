@@ -24,6 +24,12 @@ const Defecto = require('./instrucciones/DeclaDefecto')
 const Casteos = require('./expresiones/Casteos')
 const funcIfternario = require('./instrucciones/funcIfternario')
 const Vectores = require('./instrucciones/VectorUna')
+const AccesoVector  = require('./expresiones/AccesoVarU')
+
+const Errores = require('./excepcicones/Errores')
+
+const indexController =  require('../indexController')
+
 var cadena = '';
 %}
 
@@ -128,7 +134,9 @@ var cadena = '';
 [\ \n]                  {}
 
 // simbolo de fin de cadena
-<<EOF>>                 return "EOF"
+<<EOF>>                 return "EOF";
+.                       { let errores = new Errores.default("lexico",("token no reconocido: "+yytext),yylloc.first_line,yylloc.first_column);
+                        indexController.errores_list.push(errores);}
 
 
 %{
@@ -194,8 +202,9 @@ DECLARACION : TIPOS DECLA VERIFICARDECLARACION    {
         }else{
                 $$ = new Declaracion.default($1, @1.first_line, @1.first_column, $2, $3);
 
-        }
+        }      
 }
+        
 ;
 
 VERIFICARDECLARACION:IGUAL EXPRESION  {$$ = $2;}
@@ -313,7 +322,10 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
             | FUNCASTEO         {$$=$1;}
             | FUNIFTERNARIO   {$$=$1;}
             | EXPRESION PUNTO LENGTH PAR1 PAR2  {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.Length, @1.first_line, @1.first_column, $1);}
-           
+            | BUSCARVECTOR {$$ = $1;}
+;
+
+BUSCARVECTOR :  ID CORCHETE1  EXPRESION CORCHETE2 {$$ = new AccesoVector.default($1,$3,@1.first_line, @1.first_column);}
 ;
 
 INCRE : ID VALIDARINCRE              {$$ = new IncreDecre.default( @1.first_line, @1.first_column, $1,$2);}

@@ -10,4 +10,38 @@ export default class Errores {
         this.fila = fila
         this.columna = columna
     }
+
+    // Métodos get
+    getTipoError(): string {
+        return this.tipoError;
+    }
+
+    getDescp(): string {
+        return this.descp;
+    }
+
+    getFila(): number {
+        return this.fila;
+    }
+
+    getColumna(): number {
+        return this.columna;
+    }
+
+    // Métodos set
+    setTipoError(tipo: string): void {
+        this.tipoError = tipo;
+    }
+
+    setDescp(desc: string): void {
+        this.descp = desc;
+    }
+
+    setFila(fila: number): void {
+        this.fila = fila;
+    }
+
+    setColumna(columna: number): void {
+        this.columna = columna;
+    }
 }

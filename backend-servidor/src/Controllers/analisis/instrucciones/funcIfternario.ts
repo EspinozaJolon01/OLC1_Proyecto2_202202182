@@ -30,6 +30,7 @@ export default class funcIfternario extends Instruccion {
         if(Instrucciones2 instanceof Errores) return Instrucciones2
 
         if (this.condicion.tipoDato.getTipo() != tipoDato.BOOL) {
+            arbol.Print("\n Error Semantico:"+"La condicion ser bool" + "linea: " + this.linea + "columna:" + (this.col+1))
             return new Errores("SEMANTICO", "La condicion debe ser bool", this.linea, this.col)
         }
 
