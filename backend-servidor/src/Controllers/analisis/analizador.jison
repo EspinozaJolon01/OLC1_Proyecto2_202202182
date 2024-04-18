@@ -26,6 +26,9 @@ const funcIfternario = require('./instrucciones/funcIfternario')
 const Vectores = require('./instrucciones/VectorUna')
 const AccesoVector  = require('./expresiones/AccesoVarU')
 const ModVector  = require('./expresiones/ModVector')
+
+const VectoresDOS = require('./instrucciones/VectorDos')
+
 const Errores = require('./excepcicones/Errores')
 
 const indexController =  require('../indexController')
@@ -261,15 +264,22 @@ LISTAVALORES : LISTAVALORES COMA EXPRESION {$1.push($3); $$=$1;}
 ;
 
 DECARRELGO2DIMEN: TIPOS ID CORCHETE1 CORCHETE2 CORCHETE1 CORCHETE2 IGUAL NEW TIPOS CORCHETE1 EXPRESION CORCHETE2 CORCHETE1 EXPRESION CORCHETE2
-        |TIPOS ID CORCHETE1 CORCHETE2 CORCHETE1 CORCHETE2 IGUAL CORCHETE1 LISTADIMENSIOENS CORCHETE2
+        {$$ = new VectoresDOS.default($1,$2,@1.first_line, @1.first_column,$9,$11,$14,undefined,undefined);}
+        |TIPOS ID CORCHETE1 CORCHETE2 CORCHETE1 CORCHETE2 IGUAL CORCHETE1 LISTARECURSIVA CORCHETE2
+        
 ;
 
-LISTADIMENSIOENS: CORCHETE1 DATODENTRO CORCHETE2
-        | COMA
+LISTARECURSIVA: LISTARECURSIVA COMA LISTADIMENSIOENS {$1.push($3); $$=$1;}
+                | LISTADIMENSIOENS  {$$=[$1];}
+
 ;
 
-DATODENTRO: DATODENTRO COMA EXPRESION
-        |EXPRESION
+LISTADIMENSIOENS: CORCHETE1 DATODENTRO CORCHETE2   {$$ = $2}
+        
+;
+
+DATODENTRO: DATODENTRO COMA EXPRESION {$1.push($3); $$=$1;}
+        |EXPRESION   {$$=[$1];}
 ;
 
 FUNBREAK : BREAK PUNTOCOMA {$$ = new Break.default(@1.first_line, @1.first_column);}
