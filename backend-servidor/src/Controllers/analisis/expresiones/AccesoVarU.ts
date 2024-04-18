@@ -20,6 +20,7 @@ export default class AccesoVector extends Instruccion {
         let pos = this.posicion.interpretar(arbol,tabla)
 
         if (valorVariable === null) {
+            arbol.Print("\n Error Semantico: "+"La variable no está definida " + "linea: " + this.linea + "columna:" + (this.col+1))
             return new Errores("SEMANTICO", "La variable no está definida", this.linea, this.col);
         }
 
@@ -27,10 +28,12 @@ export default class AccesoVector extends Instruccion {
         this.tipoDato = valorVariable.getTipo()
 
         if (!Array.isArray(valorVector)) {
+            arbol.Print("---> Error Semantico: "+"La variable no es un vector " + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
             return new Errores("SEMANTICO", "La variable no es un vector", this.linea, this.col);
         }
 
         if (pos < 0 || pos >= valorVector.length) {
+            arbol.Print("---> Error Semantico: "+"Índice de vector fuera de rango " + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
             return new Errores("SEMANTICO", "Índice de vector fuera de rango", this.linea, this.col);
         }
 

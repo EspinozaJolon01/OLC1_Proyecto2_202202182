@@ -23,7 +23,7 @@ class controller {
             ast.setTablaGlobal(tabla)
             ast.setConsola("")
             for (let i of errores_list) {
-                ast.Print("\n"+i.getTipoError()+ ":" + i.getDescp() +" Fila: "+ i.getFila()+" Columna: "+ i.getColumna() )
+                ast.Print("---> "+i.getTipoError()+ ":" + i.getDescp() +" Fila: "+ i.getFila()+" Columna: "+ i.getColumna()+"\n" )
             }
 
             for (let i of ast.getInstrucciones()) {

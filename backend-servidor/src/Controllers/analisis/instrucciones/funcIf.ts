@@ -28,7 +28,7 @@ export default class funcIf extends Instruccion {
         if (cond instanceof Errores) return cond;
 
         // Validación
-        if (this.condicion.tipoDato.getTipo() !== tipoDato.BOOL) {
+        if (this.condicion.tipoDato.getTipo() != tipoDato.BOOL) {
             arbol.Print("\n Error Semantico:"+"La condicion ser bool" + "linea: " + this.linea + "columna:" + (this.col+1))
             return new Errores("SEMANTICO", "La condición debe ser booleana", this.linea, this.col);
         }
@@ -40,8 +40,9 @@ export default class funcIf extends Instruccion {
             newTabla.setNombre("Sentencia IF");
             for (let i of this.instrucciones) {
                 if (i instanceof Break) return i;
+                if (i instanceof funContinue) return i;
                 let resultado = i.interpretar(arbol, newTabla);
-                // Los errores quedan pendientes
+                if(resultado instanceof Errores) return resultado
             }
         } else {
             if (this.instruccioneselse != undefined) {

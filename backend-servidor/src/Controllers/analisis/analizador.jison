@@ -183,6 +183,7 @@ INSTRUCCION : IMPRESION             {$$=$1;}
             |FUNSWITCH                          {$$=$1;}
             |DECARREGLO   PUNTOCOMA             {$$=$1;}
             |MODFVECTOR PUNTOCOMA             {$$=$1;}
+            |DECARRELGO2DIMEN  PUNTOCOMA {$$=$1;}
             
 ;
 
@@ -225,7 +226,7 @@ FUNIFTERNARIO: EXPRESION INTERROGACION EXPRESION PUNTOS EXPRESION {$$ = new func
 
 ;
 
-FUNIF : IF PAR1 EXPRESION PAR2  OTROIFBLOQUE {$$ = new funcIf.default($3, $4, @1.first_line, @1.first_column, undefined,undefined);}
+FUNIF : IF PAR1 EXPRESION PAR2  OTROIFBLOQUE {$$ = new funcIf.default($3, $5, @1.first_line, @1.first_column, undefined,undefined);}
         |IF PAR1 EXPRESION PAR2 OTROIFBLOQUE ELSE OTROIFBLOQUE {$$ = new funcIf.default($3, $5, @1.first_line, @1.first_column, undefined,$7);}
         |IF PAR1 EXPRESION PAR2 OTROIFBLOQUE ELSE FUNIF {$$ = new funcIf.default($3, $5, @1.first_line, @1.first_column, $7,undefined);}
 ;
@@ -257,6 +258,18 @@ DECARREGLO: TIPOS ID CORCHETE1 CORCHETE2 IGUAL NEW TIPOS CORCHETE1 EXPRESION COR
 
 LISTAVALORES : LISTAVALORES COMA EXPRESION {$1.push($3); $$=$1;}
         | EXPRESION     {$$=[$1];}
+;
+
+DECARRELGO2DIMEN: TIPOS ID CORCHETE1 CORCHETE2 CORCHETE1 CORCHETE2 IGUAL NEW TIPOS CORCHETE1 EXPRESION CORCHETE2 CORCHETE1 EXPRESION CORCHETE2
+        |TIPOS ID CORCHETE1 CORCHETE2 CORCHETE1 CORCHETE2 IGUAL CORCHETE1 LISTADIMENSIOENS CORCHETE2
+;
+
+LISTADIMENSIOENS: CORCHETE1 DATODENTRO CORCHETE2
+        | COMA
+;
+
+DATODENTRO: DATODENTRO COMA EXPRESION
+        |EXPRESION
 ;
 
 FUNBREAK : BREAK PUNTOCOMA {$$ = new Break.default(@1.first_line, @1.first_column);}

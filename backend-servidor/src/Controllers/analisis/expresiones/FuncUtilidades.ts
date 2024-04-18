@@ -157,6 +157,7 @@ export default class FuncUtilidades extends Instruccion{
                 console.log(opU)
                 return op1.length
             
+            
                 
             default:
                 return new Errores("Semantico", "length invalida", this.linea, this.col)

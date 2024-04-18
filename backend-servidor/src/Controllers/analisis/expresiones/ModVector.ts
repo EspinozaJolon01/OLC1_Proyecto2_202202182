@@ -25,19 +25,23 @@ export default class  ModVector extends Instruccion{
         let pos = this.posicion.interpretar(arbol,tabla)
 
         if (valorVariable === null) {
+            arbol.Print("---> Error Semantico: "+"La variable no está definida " + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
             return new Errores("SEMANTICO", "La variable no está definida", this.linea, this.col);
         }
 
         const valorVector = valorVariable.getValor();
         this.tipoDato = valorVariable.getTipo()
+
         let nuevoValor = this.Actualizar.interpretar(arbol,tabla)
 
         if (!Array.isArray(valorVector)) {
+            arbol.Print("---> Error Semantico: "+"La variable no es un vector " + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
             return new Errores("SEMANTICO", "La variable no es un vector", this.linea, this.col);
         }
 
         if (pos < 0 || pos >= valorVector.length) {
-            return new Errores("SEMANTICO", "Índice de vector fuera de rango", this.linea, this.col);
+            arbol.Print("---> Error Semantico: "+"indice de vector fuera de rango " + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
+            return new Errores("SEMANTICO", "indice de vector fuera de rango", this.linea, this.col);
         }
 
 
