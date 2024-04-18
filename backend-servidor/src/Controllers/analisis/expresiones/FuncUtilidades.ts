@@ -49,6 +49,9 @@ export default class FuncUtilidades extends Instruccion{
             case Operadores.Typeof:
                 return this.typeof(unico)
             case Operadores.Length:
+                if(Array.isArray(unico)){
+                    return this.arreglo_log(unico);
+                }
                 return this.length1(unico)
             default:
                 return new Errores("Semantico", "Funcion Invalido", this.linea, this.col)
@@ -144,6 +147,53 @@ export default class FuncUtilidades extends Instruccion{
         }
         
     }
+
+    
+
+    arreglo_log(op1: any){
+
+        // this.tipoDato =  new Tipo(tipoDato.ENTERO)
+        
+        // return op1.length
+
+        let opU = this.operandoUnido?.tipoDato.getTipo()
+        switch (opU) {
+            
+            case tipoDato.ENTERO:
+                this.tipoDato = new Tipo(tipoDato.ENTERO)
+                console.log(op1)
+                console.log(opU)
+                return op1.length
+            case tipoDato.CADENA:
+                this.tipoDato = new Tipo(tipoDato.ENTERO)
+                console.log(op1)
+                console.log(opU)
+                return op1.length
+            case tipoDato.CARACTER:
+                this.tipoDato = new Tipo(tipoDato.ENTERO)
+                console.log(op1)
+                console.log(opU)
+                return op1.length
+            case tipoDato.DECIMAL:
+                this.tipoDato = new Tipo(tipoDato.ENTERO)
+                console.log(op1)
+                console.log(opU)
+                return op1.length
+            case tipoDato.BOOL:
+                this.tipoDato = new Tipo(tipoDato.ENTERO)
+                console.log(op1)
+                console.log(opU)
+                return op1.length
+            
+            
+                
+            default:
+                return new Errores("Semantico", "length invalida", this.linea, this.col)
+        }
+            
+    }
+        
+    
 
 
     length1(op1: any){
