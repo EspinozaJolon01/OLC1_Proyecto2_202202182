@@ -33,6 +33,7 @@ const ModVector2 =  require('./expresiones/ModVector2')
 const Llamada = require('./instrucciones/Llamada')
 
 const VectoresDOS = require('./instrucciones/VectorDos')
+const AccesoVector2  = require('./expresiones/AccesoVec2')
 
 const Errores = require('./excepcicones/Errores')
 
@@ -360,9 +361,14 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
             | FUNIFTERNARIO   {$$=$1;}
             | EXPRESION PUNTO LENGTH PAR1 PAR2  {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.Length, @1.first_line, @1.first_column, $1);}
             | BUSCARVECTOR {$$ = $1;}
+            | BUSCARVECTOR2 {$$ = $1;}
 ;
 
 BUSCARVECTOR :  ID CORCHETE1  EXPRESION CORCHETE2 {$$ = new AccesoVector.default($1,$3,@1.first_line, @1.first_column);}
+;
+
+BUSCARVECTOR2 :  ID CORCHETE1  EXPRESION CORCHETE2 CORCHETE1  EXPRESION CORCHETE2 
+                {$$ = new AccesoVector2.default($1,$3,$6,@1.first_line, @1.first_column);}
 ;
 
 MODFVECTOR : ID CORCHETE1  EXPRESION CORCHETE2 IGUAL EXPRESION {$$ =  new ModVector.default($1,$3,$6,@1.first_line, @1.first_column);}
