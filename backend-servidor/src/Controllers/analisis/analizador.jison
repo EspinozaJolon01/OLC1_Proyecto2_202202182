@@ -82,6 +82,7 @@ var cadena = '';
 "new"                   return 'NEW'
 "execute"                   return 'EXECUTE'
 "void"                  return 'VOID'
+"c_str"                 return 'CSTR'
 
 
 
@@ -269,6 +270,7 @@ FUNFOR : FOR PAR1 VEFICACION PUNTOCOMA EXPRESION PUNTOCOMA ASIGNACION PAR2 LLAVE
 
 DECARREGLO: TIPOS ID CORCHETE1 CORCHETE2 IGUAL NEW TIPOS CORCHETE1 EXPRESION CORCHETE2 {$$ = new Vectores.default($1,$2,@1.first_line, @1.first_column,$7,$9,undefined);}
         | TIPOS ID  CORCHETE1 CORCHETE2 IGUAL CORCHETE1 LISTAVALORES CORCHETE2  {$$ = new Vectores.default($1,$2,@1.first_line, @1.first_column,undefined,undefined,$7);}
+        | TIPOS CORCHETE1 CORCHETE2 IGUAL EXPRESION PUNTO CSTR PAR1 PAR2
 ;
 
 LISTAVALORES : LISTAVALORES COMA EXPRESION {$1.push($3); $$=$1;}
@@ -276,9 +278,9 @@ LISTAVALORES : LISTAVALORES COMA EXPRESION {$1.push($3); $$=$1;}
 ;
 
 DECARRELGO2DIMEN: TIPOS ID CORCHETE1 CORCHETE2 CORCHETE1 CORCHETE2 IGUAL NEW TIPOS CORCHETE1 EXPRESION CORCHETE2 CORCHETE1 EXPRESION CORCHETE2
-        {$$ = new VectoresDOS.default($1,$2,@1.first_line, @1.first_column,$9,$11,$14,undefined,undefined);}
+        {$$ = new VectoresDOS.default($1,$2,@1.first_line, @1.first_column,$9,$11,$14,undefined);}
         |TIPOS ID CORCHETE1 CORCHETE2 CORCHETE1 CORCHETE2 IGUAL CORCHETE1 LISTARECURSIVA CORCHETE2
-        {$$ = new VectoresDOS.default($1,$2,@1.first_line, @1.first_column,undefined,undefined,undefined,$9,$9);}
+        {$$ = new VectoresDOS.default($1,$2,@1.first_line, @1.first_column,undefined,undefined,undefined,$9);}
 
         
 ;

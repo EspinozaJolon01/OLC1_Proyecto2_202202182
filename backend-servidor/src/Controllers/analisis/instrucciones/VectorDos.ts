@@ -12,11 +12,11 @@ export default class VectoresDOS extends Instruccion{
     private id:string;
     private dimension1?:Instruccion |undefined;
     private dimension2?:Instruccion |undefined;
-    private listavalores1?: Instruccion[] | undefined;
-    private listavalores2?: Instruccion[] | undefined;
+    private listavalores1?: Instruccion[][] | undefined;
+    
 
     constructor(tipo1:Tipo,id:string,linea:number,colum:number,tipo2?:Tipo | undefined,dimension1?:Instruccion,
-        dimension2?:Instruccion,listavalores1?: Instruccion[],listavalores2?: Instruccion[]){
+        dimension2?:Instruccion,listavalores1?: Instruccion[][]){
             super(tipo1, linea, colum)
             this.tipo1 =tipo1
             this.tipo2 = tipo2
@@ -24,35 +24,42 @@ export default class VectoresDOS extends Instruccion{
             this.dimension1 = dimension1
             this.dimension2 = dimension2
             this.listavalores1 = listavalores1
-            this.listavalores2 = listavalores2
+            
     }
 
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         let arreglo2d: any[][] = []
-        if(this.listavalores1 && this.listavalores2){
+        if(this.listavalores1){
 
-            if(this.dimension1 && this.dimension2){
-                const dim1 = this.dimension1.interpretar(arbol,tabla)
-                const dim2 = this.dimension2.interpretar(arbol,tabla)
+            let arreglo2 =  new Array(this.listavalores1.length)
+
+            for(let i=0; i<this.listavalores1.length;i++){
+
+                if(Array.isArray(this.listavalores1[i])){
+                    arreglo2[i] = new Array(this.listavalores1[i].length)
+
+                    for(let j=0; j< this.listavalores1.length;j++){
+                        let dato = this.listavalores1[i][j].interpretar(arbol,tabla)
+                        if(dato instanceof Errores) return dato
+                        if(this.tipo1.getTipo() != this.listavalores1[i][j].tipoDato.getTipo()){
+                            return new Errores("SEMANTICO", "Las dimensiones deben ser números", this.linea, this.col);
+                        }
+                        arreglo2[i][j] = dato
+                    }
+
+                }else{
+                    return new Errores("SEMANTICO", "Debe de ser un vector", this.linea, this.col);
+
+                }
                 
-                //sea numero
-                if(typeof dim1 !== "number" || typeof dim2 !== "number"){
-                    return new Errores("SEMANTICO", "Las dimensiones deben ser números", this.linea, this.col);
-                }
-
-                if (dim1 !== this.listavalores1.length || dim2 !== this.listavalores2.length) {
-                    return new Errores("SEMANTICO", "Las dimensiones no coinciden con la inicialización del arreglo", this.linea, this.col);
-                }
 
             }
-            for(let i = 0; i < this.listavalores1.length; i++){
-                let fila: any[]=[]
-                    for(let j = 0; j < this.listavalores1.length ; j++){
-                        fila.push(this.listavalores1[j].interpretar(arbol,tabla))
-                    }
-                    arreglo2d.push(fila);
-                }
+            if (!tabla.setVariable(new Simbolo(this.tipoDato, this.id, arreglo2))){
+                arbol.Print("\n Error Semantico:"+"No se puede declarar variable porque ya existia" + "linea: " + this.linea + "columna:" + (this.col+1))
+                return new Errores("SEMANTICO", "No se puede declarar variable porque ya existia", this.linea, this.col)
+            }
+                
 
         }else {
             
@@ -81,15 +88,17 @@ export default class VectoresDOS extends Instruccion{
             } else {
                 return new Errores("SEMANTICO", "Dimensiones no especificadas", this.linea, this.col);
             }
-        }
 
-        // Agregar el arreglo 2D a la tabla de símbolos
+            // Agregar el arreglo 2D a la tabla de símbolos
         if (!tabla.setVariable(new Simbolo(this.tipoDato, this.id, arreglo2d))){
             arbol.Print("\n Error Semantico:"+"No se puede declarar variable porque ya existia" + "linea: " + this.linea + "columna:" + (this.col+1))
             return new Errores("SEMANTICO", "No se puede declarar variable porque ya existia", this.linea, this.col)
         }
 
         return null;
+        }
+
+        
         
     }
 }
