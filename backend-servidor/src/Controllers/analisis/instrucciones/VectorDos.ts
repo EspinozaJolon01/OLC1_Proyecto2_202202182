@@ -48,8 +48,8 @@ export default class VectoresDOS extends Instruccion{
             }
             for(let i = 0; i < this.listavalores1.length; i++){
                 let fila: any[]=[]
-                    for(let j = 0; j < this.listavalores2.length ; j++){
-                        fila.push(this.listavalores2[j].interpretar(arbol,tabla))
+                    for(let j = 0; j < this.listavalores1.length ; j++){
+                        fila.push(this.listavalores1[j].interpretar(arbol,tabla))
                     }
                     arreglo2d.push(fila);
                 }

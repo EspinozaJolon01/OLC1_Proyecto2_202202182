@@ -28,6 +28,7 @@ const funcIfternario = require('./instrucciones/funcIfternario')
 const Vectores = require('./instrucciones/VectorUna')
 const AccesoVector  = require('./expresiones/AccesoVarU')
 const ModVector  = require('./expresiones/ModVector')
+const ModVector2 =  require('./expresiones/ModVector2')
 
 const Llamada = require('./instrucciones/Llamada')
 
@@ -192,6 +193,7 @@ INSTRUCCION : IMPRESION             {$$=$1;}
             |FUNSWITCH                          {$$=$1;}
             |DECARREGLO   PUNTOCOMA             {$$=$1;}
             |MODFVECTOR PUNTOCOMA             {$$=$1;}
+            | MOFVECTOR2 PUNTOCOMA             {$$=$1;}
             |DECARRELGO2DIMEN  PUNTOCOMA {$$=$1;}
             |METODO  {$$=$1;}
             |EXECUTEN PUNTOCOMA  {$$=$1;}
@@ -275,6 +277,8 @@ LISTAVALORES : LISTAVALORES COMA EXPRESION {$1.push($3); $$=$1;}
 DECARRELGO2DIMEN: TIPOS ID CORCHETE1 CORCHETE2 CORCHETE1 CORCHETE2 IGUAL NEW TIPOS CORCHETE1 EXPRESION CORCHETE2 CORCHETE1 EXPRESION CORCHETE2
         {$$ = new VectoresDOS.default($1,$2,@1.first_line, @1.first_column,$9,$11,$14,undefined,undefined);}
         |TIPOS ID CORCHETE1 CORCHETE2 CORCHETE1 CORCHETE2 IGUAL CORCHETE1 LISTARECURSIVA CORCHETE2
+        {$$ = new VectoresDOS.default($1,$2,@1.first_line, @1.first_column,undefined,undefined,undefined,$9,$9);}
+
         
 ;
 
@@ -363,6 +367,10 @@ BUSCARVECTOR :  ID CORCHETE1  EXPRESION CORCHETE2 {$$ = new AccesoVector.default
 
 MODFVECTOR : ID CORCHETE1  EXPRESION CORCHETE2 IGUAL EXPRESION {$$ =  new ModVector.default($1,$3,$6,@1.first_line, @1.first_column);}
 
+;
+
+MOFVECTOR2: ID CORCHETE1  EXPRESION CORCHETE2 CORCHETE1  EXPRESION CORCHETE2 IGUAL EXPRESION
+                        {$$ =  new ModVector2.default($1,$3,$6,$9,@1.first_line, @1.first_column);}
 ;
 
 INCRE : ID VALIDARINCRE              {$$ = new IncreDecre.default( @1.first_line, @1.first_column, $1,$2);}
