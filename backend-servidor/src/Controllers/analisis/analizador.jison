@@ -21,11 +21,15 @@ const Case = require('./instrucciones/FuncCase')
 const Default = require('./instrucciones/FuncDefault')
 const funContinue = require('./instrucciones/funContinue')
 const Defecto = require('./instrucciones/DeclaDefecto')
+const Metodo = require('./instrucciones/Metodo')
+const Execute = require('./instrucciones/Excute')
 const Casteos = require('./expresiones/Casteos')
 const funcIfternario = require('./instrucciones/funcIfternario')
 const Vectores = require('./instrucciones/VectorUna')
 const AccesoVector  = require('./expresiones/AccesoVarU')
 const ModVector  = require('./expresiones/ModVector')
+
+const Llamada = require('./instrucciones/Llamada')
 
 const VectoresDOS = require('./instrucciones/VectorDos')
 
@@ -74,6 +78,8 @@ var cadena = '';
 "case"                  return 'CASE'
 "default"               return 'DEFAULT'
 "new"                   return 'NEW'
+"execute"                   return 'EXECUTE'
+"void"                  return 'VOID'
 
 
 
@@ -187,6 +193,9 @@ INSTRUCCION : IMPRESION             {$$=$1;}
             |DECARREGLO   PUNTOCOMA             {$$=$1;}
             |MODFVECTOR PUNTOCOMA             {$$=$1;}
             |DECARRELGO2DIMEN  PUNTOCOMA {$$=$1;}
+            |METODO  {$$=$1;}
+            |EXECUTEN PUNTOCOMA  {$$=$1;}
+            |LLAMADA  PUNTOCOMA  {$$=$1;}
             
 ;
 
@@ -365,6 +374,32 @@ VALIDARINCRE:   INCREMENTO {$$ = true;}
         |DECREMIENTO {$$ = false;}
 
 ;
+//id(param):void {instrucciones}
+METODO: TIPOS ID PAR1 PARAMETROS PAR2 LLAVE1 INSTRUCCIONES LLAVE2
+        {$$ =  new Metodo.default($2,$1,$7,@1.first_line, @1.first_column,$4);}
+        | TIPOS ID PAR1  PAR2 LLAVE1 INSTRUCCIONES LLAVE2
+        {$$ =  new Metodo.default($2,$1,$6,@1.first_line, @1.first_column,[]);}
+
+;
+
+PARAMETROS: PARAMETROS COMA TIPOS ID {$1.push({tipo:$3, id:$4}); $$=$1;}
+        |TIPOS ID {$$ = [{tipo:$1,id:$2}];}
+
+;
+
+
+EXECUTEN : EXECUTE ID PAR1 PARANS PAR2   {$$ =  new Execute.default($2,@1.first_line, @1.first_column,$4);}
+        | EXECUTE ID PAR1 PAR2  {$$ =  new Execute.default($2,@1.first_line, @1.first_column,[]);}
+;
+
+LLAMADA: ID PAR1 PARANS PAR2            {$$ =  new Llamada.default($1,@1.first_line, @1.first_column,$3);}
+        | ID PAR1 PAR2                  {$$ =  new Llamada.default($1,@1.first_line, @1.first_column,[]);}
+
+;
+PARANS: PARANS COMA EXPRESION   {$1.push($3); $$=$1;}
+        |EXPRESION     {$$ = [$1];}
+;
+
 
 
 
@@ -381,4 +416,6 @@ TIPOS : INT             {$$ = new Tipo.default(Tipo.tipoDato.ENTERO);}
         | STRING          {$$ = new Tipo.default(Tipo.tipoDato.CADENA);}
         | CHAR          {$$ = new Tipo.default(Tipo.tipoDato.CARACTER);}
         | BOOLEAN          {$$ = new Tipo.default(Tipo.tipoDato.BOOL);}
+        | VOID          {$$ = new Tipo.default(Tipo.tipoDato.VOID);}
+
 ;

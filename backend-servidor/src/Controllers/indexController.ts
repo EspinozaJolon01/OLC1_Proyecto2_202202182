@@ -2,6 +2,10 @@ import { Request, Response } from 'express';
 import Arbol from './analisis/simbolo/Arbol';
 import tablaSimbolo from './analisis/simbolo/tablaSimbolos';
 import Errores from './analisis/excepcicones/Errores';
+import Metodo from './analisis/instrucciones/Metodo';
+import Declaracion from './analisis/instrucciones/Declaracion';
+import Llamada from './analisis/instrucciones/Excute';
+import Execute from './analisis/instrucciones/Excute';
 
 //errores
 export let errores_list: Array<Errores> = []
@@ -22,24 +26,48 @@ class controller {
             tabla.setNombre("Ejemplo1")
             ast.setTablaGlobal(tabla)
             ast.setConsola("")
+
+            let execute = null;
+
+            //primer recorrdio
+            for(let i of ast.getInstrucciones()){
+                if(i instanceof Metodo){
+                    i.id = i.id.toLocaleLowerCase()
+                    ast.agregarFunciones(i)
+                }
+                if(i instanceof Declaracion){
+                    i.interpretar(ast, tabla)
+                    // manejo de errores
+                }
+                if (i instanceof Execute){
+                    execute = i
+                }
+
+            }
+
             for (let i of errores_list) {
                 ast.Print("---> "+i.getTipoError()+ ":" + i.getDescp() +" Fila: "+ i.getFila()+" Columna: "+ i.getColumna()+"\n" )
             }
 
-            for (let i of ast.getInstrucciones()) {
-
-                if(i instanceof Errores){
-                    errores_list.push(i)
-                }
-                //console.log(i)
-                var resultado = i.interpretar(ast, tabla)
-
-                if(resultado instanceof Errores){
-                    errores_list.push(resultado)
-                }
-                console.log(resultado)
-
+            if(execute != null){
+                execute.interpretar(ast,tabla)
+                // manejo de errores
             }
+
+            // for (let i of ast.getInstrucciones()) {
+
+            //     if(i instanceof Errores){
+            //         errores_list.push(i)
+            //     }
+            //     //console.log(i)
+            //     var resultado = i.interpretar(ast, tabla)
+
+            //     if(resultado instanceof Errores){
+            //         errores_list.push(resultado)
+            //     }
+            //     console.log(resultado)
+
+            // }
             console.log(tabla)
             res.send({ "Respuesta": ast.getConsola() })
 
