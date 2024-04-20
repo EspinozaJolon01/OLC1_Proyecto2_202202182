@@ -5,6 +5,7 @@ import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./funBreak";
 import funContinue from "./funContinue";
+import funReturn from "./funReturn";
 
 
 
@@ -29,7 +30,7 @@ export default class funcIf extends Instruccion {
 
         // Validación
         if (this.condicion.tipoDato.getTipo() != tipoDato.BOOL) {
-            arbol.Print("\n Error Semantico:"+"La condicion ser bool" + "linea: " + this.linea + "columna:" + (this.col+1))
+            arbol.Print("--> Error Semantico:"+"La condicion debe ser bool" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
             return new Errores("SEMANTICO", "La condición debe ser booleana", this.linea, this.col);
         }
 
@@ -41,6 +42,7 @@ export default class funcIf extends Instruccion {
             for (let i of this.instrucciones) {
                 if (i instanceof Break) return i;
                 if (i instanceof funContinue) return i;
+                if(i instanceof funReturn) return i.interpretar(arbol,tabla);
                 let resultado = i.interpretar(arbol, newTabla);
                 if(resultado instanceof Errores) return resultado
             }
@@ -51,6 +53,7 @@ export default class funcIf extends Instruccion {
                 for (let i of this.instruccioneselse) {
                     if (i instanceof Break) return i;
                     if (i instanceof funContinue) return i;
+                    if(i instanceof funReturn) return i.interpretar(arbol,tabla);
                     let resultado1 = i.interpretar(arbol, newTabla1);
                     if(resultado1 instanceof Errores) return resultado1
                     // Los errores quedan pendientes
@@ -59,6 +62,7 @@ export default class funcIf extends Instruccion {
                 let ielsi = this.condicion_ifelse?.interpretar(arbol,tabla)
                 if(ielsi instanceof Errores) return ielsi
                 if (ielsi instanceof Break) return ielsi;
+                if(ielsi instanceof funReturn) return ielsi.interpretar(arbol,tabla);
                 if (ielsi instanceof funContinue) return ielsi;
 
             }

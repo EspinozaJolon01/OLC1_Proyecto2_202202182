@@ -23,7 +23,7 @@ export default class AccesoVector2 extends Instruccion {
         let pos2 = this.posicion2.interpretar(arbol,tabla)
 
         if (valorVariable === null) {
-            arbol.Print("\n Error Semantico: "+"La variable no está definida " + "linea: " + this.linea + "columna:" + (this.col+1))
+            arbol.Print("--> Error Semantico:"+"La variable no está definida" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
             return new Errores("SEMANTICO", "La variable no está definida", this.linea, this.col);
         }
 

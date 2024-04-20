@@ -188,6 +188,7 @@ export default class FuncUtilidades extends Instruccion{
             
                 
             default:
+                
                 return new Errores("Semantico", "length invalida", this.linea, this.col)
         }
             

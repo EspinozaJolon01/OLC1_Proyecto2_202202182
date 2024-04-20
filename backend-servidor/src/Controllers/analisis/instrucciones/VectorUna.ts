@@ -35,19 +35,21 @@ export default class Vectores extends Instruccion{
 
                 if(valor instanceof Errores) return valor
                 if(this.tipo1.getTipo() != this.listavalores[i].tipoDato.getTipo()){
-                    arbol.Print("\n Error Semantico:"+"Los tipos de datos no son iguales" + "linea: " + this.linea + "columna:" + (this.col+1))
+                    arbol.Print("--> Error Semantico:"+"Los tipos de datos no son iguales" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
                     return new Errores("SEMANTICA", "Los tipos de datos no son iguales", this.linea, this.col);
                 }
                 arry[i] = valor
             }
             if (!tabla.setVariable(new Simbolo(this.tipoDato, this.id, arry))){
+                arbol.Print("--> Error Semantico:"+"No se puede declarar variable porque ya existia" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
+
                 return new Errores("SEMANTICO", "No se puede declarar variable porque ya existia", this.linea, this.col)
             }
 
 
         }else if(this.dimension){
             if(this.tipo1.getTipo() != this.tipo2?.getTipo()){
-                arbol.Print("\n Error Semantico:"+"Los tipos no son iguales " + "linea: " + this.linea + "columna:" + (this.col+1))
+                arbol.Print("--> Error Semantico:"+"Los tipos no son iguales" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
                 return new Errores("SEMANTICA", "Los tipos no son iguales ", this.linea, this.col);
             }
             
@@ -58,12 +60,12 @@ export default class Vectores extends Instruccion{
                 arry[i] = []
             }
             if (!tabla.setVariable(new Simbolo(this.tipoDato, this.id, arry))){
-                arbol.Print("\n Error Semantico:"+"No se puede declarar variable porque ya existia" + "linea: " + this.linea + "columna:" + (this.col+1))
+                arbol.Print("--> Error Semantico:"+"No se puede declarar variable porque ya existia" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
                 return new Errores("SEMANTICO", "No se puede declarar variable porque ya existia", this.linea, this.col)
             }
 
         }else{
-            arbol.Print("\n Error Semantico:"+"falta datos" + "linea: " + this.linea + "columna:" + (this.col+1))
+            arbol.Print("--> Error Semantico:"+"falta datos" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
             return new Errores("SEMANTICA", "falta datos", this.linea, this.col);
         }
     }

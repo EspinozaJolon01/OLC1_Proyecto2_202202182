@@ -49,6 +49,7 @@ export default class Aritmeticas extends Instruccion {
             case Operadores.MODUL:
                 return this.modulo(opIzq, opDer)
             default:
+                arbol.Print("--> Error Semantico:"+"Operador Aritmetico Invalido" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
                 return new Errores("Semantico", "Operador Aritmetico Invalido", this.linea, this.col)
         }
     }

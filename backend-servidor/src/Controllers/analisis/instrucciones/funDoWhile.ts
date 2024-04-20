@@ -32,6 +32,7 @@ export default class funDoWhile extends Instruccion{
 
         // validaciones
         if (this.condicion.tipoDato.getTipo() != tipoDato.BOOL) {
+            arbol.Print("--> Error Semantico:"+"La condicion debe ser bool" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
             return new Errores("SEMANTICO", "La condicion debe ser bool", this.linea, this.col)
         }
 

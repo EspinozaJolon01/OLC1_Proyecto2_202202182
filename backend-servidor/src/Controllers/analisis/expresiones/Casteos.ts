@@ -47,6 +47,8 @@ export default class Casteos extends Instruccion{
                 return this.casteoscaracter(Unico)
 
             default:
+                arbol.Print("--> Error Semantico:"+"Casteo Invalido" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
+
                 return new Errores("Semantico", "Casteo Invalido", this.linea, this.col)
 
         }   

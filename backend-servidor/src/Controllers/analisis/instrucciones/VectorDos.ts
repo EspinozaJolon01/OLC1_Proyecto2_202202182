@@ -43,12 +43,14 @@ export default class VectoresDOS extends Instruccion{
                         let dato = this.listavalores1[i][j].interpretar(arbol,tabla)
                         if(dato instanceof Errores) return dato
                         if(this.tipo1.getTipo() != this.listavalores1[i][j].tipoDato.getTipo()){
+                            arbol.Print("--> Error Semantico:"+"Las dimensiones deben ser números" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
                             return new Errores("SEMANTICO", "Las dimensiones deben ser números", this.linea, this.col);
                         }
                         arreglo2[i][j] = dato
                     }
 
                 }else{
+                    arbol.Print("--> Error Semantico:"+"Debe de ser un vector" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
                     return new Errores("SEMANTICO", "Debe de ser un vector", this.linea, this.col);
 
                 }
@@ -56,7 +58,7 @@ export default class VectoresDOS extends Instruccion{
 
             }
             if (!tabla.setVariable(new Simbolo(this.tipoDato, this.id, arreglo2))){
-                arbol.Print("\n Error Semantico:"+"No se puede declarar variable porque ya existia" + "linea: " + this.linea + "columna:" + (this.col+1))
+                arbol.Print("--> Error Semantico:"+"No se puede declarar variable porque ya existia" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
                 return new Errores("SEMANTICO", "No se puede declarar variable porque ya existia", this.linea, this.col)
             }
                 
@@ -70,6 +72,7 @@ export default class VectoresDOS extends Instruccion{
                 console.log("num2: " , dim2)
 
                 if (this.dimension1.tipoDato.getTipo() !=  tipoDato.ENTERO && this.dimension2.tipoDato.getTipo() !=  tipoDato.ENTERO) {
+                    arbol.Print("--> Error Semantico:"+"Las dimensiones deben ser números" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
                     return new Errores("SEMANTICO", "Las dimensiones deben ser números", this.linea, this.col);
                 }
 
@@ -86,12 +89,13 @@ export default class VectoresDOS extends Instruccion{
                     arreglo2d.push(fila);
                 }
             } else {
+                arbol.Print("--> Error Semantico:"+"Dimensiones no especificadas" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
                 return new Errores("SEMANTICO", "Dimensiones no especificadas", this.linea, this.col);
             }
 
             // Agregar el arreglo 2D a la tabla de símbolos
         if (!tabla.setVariable(new Simbolo(this.tipoDato, this.id, arreglo2d))){
-            arbol.Print("\n Error Semantico:"+"No se puede declarar variable porque ya existia" + "linea: " + this.linea + "columna:" + (this.col+1))
+            arbol.Print("--> Error Semantico:"+"No se puede declarar variable porque ya existia" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
             return new Errores("SEMANTICO", "No se puede declarar variable porque ya existia", this.linea, this.col)
         }
 

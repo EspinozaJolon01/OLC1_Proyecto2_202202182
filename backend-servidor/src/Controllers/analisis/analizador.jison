@@ -31,6 +31,7 @@ const ModVector  = require('./expresiones/ModVector')
 const ModVector2 =  require('./expresiones/ModVector2')
 
 const Llamada = require('./instrucciones/Llamada')
+const funReturn = require('./instrucciones/funReturn')
 
 const VectoresDOS = require('./instrucciones/VectorDos')
 const AccesoVector2  = require('./expresiones/AccesoVec2')
@@ -83,6 +84,7 @@ var cadena = '';
 "execute"                   return 'EXECUTE'
 "void"                  return 'VOID'
 "c_str"                 return 'CSTR'
+"return"                return 'RETURN'
 
 
 
@@ -200,6 +202,7 @@ INSTRUCCION : IMPRESION             {$$=$1;}
             |METODO  {$$=$1;}
             |EXECUTEN PUNTOCOMA  {$$=$1;}
             |LLAMADA  PUNTOCOMA  {$$=$1;}
+            |FUNRETURN PUNTOCOMA {$$=$1;}
             
 ;
 
@@ -301,6 +304,11 @@ DATODENTRO: DATODENTRO COMA EXPRESION {$1.push($3); $$=$1;}
 FUNBREAK : BREAK PUNTOCOMA {$$ = new Break.default(@1.first_line, @1.first_column);}
 ;
 
+FUNRETURN : RETURN EXPRESION {$$ = new funReturn.default(@1.first_line, @1.first_column,$2);}
+        | RETURN  {$$ = new funReturn.default(@1.first_line, @1.first_column,undefined);}
+
+;
+
 FUNCONTINUE : CONTINUE PUNTOCOMA {$$ = new funContinue.default(@1.first_line, @1.first_column);}
 ;
 
@@ -396,6 +404,10 @@ METODO: TIPOS ID PAR1 PARAMETROS PAR2 LLAVE1 INSTRUCCIONES LLAVE2
         | TIPOS ID PAR1  PAR2 LLAVE1 INSTRUCCIONES LLAVE2
         {$$ =  new Metodo.default($2,$1,$6,@1.first_line, @1.first_column,[]);}
 
+;
+
+FUNCION : TIPOS ID PAR1 PARAMETROS PAR2 LLAVE1 INSTRUCCIONES LLAVE2
+        | TIPOS ID PAR1  PAR2 LLAVE1 INSTRUCCIONES LLAVE2
 ;
 
 PARAMETROS: PARAMETROS COMA TIPOS ID {$1.push({tipo:$3, id:$4}); $$=$1;}

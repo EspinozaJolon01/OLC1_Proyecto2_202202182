@@ -23,12 +23,18 @@ export default class Execute extends Instruccion{
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         let buscar = arbol.getFuncion(this.id)
-        if(buscar == null) return new Errores("Semantico", "Funciones no existe", this.linea,this.col)
+        if(buscar == null){       
+            arbol.Print("--> Error Semantico:"+"Funciones no existe" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
+
+            return new Errores("Semantico", "Funciones no existe", this.linea,this.col)
+        } 
         if(buscar instanceof Metodo){
             let nuevaTabla =  new tablaSimbolo(arbol.getTablaGlobal())
             nuevaTabla.setNombre("LLAMADA")
             
             if(buscar.parametros.length != this.parametros.length){
+                arbol.Print("--> Error Semantico:"+"Los paramaetros de la llamada son invalidos" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
+
                 return new Errores("Semantico","Los paramaetros de la llamada son invalidos", this.linea,this.col)
             }
 
