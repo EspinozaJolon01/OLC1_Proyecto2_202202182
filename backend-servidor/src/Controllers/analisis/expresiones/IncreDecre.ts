@@ -54,26 +54,26 @@ export default class IncreDecre extends Instruccion {
         let bandera = Ast.getInstancia();
         let datoObt = "";
 
-        let ident = `n${bandera.get()}`;
-        let nombre = `n${bandera.get()}`;
-        let mas1 = `n${bandera.get()}`;
-        let mas2 = `n${bandera.get()}`;
+        let indentifcador = `n${bandera.get()}`;
+        let varDato = `n${bandera.get()}`;
+        let incremento = `n${bandera.get()}`;
+        let incremento2 = `n${bandera.get()}`;
 
-        datoObt += ` ${ident}[label="IDENTIFICADOR"];\n`;
-        datoObt += ` ${nombre}[label="${this.operando1}"];\n`;
+        datoObt += ` ${indentifcador}[label="IDENTIFICADOR"];\n`;
+        datoObt += ` ${varDato}[label="${this.operando1}"];\n`;
 
         if(this.operando2 == true){
-            datoObt += ` ${mas1}[label="+"];\n`;
-            datoObt += ` ${mas2}[label="+"];\n`;
+            datoObt += ` ${incremento}[label="+"];\n`;
+            datoObt += ` ${incremento2}[label="+"];\n`;
         }else{
-            datoObt += ` ${mas1}[label="-"];\n`;
-            datoObt += ` ${mas2}[label="-"];\n`;
+            datoObt += ` ${incremento}[label="-"];\n`;
+            datoObt += ` ${incremento2}[label="-"];\n`;
         }
 
-        datoObt += ` ${anterior} -> ${ident};\n`;
-        datoObt += ` ${ident} -> ${nombre};\n`;
-        datoObt += `${anterior} -> ${mas1};\n`;
-        datoObt += `${anterior} -> ${mas2};\n`;
+        datoObt += ` ${anterior} -> ${indentifcador};\n`;
+        datoObt += ` ${indentifcador} -> ${varDato};\n`;
+        datoObt += `${anterior} -> ${incremento};\n`;
+        datoObt += `${anterior} -> ${incremento2};\n`;
 
         return datoObt;
 

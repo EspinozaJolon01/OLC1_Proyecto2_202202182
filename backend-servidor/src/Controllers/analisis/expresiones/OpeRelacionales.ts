@@ -4,6 +4,7 @@ import { Instruccion } from "../abstracto/Instruccion";
 
 import Errores from "../excepcicones/Errores";
 import Arbol from "../simbolo/Arbol";
+import Ast from "../simbolo/AST";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 
@@ -934,7 +935,116 @@ export default class OpeRelacionales extends Instruccion {
     }
 
     ArbolAST(anterior: string): string {
-        return ''
+        let Bandera = Ast.getInstancia();
+        let datoObt =""
+
+        if(this.operacion == OpRelacional.IGUAL){
+
+            let dato1 = `n${Bandera.get()}`
+            let dato2 = `n${Bandera.get()}`
+            let operando = `n${Bandera.get()}`
+
+            datoObt += `${dato1}[label = "DATOS"];\n`
+            datoObt += `${operando}[label = "=="];\n`
+            datoObt += `${dato2}[label = "DATOS"];\n`
+            
+            datoObt += `${anterior} -> ${dato1};\n`
+            datoObt += `${anterior} -> ${operando};\n`
+            datoObt += `${anterior} -> ${dato2};\n`
+
+            datoObt += this.operando1?.ArbolAST(dato1)
+            datoObt += this.operando2?.ArbolAST(dato2)
+
+        }else if(this.operacion == OpRelacional.DISTINTO){
+
+            let dato1 = `n${Bandera.get()}`
+            let dato2 = `n${Bandera.get()}`
+            let operando = `n${Bandera.get()}`
+
+            datoObt += `${dato1}[label = "DATOS"];\n`
+            datoObt += `${operando}[label = "!="];\n`
+            datoObt += `${dato2}[label = "DATOS"];\n`
+
+            datoObt += `${anterior} -> ${dato1};\n`
+            datoObt += `${anterior} -> ${operando};\n`
+            datoObt += `${anterior} -> ${dato2};\n`
+
+            datoObt += this.operando1?.ArbolAST(dato1)
+            datoObt += this.operando2?.ArbolAST(dato2)
+
+        }else if(this.operacion == OpRelacional.MAYOR){
+
+            let dato1 = `n${Bandera.get()}`
+            let dato2 = `n${Bandera.get()}`
+            let operando = `n${Bandera.get()}`
+
+            datoObt += `${dato1}[label = "DATOS"];\n`
+            datoObt += `${operando}[label = ">"];\n`
+            datoObt += `${dato2}[label = "DATOS"];\n`
+
+            datoObt += `${anterior} -> ${dato1};\n`
+            datoObt += `${anterior} -> ${operando};\n`
+            datoObt += `${anterior} -> ${dato2};\n`
+
+            datoObt += this.operando1?.ArbolAST(dato1)
+            datoObt += this.operando2?.ArbolAST(dato2)
+
+        }else if(this.operacion == OpRelacional.MENOR){
+
+            let dato1 = `n${Bandera.get()}`
+            let dato2 = `n${Bandera.get()}`
+            let operando = `n${Bandera.get()}`
+
+            datoObt += `${dato1}[label = "DATOS"];\n`
+            datoObt += `${operando}[label = "<"];\n`
+            datoObt += `${dato2}[label = "DATOS"];\n`
+
+            datoObt += `${anterior} -> ${dato1};\n`
+            datoObt += `${anterior} -> ${operando};\n`
+            datoObt += `${anterior} -> ${dato2};\n`
+
+            datoObt += this.operando1?.ArbolAST(dato1)
+            datoObt += this.operando2?.ArbolAST(dato2)
+
+        }else if(this.operacion == OpRelacional.MAYORIGUAL){
+
+            let dato1 = `n${Bandera.get()}`
+            let dato2 = `n${Bandera.get()}`
+            let operando = `n${Bandera.get()}`
+
+            datoObt += `${dato1}[label = "DATOS"];\n`
+            datoObt += `${operando}[label = ">="];\n`
+            datoObt += `${dato2}[label = "DATOS"];\n`
+
+            datoObt += `${anterior} -> ${dato1};\n`
+            datoObt += `${anterior} -> ${operando};\n`
+            datoObt += `${anterior} -> ${dato2};\n`
+
+            datoObt += this.operando1?.ArbolAST(dato1)
+            datoObt += this.operando2?.ArbolAST(dato2)
+
+        
+
+        }else if(this.operacion == OpRelacional.MENORIGUALES){
+
+            let dato1 = `n${Bandera.get()}`
+            let dato2 = `n${Bandera.get()}`
+            let operando = `n${Bandera.get()}`
+
+            datoObt += `${dato1}[label = "DATOS"];\n`
+            datoObt += `${operando}[label = "<="];\n`
+            datoObt += `${dato2}[label = "DATOS"];\n`
+
+            datoObt += `${anterior} -> ${dato1};\n`
+            datoObt += `${anterior} -> ${operando};\n`
+            datoObt += `${anterior} -> ${dato2};\n`
+
+            datoObt += this.operando1?.ArbolAST(dato1)
+            datoObt += this.operando2?.ArbolAST(dato2)
+
+        }
+
+        return datoObt;
     }
 
 
