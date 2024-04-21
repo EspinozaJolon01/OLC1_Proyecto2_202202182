@@ -74,7 +74,7 @@ export default class FuncFor extends Instruccion{
         let datoOb = "";
         let Intruccion = [];
 
-        let cabeza = `n${bandera.get()}`;
+        let cabeza1 = `n${bandera.get()}`;
         let For = `n${bandera.get()}`;
         let PAR1 = `n${bandera.get()}`;
         let DECLA = `n${bandera.get()}`;
@@ -90,7 +90,7 @@ export default class FuncFor extends Instruccion{
 
         let llav2 = `n${bandera.get()}`;
 
-        datoOb += `${cabeza}[label="CICLOS"];\n`;
+        datoOb += `${cabeza1}[label="CICLOS"];\n`;
         datoOb += `${For}[label="FOR"];\n`;
         datoOb += `${PAR1}[label="("];\n`;
         datoOb += `${DECLA}[label="EXPRESION"];\n`;
@@ -106,21 +106,21 @@ export default class FuncFor extends Instruccion{
 
         datoOb += `${llav2}[label="}"];\n`;
 
-        datoOb += `${anterior} -> ${cabeza};\n`;
-        datoOb += `${cabeza} -> ${For};\n`;
-        datoOb += `${cabeza} -> ${PAR1};\n`;
-        datoOb += `${cabeza} -> ${DECLA};\n`;
-        datoOb += `${cabeza} -> ${condiciones};\n`;
-        datoOb += `${cabeza} -> ${actua};\n`;
-        datoOb += `${cabeza} -> ${PAR2};\n`;
-        datoOb += `${cabeza} -> ${LLAVE};\n`;
-        datoOb += `${cabeza} -> ${CabezaIns};\n`;
+        datoOb += `${anterior} -> ${cabeza1};\n`;
+        datoOb += `${cabeza1} -> ${For};\n`;
+        datoOb += `${cabeza1} -> ${PAR1};\n`;
+        datoOb += `${cabeza1} -> ${DECLA};\n`;
+        datoOb += `${cabeza1} -> ${condiciones};\n`;
+        datoOb += `${cabeza1} -> ${actua};\n`;
+        datoOb += `${cabeza1} -> ${PAR2};\n`;
+        datoOb += `${cabeza1} -> ${LLAVE};\n`;
+        datoOb += `${cabeza1} -> ${CabezaIns};\n`;
 
         for(let i = 0; i < Intruccion.length; i++){
             datoOb += `${CabezaIns} -> ${Intruccion[i]};\n`;
         }
 
-        datoOb += `${cabeza} -> ${llav2};\n`;
+        datoOb += `${cabeza1} -> ${llav2};\n`;
 
         datoOb += this.declaracion.ArbolAST(DECLA);
         datoOb += this.codicion.ArbolAST(condiciones);
