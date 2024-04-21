@@ -170,8 +170,8 @@ var cadena = '';
 %left 'NOT'
 %left 'IGUALRE', 'DIFERENTE','MENORQUE','MENORIGUAL','MAYOR','MAYORIGUAL'
 %left 'INCREMENTO' , 'DECREMIENTO'
-%left 'MAS' 'MENOS' 'MODULO'
-%left 'MULTI' 'DIV'
+%left 'MAS' 'MENOS' 
+%left 'MULTI' 'DIV' 'MODULO'
 %right 'UMENOS'
 %left   'PAR1'
 %left 'PUNTO'
@@ -360,7 +360,7 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
             | EXPRESION MENORIGUAL EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.MENORIGUALES, @1.first_line, @1.first_column, $1, $3);}
             | EXPRESION MAYOR EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.MAYOR, @1.first_line, @1.first_column, $1, $3);}
             | EXPRESION MAYORIGUAL EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.MAYORIGUAL, @1.first_line, @1.first_column, $1, $3);}
-            | EXPRESION MODULO EXPRESION        {$$ = new OpeRelacionales.default(OpeRelacionales.OpRelacional.MODUL, @1.first_line, @1.first_column, $1, $3);}
+            | EXPRESION MODULO EXPRESION        {$$ = new Aritmeticas.default(Aritmeticas.Operadores.MODUL, @1.first_line, @1.first_column, $1, $3);}
             | EXPRESION OR EXPRESION        {$$ = new Logicos.default(Logicos.Operadores.OR, @1.first_line, @1.first_column, $1, $3);}
             | EXPRESION AND EXPRESION        {$$ = new Logicos.default(Logicos.Operadores.AND, @1.first_line, @1.first_column, $1, $3);}
             | POW PAR1 EXPRESION COMA EXPRESION PAR2       {$$ = new Aritmeticas.default(Aritmeticas.Operadores.POT, @1.first_line, @1.first_column, $3, $5);}

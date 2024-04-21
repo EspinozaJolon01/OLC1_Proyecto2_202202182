@@ -6,6 +6,7 @@ import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./funBreak";
 import funContinue from "./funContinue";
+import funReturn from "./funReturn";
 
 
 /*
@@ -59,6 +60,7 @@ export default class FuncFor extends Instruccion{
                 if (resultado instanceof Errores) return resultado;
                 if (resultado instanceof Break) return; // Manejar 'break'
                 if (resultado instanceof funContinue) break; // Manejar 'break'
+                if(resultado instanceof funReturn) return resultado;
             }
 
             // Ejecutar actualización

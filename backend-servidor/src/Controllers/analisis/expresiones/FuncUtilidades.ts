@@ -2,6 +2,7 @@ import { Instruccion } from "../abstracto/Instruccion";
 
 import Errores from "../excepcicones/Errores";
 import Arbol from "../simbolo/Arbol";
+import Ast from "../simbolo/AST";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 
@@ -13,30 +14,21 @@ export default class FuncUtilidades extends Instruccion{
     private operando1: Instruccion | undefined
     private operando2: Instruccion | undefined
     private operacion:Operadores
-    private operandoUnido: Instruccion | undefined
+    private operandoUnido: Instruccion 
 
     constructor(operador: Operadores, fila:number, col:number,op1: Instruccion, op2?: Instruccion){
         super(new Tipo(tipoDato.VOID), fila, col)
         this.operacion = operador
-        if (!op2) this.operandoUnido = op1
-        else {
-            this.operando1 = op1
-            this.operando2 = op2
-        }
+        this.operandoUnido = op1
+        
     }
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         let opIzq,opDer,unico = null
-        if(this.operandoUnido != null){
+        
             unico = this.operandoUnido.interpretar(arbol,tabla)
             if(unico instanceof Errores) return unico
-        }else {
-            opIzq = this.operando1?.interpretar(arbol,tabla)
-            if(opIzq instanceof Errores) return opIzq
-            opDer = this.operando2?.interpretar(arbol, tabla)
-            if (opDer instanceof Errores) return opDer
-        }
-
+        
         switch(this.operacion){
             case Operadores.tolower:
                 return this.TOLOWER(unico)
@@ -220,7 +212,176 @@ export default class FuncUtilidades extends Instruccion{
     }
     
     ArbolAST(anterior: string): string {
-        return ''
+        
+        let contador = Ast.getInstancia();
+        let result = "";
+
+        if(this.operacion == Operadores.Length){
+
+            let cabeza = `n${contador.get()}`;
+            let EXPRESI = `n${contador.get()}`;
+            let PUNTO = `n${contador.get()}`;
+            let unicos = `n${contador.get()}`;
+            let par1 = `n${contador.get()}`;
+            let par2 = `n${contador.get()}`;
+            let puntCom = `n${contador.get()}`;
+    
+            result += `${cabeza}[label="NAT"];\n`;
+            result += `${EXPRESI}[label="EXPRESION"];\n`;
+            result += `${PUNTO}[label="."];\n`;
+            result += `${unicos}[label="length"];\n`;
+            result += `${par1}[label="("];\n`;
+            result += `${par2}[label=")"];\n`;
+            result += `${puntCom}[label=";"];\n`;
+
+            result += `${anterior} -> ${cabeza};\n`;
+            result += `${cabeza} -> ${EXPRESI}\n;`;
+            result += `${cabeza} -> ${PUNTO}\n;`;
+            result += `${cabeza} -> ${unicos};\n`;
+            result += `${cabeza} -> ${par1}\n;`;
+            result += `${cabeza} -> ${par2}\n;`;
+            result += `${cabeza} -> ${puntCom};\n`;
+
+            result += this.operandoUnido?.ArbolAST(EXPRESI);
+
+
+        }else if(this.operacion == Operadores.Typeof){
+
+            let cabeza = `n${contador.get()}`;
+            let unicos = `n${contador.get()}`;
+            let par1 = `n${contador.get()}`;
+            let EXPRESI = `n${contador.get()}`;
+            let par2 = `n${contador.get()}`;
+            let puntCom = `n${contador.get()}`;
+
+            result += `${cabeza}[label="NAT"];\n`;
+            result += `${unicos}[label="typeof"];\n`;
+            result += `${par1}[label="("];\n`;
+            result += `${EXPRESI}[label="EXPRESION"];\n`;
+            result += `${par2}[label=")"];\n`;
+            result += `${puntCom}[label=";"];\n`;
+
+            result += `${anterior} -> ${cabeza};\n`;
+            result += `${cabeza} -> ${unicos};\n`;
+            result += `${cabeza} -> ${par1};\n`;
+            result += `${cabeza} -> ${EXPRESI};\n`;
+            result += `${cabeza} -> ${par2};\n`;
+            result += `${cabeza} -> ${puntCom};\n`;
+
+            result += this.operandoUnido?.ArbolAST(EXPRESI);
+
+        }else if(this.operacion == Operadores.toupper){
+
+            let cabeza = `n${contador.get()}`;
+            let unicos = `n${contador.get()}`;
+            let par1 = `n${contador.get()}`;
+            let EXPRESI = `n${contador.get()}`;
+            let par2 = `n${contador.get()}`;
+            let puntCom = `n${contador.get()}`;
+
+            result += `${cabeza}[label="NAT"];\n`;
+            result += `${unicos}[label="toUpper"];\n`;
+            result += `${par1}[label="("];\n`;
+            result += `${EXPRESI}[label="EXPRESION"];\n`;
+            result += `${par2}[label=")"];\n`;
+            result += `${puntCom}[label=";"];\n`;
+
+            result += `${anterior} -> ${cabeza};\n`;
+            result += `${cabeza} -> ${unicos};\n`;
+            result += `${cabeza} -> ${par1};\n`;
+            result += `${cabeza} -> ${EXPRESI};\n`;
+            result += `${cabeza} -> ${par2};\n`;
+            result += `${cabeza} -> ${puntCom};\n`;
+
+            result += this.operandoUnido?.ArbolAST(EXPRESI);
+
+        }else if(this.operacion == Operadores.tolower){
+
+            let cabeza = `n${contador.get()}`;
+            let unicos = `n${contador.get()}`;
+            let par1 = `n${contador.get()}`;
+            let EXPRESI = `n${contador.get()}`;
+            let par2 = `n${contador.get()}`;
+            let puntCom = `n${contador.get()}`;
+
+            result += `${cabeza}[label="NAT"];\n`;
+            result += `${unicos}[label="toLower"];\n`;
+            result += `${par1}[label="("];\n`;
+            result += `${EXPRESI}[label="EXPRESION"];\n`;
+            result += `${par2}[label=")"];\n`;
+            result += `${puntCom}[label=";"];\n`;
+
+            result += `${anterior} -> ${cabeza};\n`;
+            result += `${cabeza} -> ${unicos};\n`;
+            result += `${cabeza} -> ${par1};\n`;
+            result += `${cabeza} -> ${EXPRESI};\n`;
+            result += `${cabeza} -> ${par2};\n`;
+            result += `${cabeza} -> ${puntCom};\n`;
+
+            result += this.operandoUnido?.ArbolAST(EXPRESI);
+
+        }else if(this.operacion == Operadores.round){
+
+            let cabeza = `n${contador.get()}`;
+            let unicos = `n${contador.get()}`;
+            let par1 = `n${contador.get()}`;
+            let EXPRESI = `n${contador.get()}`;
+            let par2 = `n${contador.get()}`;
+            let puntCom = `n${contador.get()}`;
+
+            result += `${cabeza}[label="NAT"];\n`;
+            result += `${unicos}[label="round"];\n`;
+            result += `${par1}[label="("];\n`;
+            result += `${EXPRESI}[label="EXPRESION"];\n`;
+            result += `${par2}[label=")"];\n`;
+            result += `${puntCom}[label=";"];\n`;
+
+            result += `${anterior} -> ${cabeza};\n`;
+            result += `${cabeza} -> ${unicos};\n`;
+            result += `${cabeza} -> ${par1};\n`;
+            result += `${cabeza} -> ${EXPRESI};\n`;
+            result += `${cabeza} -> ${par2};\n`;
+            result += `${cabeza} -> ${puntCom};\n`;
+
+            result += this.operandoUnido?.ArbolAST(EXPRESI);
+
+        }else if(this.operacion == Operadores.ToString){
+
+            let cabeza = `n${contador.get()}`;
+            let std = `n${contador.get()}`;
+            let dosp1 = `n${contador.get()}`;
+            let dosp2 = `n${contador.get()}`;
+            let unicos = `n${contador.get()}`;
+            let par1 = `n${contador.get()}`;
+            let EXPRESI = `n${contador.get()}`;
+            let par2 = `n${contador.get()}`;
+            let puntCom = `n${contador.get()}`;
+
+            result += `${cabeza}[label="NAT"];\n`;
+            result += `${std}[label="std"];\n`;
+            result += `${dosp1}[label=":"];\n`;
+            result += `${dosp2}[label=":"];\n`;
+            result += `${unicos}[label="toString"];\n`;
+            result += `${par1}[label="("];\n`;
+            result += `${EXPRESI}[label="EXPRESION"];\n`;
+            result += `${par2}[label=")"];\n`;
+            result += `${puntCom}[label=";"];\n`;
+
+            result += `${anterior} -> ${cabeza};\n`;
+            result += `${cabeza} -> ${std};\n`;
+            result += `${cabeza} -> ${dosp1};\n`;
+            result += `${cabeza} -> ${dosp2};\n`;
+            result += `${cabeza} -> ${unicos};\n`;
+            result += `${cabeza} -> ${par1};\n`;
+            result += `${cabeza} -> ${EXPRESI};\n`;
+            result += `${cabeza} -> ${par2};\n`;
+            result += `${cabeza} -> ${puntCom};\n`;
+
+            result += this.operandoUnido?.ArbolAST(EXPRESI);
+
+        }
+
+        return result;
     }
     
 

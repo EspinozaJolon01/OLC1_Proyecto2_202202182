@@ -43,6 +43,7 @@ export default class funcWhile extends Instruccion {
                 if (resultado instanceof Break) return;
                 if (resultado instanceof funContinue) break;
                 if (resultado instanceof funReturn) return resultado;
+                
                 // los errores les quedan de tarea
             }
         }

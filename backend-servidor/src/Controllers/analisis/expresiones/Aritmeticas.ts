@@ -543,21 +543,23 @@ export default class Aritmeticas extends Instruccion {
 
     }
     modulo(op1: any, op2: any) {
+        console.log("aqui estoyyyyy")
         let tipo1 = this.operando1?.tipoDato.getTipo()
         let tipo2 = this.operando2?.tipoDato.getTipo()
+
         switch (tipo1) {
             case tipoDato.ENTERO:
                 switch (tipo2) {
                     case tipoDato.ENTERO:
-                        this.tipoDato = new Tipo(tipoDato.ENTERO)
-                        return parseInt(op1) % parseInt(op2)
-                        
+                        this.tipoDato = new Tipo(tipoDato.DECIMAL)
+                        return parseFloat(op1) % parseFloat(op2)
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
                         return parseFloat(op1) % parseFloat(op2)
                     default:
-                        return new Errores("Semantico", "Modulo Invalida", this.linea, this.col)
+                        return new Errores('Semantico', 'No se puede hacer '+tipo1+" % "+tipo2, this.linea, this.col )
                 }
+
             case tipoDato.DECIMAL:
                 switch (tipo2) {
                     case tipoDato.ENTERO:
@@ -567,10 +569,10 @@ export default class Aritmeticas extends Instruccion {
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
                         return parseFloat(op1) % parseFloat(op2)
                     default:
-                        return new Errores("Semantico", "Modulo Invalida", this.linea, this.col)
+                        return new Errores('Semantico', 'No se puede hacer '+tipo1+" % "+tipo2, this.linea, this.col )
                 }
             default:
-                return new Errores("Semantico", "Modulo Invalida", this.linea, this.col)
+                return new Errores('Semantico', 'No se puede hacer '+tipo1+" % "+tipo2, this.linea, this.col )
         }
 
     }
