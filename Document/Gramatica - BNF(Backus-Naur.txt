@@ -1,0 +1,278 @@
+
+%start INICIO
+
+%%
+
+<INICIO> ::= <INSTRUCCIONES> <EOF>                  
+;
+
+<INSTRUCCIONES> ::= <INSTRUCCIONES> <INSTRUCCION>   
+                 | <INSTRUCCION>                 
+;
+
+<INSTRUCCION> ::= <IMPRESION>             
+                | <DECLARACION> ";"          
+                | <ASIGNACION> ";"           
+                | <FUNIF>                         
+                | <FUNWHILE>                       
+                | <FUNBREAK>                       
+                | <FUNCONTINUE>                       
+                | <FUNDOWHILE> ";"                     
+                | <FUNFOR>                             
+                | <FUNSWITCH>                          
+                | <DECARREGLO> ";"               
+                | <MODFVECTOR> ";"               
+                | <MOFVECTOR2> ";"               
+                | <DECARRELGO2DIMEN> ";"   
+                | <METODO>  
+                | <FUNCION> 
+                | <EXECUTEN> ";"    
+                | <LLAMADA>  ";"    
+                | <FUNRETURN> ";"   
+            
+;
+
+<IMPRESION> ::= "cout" "<<" <EXPRESION> <VERIFAR>   
+;
+
+<VERIFAR> ::= ";"     
+            | "<<" "endl" ";"  
+;
+
+<DECLARACION> ::= <TIPOS> <DECLA> <VERIFICARDECLARACION>    
+        
+;
+
+<VERIFICARDECLARACION> ::= "=" <EXPRESION>  
+                        | 
+;
+
+<ASIGNACION> ::= ID "=" <EXPRESION>             
+              | <INCRE> 
+;
+
+
+<DECLA> ::= <DECLA> "," ID   
+          | ID 
+          ;
+
+<FUNIFTERNARIO> ::= <EXPRESION> "?" <EXPRESION> ":" <EXPRESION> 
+
+;
+
+<FUNIF> ::= "if" "(" <EXPRESION> ")"  <OTROIFBLOQUE> 
+          | "if" "(" <EXPRESION> ")" <OTROIFBLOQUE> "else" <OTROIFBLOQUE> 
+          | "if" "(" <EXPRESION> ")" <OTROIFBLOQUE> "else" <FUNIF> 
+;
+
+
+<OTROIFBLOQUE> ::= "{" <INSTRUCCIONES> "}" 
+                | "{"  "}" 
+;
+
+<FUNWHILE> ::= "while" "(" <EXPRESION> ")" "{" <INSTRUCCIONES> "}"  
+;
+
+<FUNDOWHILE> ::= DO "{" <INSTRUCCIONES> "}" WHILE "(" <EXPRESION> ")" 
+
+;
+
+<VEFICACION> ::= <DECLARACION> 
+              | <ASIGNACION>  
+;
+
+<FUNFOR> ::= "for" "(" <VEFICACION> ";" <EXPRESION> ";" <ASIGNACION> ")" "{" <INSTRUCCIONES> "}" 
+
+;
+
+<DECARREGLO> ::= <TIPOS> ID "[" "]" "=" "new" <TIPOS> CORCHETE1 <EXPRESION> CORCHETE2 
+               | <TIPOS> ID "[" "]" "=" "[" HETE1 <LISTAVALORES> "]"  
+               | <TIPOS> "[" "]" <EXPRESION> "=" ID "." "c_str" "(" ")"  
+        
+;
+
+<LISTAVALORES> ::= <LISTAVALORES> "," <EXPRESION> 
+                | <EXPRESION>     
+;
+
+<DECARRELGO2DIMEN> ::= <TIPOS> ID "[" "]" "[" "]" "=" "new" <TIPOS> "[" <EXPRESION> "]" "[" <EXPRESION> "]"
+        
+                  | <TIPOS> ID "[" "]" "[" "]" "=" "[" <LISTARECURSIVA> "]"
+        
+
+        
+;
+
+<LISTARECURSIVA> ::= <LISTARECURSIVA> "," <LISTADIMENSIOENS> 
+                  | <LISTADIMENSIOENS>  
+
+;
+
+<LISTADIMENSIOENS> ::= [" <DATODENTRO> "]"   
+        
+;
+
+<DATODENTRO> ::= <DATODENTRO> "," <EXPRESION> 
+              | <EXPRESION>   
+;
+
+<FUNBREAK> ::= BREAK ";" 
+;
+
+
+
+<FUNRETURN> ::= "return" <EXPRESION> 
+              | "return"  
+
+;
+
+<FUNCONTINUE> ::= "continue" ";" 
+;
+
+<FUNCASTEO> ::= "(" <TIPOS> ")" <EXPRESION> 
+
+;
+
+
+<FUNSWITCH> ::= "SWITCH" "(" <EXPRESION> ")" "{" <LISTADOCASE> <DEFULTO> "}" 
+              | "SWITCH" "(" <EXPRESION> ")" "{" <LISTADOCASE> "}" 
+              | "SWITCH" "(" <EXPRESION> ")" "{" <DEFULTO> "}" 
+
+;
+
+<LISTADOCASE> ::=  <LISTADOCASE> <CASO> 
+                 | <CASO> 
+                        
+
+;
+
+<CASO> ::= "case" <EXPRESION> ":" <INSTRUCCIONES> ;
+
+<DEFULTO> ::= DEFAULTSWICH 
+;
+
+<DEFAULTSWICH> ::= DEFAULT ":" <INSTRUCCIONES> 
+;
+
+
+
+
+<EXPRESION> ::= <EXPRESION> "+" <EXPRESION>          
+              | <EXPRESION> "-" <EXPRESION>        
+              | <EXPRESION> "/" <EXPRESION>        
+              | <EXPRESION> "*" <EXPRESION>        
+              | <EXPRESION> "==" <EXPRESION>        
+              | <EXPRESION> "!="  <EXPRESION>        
+              | <EXPRESION> "<" <EXPRESION>        
+              | <EXPRESION> "<=" <EXPRESION>        
+              | <EXPRESION> ">" <EXPRESION>        
+              | <EXPRESION> ">=" <EXPRESION>        
+              | <EXPRESION> "%"  <EXPRESION>        
+              | <EXPRESION> "||"  <EXPRESION>        
+              | <EXPRESION> "&&" <EXPRESION>        
+              | "pow" "(" <EXPRESION> "," <EXPRESION> ")"       
+              | "("  <EXPRESION> ")"               
+              | "-" <EXPRESION> %prec UMENOS     
+              | "!" <EXPRESION>      
+              | ENTERO                           
+              | DECIMAL                          
+              | CADENA                           
+              | "true"                                           
+              | "false"                             
+              | ID                               
+              | CHARACTER                          
+              | <FUNCIONUTIL>       
+              | <FUNCASTEO>         
+              | <FUNIFTERNARIO>   
+              | <EXPRESION> "." "lenth" "(" ")"  
+              | <BUSCARVECTOR> 
+              | <BUSCARVECTOR2> 
+              | <LLAMADA>    
+;
+
+<BUSCARVECTOR> ::=  ID "["  <EXPRESION> "]" 
+;
+
+<BUSCARVECTOR2> ::=  ID "["  <EXPRESION> "]" "["  <EXPRESION> "]" 
+                
+;
+
+<MODFVECTOR> ::= ID "["  <EXPRESION> "]" "=" <EXPRESION> 
+;
+
+<MOFVECTOR2> ::= ID "["  <EXPRESION> "]" "["  <EXPRESION> "]" "=" <EXPRESION>
+;
+
+<INCRE> ::= ID <VALIDARINCRE>              
+
+;
+
+
+<VALIDARINCRE> ::= "++" 
+                | "--" 
+
+;
+
+
+
+
+<METODO> ::= "void  ID "(" <PARAMETROS>  "{" <INSTRUCCIONES> "}"
+        
+        | "void ID "("   "{" <INSTRUCCIONES> "}"
+        
+
+;
+
+
+
+<FUNCION> : <TIPOS> ID "(" <PARAMETROS>  "{" <INSTRUCCIONES> "}" 
+        
+        | <TIPOS> ID "("   "{" <INSTRUCCIONES> "}"
+        
+;
+
+<PARAMETROS>: <TODOPARAMS> "("  
+        |")" 
+
+;
+
+<TODOPARAMS>: <TODOPARAMS> "," <CONTENIDO>
+        | <CONTENIDO>
+;
+
+<CONTENIDO>:<TIPOS> ID 
+;
+
+
+<EXECUTEN> : <EXECUTEN> ID "(" <PARANS> ")"   
+        | <EXECUTEN> ID "(" ")"  
+;
+
+<LLAMADA>: ID "(" <PARANS> ")"            
+        | ID "(" ")"                  
+
+;
+<PARANS>: <PARANS> "," <EXPRESION>   
+        |<EXPRESION>     
+;
+
+
+
+
+<FUNCIONUTIL> : "TOLOWER" "(" <EXPRESION> ")" 
+            | "TOUPPER" "(" <EXPRESION> ")" 
+            | "ROUND" "(" <EXPRESION> ")" 
+            | "TOSTRING" "(" <EXPRESION> ")" 
+            | "TYPEOF" "(" <EXPRESION> ")"  
+
+;
+
+<TIPOS> : "int"             
+        | "double"         
+        | "std::string"          
+        | "char"          
+        | "bool"          
+        
+        
+
+;
