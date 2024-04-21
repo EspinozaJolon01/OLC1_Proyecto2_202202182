@@ -1,6 +1,7 @@
 import { Instruccion } from "../abstracto/Instruccion";
 import Errores from "../excepcicones/Errores";
 import Arbol from "../simbolo/Arbol";
+import Ast from "../simbolo/AST";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 
@@ -50,7 +51,32 @@ export default class IncreDecre extends Instruccion {
     }
 
     ArbolAST(anterior: string): string {
-        return ''
+        let bandera = Ast.getInstancia();
+        let datoObt = "";
+
+        let ident = `n${bandera.get()}`;
+        let nombre = `n${bandera.get()}`;
+        let mas1 = `n${bandera.get()}`;
+        let mas2 = `n${bandera.get()}`;
+
+        datoObt += ` ${ident}[label="IDENTIFICADOR"];\n`;
+        datoObt += ` ${nombre}[label="${this.operando1}"];\n`;
+
+        if(this.operando2 == true){
+            datoObt += ` ${mas1}[label="+"];\n`;
+            datoObt += ` ${mas2}[label="+"];\n`;
+        }else{
+            datoObt += ` ${mas1}[label="-"];\n`;
+            datoObt += ` ${mas2}[label="-"];\n`;
+        }
+
+        datoObt += ` ${anterior} -> ${ident};\n`;
+        datoObt += ` ${ident} -> ${nombre};\n`;
+        datoObt += `${anterior} -> ${mas1};\n`;
+        datoObt += `${anterior} -> ${mas2};\n`;
+
+        return datoObt;
+
     }
 
 }
