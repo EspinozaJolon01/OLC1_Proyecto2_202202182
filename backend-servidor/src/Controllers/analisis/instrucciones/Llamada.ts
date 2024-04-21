@@ -6,6 +6,7 @@ import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Declaracion from "./Declaracion";
 import Metodo from "./Metodo";
 import Funcion from "./Funciones";
+import Ast from "../simbolo/AST";
 export default class Llamada extends Instruccion {
 
     private id: string
@@ -95,6 +96,49 @@ export default class Llamada extends Instruccion {
 
 
     ArbolAST(anterior: string): string {
-        return ''
+        let bandera = Ast.getInstancia();
+        let obtenido = "";
+
+        let LLAM = `n${bandera.get()}`;
+        let INDEN = `n${bandera.get()}`;
+        let PAR = `n${bandera.get()}`;
+        let puntCom = `n${bandera.get()}`;
+
+        let listaParams = [];
+
+        for (let i = 0; i < this.params.length; i++) {
+            listaParams.push(`n${bandera.get()}`);
+        }
+
+        let LLAM2 = `n${bandera.get()}`;
+
+        obtenido += `${LLAM}[label="LLAMADA"];\n`;
+        obtenido += `${INDEN}[label="${this.id}"];\n`;
+        obtenido += `${PAR}[label="("];\n`;
+
+        for(let i = 0; i < this.params.length; i++){
+            obtenido += `${listaParams[i]}[label="PARAMS"];\n`;
+        }
+
+        obtenido += `${LLAM2}[label=")"];\n`;
+        obtenido += `${puntCom}[label=";"];\n`
+
+
+        obtenido += `${anterior} -> ${LLAM};\n`;
+        obtenido += `${LLAM} -> ${INDEN};\n`;
+        obtenido += `${LLAM} -> ${PAR};\n`;
+
+        for(let i = 0; i < this.params.length; i++){
+            obtenido += `${LLAM} -> ${listaParams[i]};\n`;
+        }
+
+        obtenido += `${LLAM} -> ${LLAM2};\n`;
+        obtenido += `${LLAM} -> ${puntCom};\n`;
+        
+        for(let i = 0; i < this.params.length; i++){
+            obtenido += this.params[i].ArbolAST(listaParams[i]);
+        }
+
+        return obtenido;
     }
 }
