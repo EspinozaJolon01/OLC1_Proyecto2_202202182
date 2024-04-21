@@ -1,6 +1,7 @@
 import { Instruccion } from "../abstracto/Instruccion";
 import Errores from "../excepcicones/Errores";
 import Arbol from "../simbolo/Arbol";
+import Ast from "../simbolo/AST";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./funBreak";
@@ -24,5 +25,22 @@ export default class Case extends Instruccion {
             if (resultado instanceof Errores) return resultado;
             if (resultado instanceof Break) return resultado;
         }
+    }
+
+    ArbolAST(anterior: string): string {
+        let bandera = Ast.getInstancia();
+        let contenidos = "";
+
+        let CONT = `n${bandera.get()}`;
+        let puntCom = `n${bandera.get()}`;
+
+        contenidos += `${CONT}[label="CONTINUO"];\n`;
+        contenidos += `${puntCom}[label=";"];\n`;
+
+        contenidos += `${anterior} -> ${CONT};\n`;
+        contenidos += `${anterior} -> ${puntCom};\n`;
+
+        return contenidos;
+
     }
 }

@@ -12,4 +12,8 @@ export default class funContinue extends Instruccion {
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         return;
     }
+
+    ArbolAST(anterior: string): string {
+        return ''
+    }
 }

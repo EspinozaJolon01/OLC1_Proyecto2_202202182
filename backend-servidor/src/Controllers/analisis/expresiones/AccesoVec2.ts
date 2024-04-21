@@ -47,4 +47,8 @@ export default class AccesoVector2 extends Instruccion {
 
         return valorVector[pos][pos2];
     }
+    
+    ArbolAST(anterior: string): string {
+        return ''
+    }
 }

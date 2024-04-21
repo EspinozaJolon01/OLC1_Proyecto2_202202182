@@ -20,7 +20,7 @@ export default class AccesoVector extends Instruccion {
         let pos = this.posicion.interpretar(arbol,tabla)
 
         if (valorVariable === null) {
-            arbol.Print("\n Error Semantico: "+"La variable no está definida " + "linea: " + this.linea + "columna:" + (this.col+1))
+            arbol.Print("--> Error Semantico:"+"La variable no está definida" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
             return new Errores("SEMANTICO", "La variable no está definida", this.linea, this.col);
         }
 
@@ -38,5 +38,9 @@ export default class AccesoVector extends Instruccion {
         }
 
         return valorVector[pos];
+    }
+
+    ArbolAST(anterior: string): string {
+        return ''
     }
 }

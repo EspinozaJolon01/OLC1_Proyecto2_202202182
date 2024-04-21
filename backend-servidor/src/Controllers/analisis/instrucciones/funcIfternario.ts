@@ -44,4 +44,9 @@ export default class funcIfternario extends Instruccion {
             return Instrucciones2
         }
     }
+
+
+    ArbolAST(anterior: string): string {
+        return ''
+    }
 }

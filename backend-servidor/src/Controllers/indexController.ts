@@ -6,9 +6,14 @@ import Metodo from './analisis/instrucciones/Metodo';
 import Declaracion from './analisis/instrucciones/Declaracion';
 import Llamada from './analisis/instrucciones/Excute';
 import Execute from './analisis/instrucciones/Excute';
+import Funcion from './analisis/instrucciones/Funciones';
+import Ast from './analisis/simbolo/AST';
 
 //errores
 export let errores_list: Array<Errores> = []
+
+var AstDot: string
+
 
 
 class controller {
@@ -20,6 +25,7 @@ class controller {
 
         errores_list =  new Array<Errores>
         try {
+            AstDot = ""
             let parser = require('./analisis/analizador')
             let ast = new Arbol(parser.parse(req.body.entrada))
             let tabla = new tablaSimbolo()
@@ -31,7 +37,7 @@ class controller {
 
             //primer recorrdio
             for(let i of ast.getInstrucciones()){
-                if(i instanceof Metodo){
+                if(i instanceof Metodo || i instanceof Funcion){
                     i.id = i.id.toLocaleLowerCase()
                     ast.agregarFunciones(i)
                 }
@@ -53,6 +59,25 @@ class controller {
                 execute.interpretar(ast,tabla)
                 // manejo de errores
             }
+
+
+            let contador = Ast.getInstancia()
+            let cadena = "digraph ast{\n"
+            cadena += "nINICIO[label=\"INICIO\"];\n"
+            cadena += "nINSTRUCCIONES[label=\"INSTRUCCIONES\"];\n"
+            cadena += "nINICIO->nINSTRUCCIONES;\n"
+
+            for (let i of ast.getInstrucciones()) {
+                if (i instanceof Errores) continue
+                let nodo = `n${contador.get()}`
+                cadena += `${nodo}[label=\"INSTRUCCION\"];\n`
+                cadena += `nINSTRUCCIONES->${nodo};\n`
+                cadena += i.ArbolAST(nodo)
+            }
+            cadena += "\n}"
+            AstDot = cadena
+
+
 
             // for (let i of ast.getInstrucciones()) {
 
@@ -81,6 +106,10 @@ class controller {
             res.send({ "Error": "Ya no sale compi1" })
             console.log(err)
         }
+    }
+
+    public ast(req: Request, res: Response) {
+        res.json({ AST: AstDot })
     }
 
 }

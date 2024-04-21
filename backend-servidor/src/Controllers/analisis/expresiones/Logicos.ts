@@ -102,7 +102,9 @@ export default class Logicos extends Instruccion{
         
     }
 
-    
+    ArbolAST(anterior: string): string {
+        return ''
+    }
 
 
 }

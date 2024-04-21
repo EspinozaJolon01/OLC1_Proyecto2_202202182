@@ -21,4 +21,8 @@ export default class Default extends Instruccion {
             if (resultado instanceof Break) return resultado;
         }
     }
+
+    ArbolAST(anterior: string): string {
+        return ''
+    }
 }

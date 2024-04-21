@@ -49,5 +49,9 @@ export default class Switch extends Instruccion {
             if (resultadoDefault instanceof Break) return ;
         }
     }
+
+    ArbolAST(anterior: string): string {
+        return ''
+    }
 }
 

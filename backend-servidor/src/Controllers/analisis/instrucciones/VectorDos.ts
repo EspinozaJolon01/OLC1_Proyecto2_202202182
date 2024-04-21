@@ -105,5 +105,9 @@ export default class VectoresDOS extends Instruccion{
         
         
     }
+
+    ArbolAST(anterior: string): string {
+        return ''
+    }
 }
     

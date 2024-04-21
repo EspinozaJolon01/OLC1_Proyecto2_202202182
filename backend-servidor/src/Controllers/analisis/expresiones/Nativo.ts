@@ -1,5 +1,6 @@
 import { Instruccion } from "../abstracto/Instruccion";
 import Arbol from "../simbolo/Arbol";
+import Ast from "../simbolo/AST";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 
@@ -14,5 +15,16 @@ export default class Nativo extends Instruccion {
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         return this.valor
+    }
+
+    ArbolAST(anterior: string): string {
+        let count = Ast.getInstancia()
+        let nodoN = `n${count.get()}`
+        let ValorNodo = `n${count.get()}`
+        let resultado = `${nodoN}[label=\"NUMERO\"];\n`
+        resultado += `${ValorNodo}[label=\"${this.valor}\"];\n`
+        resultado += `${nodoN}->${ValorNodo};\n`
+        resultado += `${anterior}->${nodoN};\n`
+        return resultado
     }
 }

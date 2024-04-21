@@ -94,6 +94,9 @@ export default class FuncUtilidades extends Instruccion{
             case tipoDato.DECIMAL:
                 this.tipoDato = new Tipo(tipoDato.ENTERO)
                 return Math.round(op1)
+            case tipoDato.ENTERO:
+                this.tipoDato = new Tipo(tipoDato.ENTERO)
+                return Math.round(op1)
                 
             default:
                 return new Errores("Semantico", "ROUND invalida", this.linea, this.col)
@@ -215,7 +218,11 @@ export default class FuncUtilidades extends Instruccion{
         }
         
     }
-
+    
+    ArbolAST(anterior: string): string {
+        return ''
+    }
+    
 
 }
 

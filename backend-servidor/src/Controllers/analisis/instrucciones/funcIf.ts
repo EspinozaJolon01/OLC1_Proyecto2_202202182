@@ -37,36 +37,49 @@ export default class funcIf extends Instruccion {
         
 
         if (cond) {
+            console.log("entre a este if")
             let newTabla = new tablaSimbolo(tabla);
             newTabla.setNombre("Sentencia IF");
             for (let i of this.instrucciones) {
-                if (i instanceof Break) return i;
-                if (i instanceof funContinue) return i;
-                if(i instanceof funReturn) return i.interpretar(arbol,tabla);
+                // if (i instanceof Break) return i;
+                // if (i instanceof funContinue) return i;
+                // if(i instanceof funReturn) return i;
+                // console.log("con el i", i)
                 let resultado = i.interpretar(arbol, newTabla);
                 if(resultado instanceof Errores) return resultado
+                console.log(resultado)
+                if(resultado instanceof funReturn) return resultado;
+                if (resultado instanceof Break) return resultado;
+                if (resultado instanceof funContinue) return resultado;
             }
         } else {
             if (this.instruccioneselse != undefined) {
                 let newTabla1 = new tablaSimbolo(tabla);
                 newTabla1.setNombre("Sentencia ELSE");
                 for (let i of this.instruccioneselse) {
-                    if (i instanceof Break) return i;
-                    if (i instanceof funContinue) return i;
-                    if(i instanceof funReturn) return i.interpretar(arbol,tabla);
+                    // if (i instanceof Break) return i;
+                    // if (i instanceof funContinue) return i;
+                    // if(i instanceof funReturn) return i;
                     let resultado1 = i.interpretar(arbol, newTabla1);
                     if(resultado1 instanceof Errores) return resultado1
+                    if(resultado1 instanceof funReturn) return resultado1;
+                    if (resultado1 instanceof Break) return resultado1;
+                    if (resultado1 instanceof funContinue) return resultado1;
                     // Los errores quedan pendientes
                 }
             }else if(this.condicion_ifelse != undefined){
                 let ielsi = this.condicion_ifelse?.interpretar(arbol,tabla)
                 if(ielsi instanceof Errores) return ielsi
                 if (ielsi instanceof Break) return ielsi;
-                if(ielsi instanceof funReturn) return ielsi.interpretar(arbol,tabla);
+                if(ielsi instanceof funReturn) return ielsi;
                 if (ielsi instanceof funContinue) return ielsi;
 
             }
         }
+    }
+
+    ArbolAST(anterior: string): string {
+        return ''
     }
 }
 

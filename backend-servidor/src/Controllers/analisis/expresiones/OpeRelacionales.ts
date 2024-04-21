@@ -933,6 +933,10 @@ export default class OpeRelacionales extends Instruccion {
 
     }
 
+    ArbolAST(anterior: string): string {
+        return ''
+    }
+
 
 
 }

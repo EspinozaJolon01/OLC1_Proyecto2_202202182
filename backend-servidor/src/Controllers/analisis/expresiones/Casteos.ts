@@ -119,6 +119,10 @@ export default class Casteos extends Instruccion{
         
     }
 
+    ArbolAST(anterior: string): string {
+        return ''
+    }
+
 }
 
 export enum CasteosTipo{

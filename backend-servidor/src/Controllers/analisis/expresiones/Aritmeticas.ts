@@ -1,6 +1,7 @@
 import { Instruccion } from "../abstracto/Instruccion";
 import Errores from "../excepcicones/Errores";
 import Arbol from "../simbolo/Arbol";
+import Ast from "../simbolo/AST";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 
@@ -621,6 +622,120 @@ export default class Aritmeticas extends Instruccion {
                 return new Errores("Semantico", "Negacion Unaria invalida", this.linea, this.col)
         }
     }
+
+
+    ArbolAST(anterior: string): string {
+        let contador = Ast.getInstancia()
+        let datoObtenido = ""
+        if (this.operacion == Operadores.NEG) {
+            let Neg = `n${contador.get()}`
+            let nodoExp = `n${contador.get()}`
+            datoObtenido += `${Neg}[label=\"+\"];\n`
+            datoObtenido += `${nodoExp}[label=\"EXPRESIONNEG\"];\n`
+            datoObtenido += `${anterior}->${Neg};\n`
+            datoObtenido += `${anterior}->${nodoExp};\n`
+            datoObtenido += this.operandoUnico?.ArbolAST(nodoExp)
+            return datoObtenido
+        }else if(this.operacion == Operadores.SUMA){
+            let Dato1 = `n${contador.get()}`
+            let Operacion = `n${contador.get()}`
+            let Dato2 = `n${contador.get()}`
+
+            datoObtenido += `${Dato1}[label= \"EXPRESION1\"];\n`
+            datoObtenido += `${Operacion}[label=\"-\"];\n`
+            datoObtenido += `${Dato2}[label=\"EXPRESION1\"];\n`
+            datoObtenido += `${anterior} -> ${Dato1};\n`
+            datoObtenido += `${anterior} -> ${Operacion};\n`
+            datoObtenido += `${anterior} -> ${Dato2};\n`
+            datoObtenido += this.operando1?.ArbolAST(Dato1)
+            datoObtenido += this.operando2?.ArbolAST(Dato2)
+
+        }else if(this.operacion == Operadores.RESTA){
+            let Dato1 = `n${contador.get()}`
+            let Operacion = `n${contador.get()}`
+            let Dato2 = `n${contador.get()}`
+
+            datoObtenido += `${Dato1}[label= \"EXPRESION1\"];\n`
+            datoObtenido += `${Operacion}[label=\"-\"];\n`
+            datoObtenido += `${Dato2}[label=\"EXPRESION2\"];\n`
+            datoObtenido += `${anterior} -> ${Dato1};\n`
+            datoObtenido += `${anterior} -> ${Operacion};\n`
+            datoObtenido += `${anterior} -> ${Dato2};\n`
+            datoObtenido += this.operando1?.ArbolAST(Dato1)
+            datoObtenido += this.operando2?.ArbolAST(Dato2)
+
+        }else if(this.operacion == Operadores.DIVI){
+            let Dato1 = `n${contador.get()}`
+            let Operacion = `n${contador.get()}`
+            let Dato2 = `n${contador.get()}`
+
+            datoObtenido += `${Dato1}[label= \"EXPRESION1\"];\n`
+            datoObtenido += `${Operacion}[label=\"/\"];\n`
+            datoObtenido += `${Dato2}[label=\"EXPRESION2\"];\n`
+            datoObtenido += `${anterior} -> ${Dato1};\n`
+            datoObtenido += `${anterior} -> ${Operacion};\n`
+            datoObtenido += `${anterior} -> ${Dato2};\n`
+            datoObtenido += this.operando1?.ArbolAST(Dato1)
+            datoObtenido += this.operando2?.ArbolAST(Dato2)
+
+
+        }else if(this.operacion == Operadores.MULT){
+            let Dato1 = `n${contador.get()}`
+            let Operacion = `n${contador.get()}`
+            let Dato2 = `n${contador.get()}`
+
+            datoObtenido += `${Dato1}[label= \"EXPRESION1\"];\n`
+            datoObtenido += `${Operacion}[label=\"*\"];\n`
+            datoObtenido += `${Dato2}[label=\"EXPRESION2\"];\n`
+            datoObtenido += `${anterior} -> ${Dato1};\n`
+            datoObtenido += `${anterior} -> ${Operacion};\n`
+            datoObtenido += `${anterior} -> ${Dato2};\n`
+            datoObtenido += this.operando1?.ArbolAST(Dato1)
+            datoObtenido += this.operando2?.ArbolAST(Dato2)
+
+        }else if(this.operacion ==  Operadores.POT){
+            let Dato1 = `n${contador.get()}`
+            let Dato2 = `n${contador.get()}`
+            let par1 = `n${contador.get()}`
+            let par2 = `n${contador.get()}`
+            let nodoPow = `n${contador.get()}`
+            let nodoComa = `n${contador.get()}`
+            datoObtenido += `${nodoPow}[label="pow"];\n`
+            datoObtenido += `${par1}[label="("];\n`
+            datoObtenido += `${Dato1}[label="EXPRESION1"];\n`
+            datoObtenido += `${nodoComa}[label=","];\n`
+            datoObtenido += `${Dato2}[label="EXPRESION2"];\n`
+            datoObtenido += `${par2}[label=")"];\n`
+            datoObtenido += `${anterior} -> ${nodoPow};\n`
+            datoObtenido += `${anterior} -> ${par1};\n`
+            datoObtenido += `${anterior} -> ${Dato1};\n`
+            datoObtenido += `${anterior} -> ${nodoComa};\n`
+            datoObtenido += `${anterior} -> ${Dato2};\n`
+            datoObtenido += `${anterior} -> ${par2};\n`
+
+            datoObtenido += this.operando1?.ArbolAST(Dato1)
+            datoObtenido += this.operando2?.ArbolAST(Dato2)
+
+        }else if(this.operacion == Operadores.MODUL){
+            let Dato1 = `n${contador.get()}`
+            let Operacion = `n${contador.get()}`
+            let Dato2 = `n${contador.get()}`
+
+            datoObtenido += `${Dato1}[label= \"EXPRESION1\"];\n`
+            datoObtenido += `${Operacion}[label=\"%\"];\n`
+            datoObtenido += `${Dato2}[label=\"EXPRESION2\"];\n`
+            datoObtenido += `${anterior} -> ${Dato1};\n`
+            datoObtenido += `${anterior} -> ${Operacion};\n`
+            datoObtenido += `${anterior} -> ${Dato2};\n`
+            datoObtenido += this.operando1?.ArbolAST(Dato1)
+            datoObtenido += this.operando2?.ArbolAST(Dato2)
+
+        }
+        
+        return datoObtenido
+    }
+
+    
 
 }
 

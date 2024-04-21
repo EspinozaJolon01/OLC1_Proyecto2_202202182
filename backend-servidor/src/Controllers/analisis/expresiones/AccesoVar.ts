@@ -24,4 +24,8 @@ export default class AccesoVar extends Instruccion {
         this.tipoDato = valorVariable.getTipo()
         return valorVariable.getValor()
     }
+
+    ArbolAST(anterior: string): string {
+        return ''
+    }
 }

@@ -2,6 +2,7 @@ import tablaSimbolo from "./tablaSimbolos";
 import { Instruccion } from "../abstracto/Instruccion";
 import Errores from "../excepcicones/Errores";
 import Metodo from "../instrucciones/Metodo";
+import Funcion from "../instrucciones/Funciones";
 
 export default class Arbol {
     private instrucciones: Array<Instruccion>
@@ -65,6 +66,8 @@ export default class Arbol {
     public getFuncion(id:string){
         for(let i of this.getFunciones()){
             if(i instanceof Metodo){
+                if(i.id.toLocaleLowerCase() == id.toLocaleLowerCase())return i
+            }else if(i instanceof Funcion){
                 if(i.id.toLocaleLowerCase() == id.toLocaleLowerCase())return i
             }
         }

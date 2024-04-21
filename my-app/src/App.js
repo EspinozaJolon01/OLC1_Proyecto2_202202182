@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import './App.css';
 import Editor from '@monaco-editor/react';
+import { Graphviz } from 'graphviz-react';
 
 function App() {
     const editorRef = useRef(null);
     const consolaRef = useRef(null);
+    const [AST, obtenerAst] = useState("");
 
     const [archivos, setArchivos] = useState([]); // Estado para mantener los archivos
     const [archivoActual, setArchivoActual] = useState(null); // Estado para mantener el archivo actual
@@ -16,6 +18,25 @@ function App() {
             consolaRef.current = editor;
         }
     }
+
+    function reporteAST(){
+        fetch('http://localhost:4000/getAST', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(response => response.json())
+          .then(data => {
+            obtenerAst(data.AST);
+            console.log(data.AST);
+            //consolaRef.current.setValue(data.message);
+          })
+          .catch((error) => {
+            alert("Error al interpretar el archivo.")
+            console.error('Error:', error);
+          });
+      }
 
     function interpretar() {
         var entrada = editorRef.current.getValue();
@@ -118,6 +139,9 @@ function App() {
                     <Editor height="90vh" width="100%" defaultLanguage="cpp" defaultValue="" theme="vs" options={{ readOnly: true }} onMount={(editor) => handleEditorDidMount(editor, "consola")} />
                 </div>
             </div>
+
+            <button class="btn btn-primary" onClick={reporteAST}>Generar Arbol AST</button>
+            {AST && <Graphviz dot={AST} options={{zoom:true}} />}
 
             <footer>
                 <div className="programador-info">

@@ -16,5 +16,6 @@ export abstract class Instruccion {
     
 
     abstract interpretar(arbol: Arbol, tabla: tablaSimbolos): any
+    abstract ArbolAST(anterior: string): string
 
 }

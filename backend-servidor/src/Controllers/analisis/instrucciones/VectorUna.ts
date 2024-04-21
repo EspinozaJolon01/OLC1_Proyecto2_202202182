@@ -69,4 +69,8 @@ export default class Vectores extends Instruccion{
             return new Errores("SEMANTICA", "falta datos", this.linea, this.col);
         }
     }
+
+    ArbolAST(anterior: string): string {
+        return ''
+    }
 }

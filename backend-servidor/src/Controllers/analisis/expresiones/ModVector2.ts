@@ -57,4 +57,8 @@ export default class  ModVector2 extends Instruccion{
 
         valorVector[pos1][pos2] = nuevoValor;
     }
+
+    ArbolAST(anterior: string): string {
+        return ''
+    }
 }

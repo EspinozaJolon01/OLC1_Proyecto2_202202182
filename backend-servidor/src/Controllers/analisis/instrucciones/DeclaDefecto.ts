@@ -38,16 +38,22 @@ export default class Defecto extends Instruccion{
                     valorFinal = 0.0;
                     break;
                 default:
+                    arbol.Print("--> Error Semantico:"+"No es posible declarar variable." + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
                     return new Errores("Error semántico", "No es posible declarar variable.", this.linea, this.col);
                 
             }
     
             
             if (!tabla.setVariable(new Simbolo(this.tipoDato, elemento, valorFinal))){
+                arbol.Print("--> Error Semantico:"+"No se puede declarar variable porque ya existia" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
                 return new Errores("SEMANTICO", "No se puede declarar variable porque ya existia", this.linea, this.col)
             }   
         });
 
+    }
+
+    ArbolAST(anterior: string): string {
+        return ''
     }
 
 }

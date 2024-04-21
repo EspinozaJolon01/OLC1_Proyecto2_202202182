@@ -21,11 +21,13 @@ export default class IncreDecre extends Instruccion {
 
         if (dato == null) {
             console.log("VARIABLE NO EXISTE");
+            arbol.Print("--> Error Semantico:"+"VARIABLE NO EXISTEa" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
             return new Errores("SEMANTICA", "VARIABLE NO EXISTE", this.linea, this.col);
         }
         
         if (dato.getTipo().getTipo() != tipoDato.ENTERO && dato.getTipo().getTipo() != tipoDato.DECIMAL) {
             console.log("NO SE PUEDE");
+            arbol.Print("--> Error Semantico:"+"NO es del mismo tipo" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
             return new Errores('SEMANTICO', 'NO SE PUEDE', this.linea, this.col);
         }
         
@@ -45,6 +47,10 @@ export default class IncreDecre extends Instruccion {
         
         
         
+    }
+
+    ArbolAST(anterior: string): string {
+        return ''
     }
 
 }

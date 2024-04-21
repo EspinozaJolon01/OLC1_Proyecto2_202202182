@@ -35,10 +35,14 @@ const funReturn = require('./instrucciones/funReturn')
 
 const VectoresDOS = require('./instrucciones/VectorDos')
 const AccesoVector2  = require('./expresiones/AccesoVec2')
+const Vector_cstr = require('./instrucciones/Vector_cstr')
+const Funcion = require('./instrucciones/Funciones')
+
 
 const Errores = require('./excepcicones/Errores')
 
 const indexController =  require('../indexController')
+
 
 var cadena = '';
 %}
@@ -200,6 +204,7 @@ INSTRUCCION : IMPRESION             {$$=$1;}
             | MOFVECTOR2 PUNTOCOMA             {$$=$1;}
             |DECARRELGO2DIMEN  PUNTOCOMA {$$=$1;}
             |METODO  {$$=$1;}
+            |FUNCION {$$ =$1;}
             |EXECUTEN PUNTOCOMA  {$$=$1;}
             |LLAMADA  PUNTOCOMA  {$$=$1;}
             |FUNRETURN PUNTOCOMA {$$=$1;}
@@ -273,7 +278,8 @@ FUNFOR : FOR PAR1 VEFICACION PUNTOCOMA EXPRESION PUNTOCOMA ASIGNACION PAR2 LLAVE
 
 DECARREGLO: TIPOS ID CORCHETE1 CORCHETE2 IGUAL NEW TIPOS CORCHETE1 EXPRESION CORCHETE2 {$$ = new Vectores.default($1,$2,@1.first_line, @1.first_column,$7,$9,undefined);}
         | TIPOS ID  CORCHETE1 CORCHETE2 IGUAL CORCHETE1 LISTAVALORES CORCHETE2  {$$ = new Vectores.default($1,$2,@1.first_line, @1.first_column,undefined,undefined,$7);}
-        | TIPOS CORCHETE1 CORCHETE2 IGUAL EXPRESION PUNTO CSTR PAR1 PAR2
+        | TIPOS CORCHETE1 CORCHETE2 EXPRESION IGUAL ID PUNTO CSTR PAR1 PAR2  {$$ = new Vector_cstr.default($1,$4,$6,@1.first_line, @1.first_column,undefined,undefined,$7);}
+        
 ;
 
 LISTAVALORES : LISTAVALORES COMA EXPRESION {$1.push($3); $$=$1;}
@@ -303,6 +309,8 @@ DATODENTRO: DATODENTRO COMA EXPRESION {$1.push($3); $$=$1;}
 
 FUNBREAK : BREAK PUNTOCOMA {$$ = new Break.default(@1.first_line, @1.first_column);}
 ;
+
+//constructor(linea: number, columna: number, expresiones?: Instruccion) {
 
 FUNRETURN : RETURN EXPRESION {$$ = new funReturn.default(@1.first_line, @1.first_column,$2);}
         | RETURN  {$$ = new funReturn.default(@1.first_line, @1.first_column,undefined);}
@@ -372,6 +380,7 @@ EXPRESION : EXPRESION MAS EXPRESION          {$$ = new Aritmeticas.default(Aritm
             | EXPRESION PUNTO LENGTH PAR1 PAR2  {$$ = new FuncUtilidades.default(FuncUtilidades.Operadores.Length, @1.first_line, @1.first_column, $1);}
             | BUSCARVECTOR {$$ = $1;}
             | BUSCARVECTOR2 {$$ = $1;}
+            |LLAMADA    {$$=$1;}
 ;
 
 BUSCARVECTOR :  ID CORCHETE1  EXPRESION CORCHETE2 {$$ = new AccesoVector.default($1,$3,@1.first_line, @1.first_column);}
@@ -398,21 +407,35 @@ VALIDARINCRE:   INCREMENTO {$$ = true;}
         |DECREMIENTO {$$ = false;}
 
 ;
-//id(param):void {instrucciones}
-METODO: TIPOS ID PAR1 PARAMETROS PAR2 LLAVE1 INSTRUCCIONES LLAVE2
-        {$$ =  new Metodo.default($2,$1,$7,@1.first_line, @1.first_column,$4);}
-        | TIPOS ID PAR1  PAR2 LLAVE1 INSTRUCCIONES LLAVE2
-        {$$ =  new Metodo.default($2,$1,$6,@1.first_line, @1.first_column,[]);}
+
+
+//constructor(id:string, tipo: Tipo, instrucciones: Instruccion[], linea:number, columna: number, parametros: any[]) {
+
+METODO: VOID  ID PAR1 PARAMETROS  LLAVE1 INSTRUCCIONES LLAVE2
+        {$$ =  new Metodo.default($2,new Tipo.default(Tipo.tipoDato.VOID),$6,@1.first_line, @1.first_column,$4);}
+        | VOID ID PAR1   LLAVE1 INSTRUCCIONES LLAVE2
+        {$$ =  new Metodo.default($2,new Tipo.default(Tipo.tipoDato.VOID),$5,@1.first_line, @1.first_column,[]);}
 
 ;
 
-FUNCION : TIPOS ID PAR1 PARAMETROS PAR2 LLAVE1 INSTRUCCIONES LLAVE2
-        | TIPOS ID PAR1  PAR2 LLAVE1 INSTRUCCIONES LLAVE2
+//constructor(id:string, tipo: Tipo, instrucciones: Instruccion[], linea:number, columna: number, parametros: any[]) {
+
+FUNCION : TIPOS ID PAR1 PARAMETROS  LLAVE1 INSTRUCCIONES LLAVE2 
+        {$$ =  new Funcion.default($2,$1,$6,@1.first_line, @1.first_column,$4);}
+        | TIPOS ID PAR1   LLAVE1 INSTRUCCIONES LLAVE2
+        {$$ =  new Funcion.default($2,$1,$5,@1.first_line, @1.first_column,[]);}
 ;
 
-PARAMETROS: PARAMETROS COMA TIPOS ID {$1.push({tipo:$3, id:$4}); $$=$1;}
-        |TIPOS ID {$$ = [{tipo:$1,id:$2}];}
+PARAMETROS: TODOPARAMS PAR2  { $$ = $1 }
+        |PAR2 { $$ = [] }
 
+;
+
+TODOPARAMS: TODOPARAMS COMA CONTENIDO { $1.push($3); $$ = $1 }
+        | CONTENIDO { $$ = [$1] }
+;
+
+CONTENIDO :TIPOS ID { $$ = {tipo: $1, id: [$2], accion: 1} }
 ;
 
 
@@ -444,6 +467,7 @@ TIPOS : INT             {$$ = new Tipo.default(Tipo.tipoDato.ENTERO);}
         | STRING          {$$ = new Tipo.default(Tipo.tipoDato.CADENA);}
         | CHAR          {$$ = new Tipo.default(Tipo.tipoDato.CARACTER);}
         | BOOLEAN          {$$ = new Tipo.default(Tipo.tipoDato.BOOL);}
-        | VOID          {$$ = new Tipo.default(Tipo.tipoDato.VOID);}
+        
+        
 
 ;
