@@ -4,6 +4,7 @@ import { Instruccion } from "../abstracto/Instruccion";
 
 import Errores from "../excepcicones/Errores";
 import Arbol from "../simbolo/Arbol";
+import Ast from "../simbolo/AST";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 
@@ -103,7 +104,58 @@ export default class Logicos extends Instruccion{
     }
 
     ArbolAST(anterior: string): string {
-        return ''
+        let datoObt = "";
+
+        let candera = Ast.getInstancia();
+
+        if (this.operacion == Operadores.AND) {
+
+            let dato1 = `n${candera.get()}`;
+            let dato2 = `n${candera.get()}`;
+            let operador = `n${candera.get()}`;
+            datoObt += `${dato1}[label=\"EXPRESION\"];\n`;
+            datoObt += `${dato2}[label=\"EXPRESION\"];\n`;
+            datoObt += `${operador}[label=\"&&\"];\n`;
+
+            datoObt += `${anterior} -> ${dato1};\n`;
+            datoObt += `${anterior} -> ${operador};\n`;
+            datoObt += `${anterior} -> ${dato2};\n`;
+
+            datoObt += this.operando1?.ArbolAST(dato1);
+            datoObt += this.operando2?.ArbolAST(dato2);
+
+        }else if(this.operacion == Operadores.OR){
+
+            let dato1 = `n${candera.get()}`;
+            let dato2 = `n${candera.get()}`;
+            let operador = `n${candera.get()}`;
+            datoObt += `${dato1}[label=\"EXPRESION\"];\n`;
+            datoObt += `${dato2}[label=\"EXPRESION\"];\n`;
+            datoObt += `${operador}[label=\"||\"];\n`;
+
+            datoObt += `${anterior} -> ${dato1};\n`;
+            datoObt += `${anterior} -> ${operador};\n`;
+            datoObt += `${anterior} -> ${dato2};\n`;
+
+            datoObt += this.operando1?.ArbolAST(dato1);
+            datoObt += this.operando2?.ArbolAST(dato2);
+
+        }else if(this.operacion == Operadores.NOT){
+
+            let notExpre = `n${candera.get()}`;
+            let notExp = `n${candera.get()}`;
+            datoObt += `${notExpre}[label="!"];\n`;
+            datoObt += `${notExp}[label="EXPRESION"];\n`;
+
+            datoObt += `${anterior} -> ${notExpre};\n`;
+            datoObt += `${anterior} -> ${notExp};\n`;
+
+            datoObt += this.operandoUnico?.ArbolAST(notExp);
+
+        }
+
+        return datoObt;
+
     }
 
 

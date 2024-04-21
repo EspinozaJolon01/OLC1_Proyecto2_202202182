@@ -550,7 +550,7 @@ export default class Aritmeticas extends Instruccion {
                 switch (tipo2) {
                     case tipoDato.ENTERO:
                         this.tipoDato = new Tipo(tipoDato.ENTERO)
-                        return parseFloat(op1) % parseFloat(op2)
+                        return parseInt(op1) % parseInt(op2)
                         
                     case tipoDato.DECIMAL:
                         this.tipoDato = new Tipo(tipoDato.DECIMAL)
