@@ -1,6 +1,7 @@
 import { Instruccion } from "../abstracto/Instruccion";
 import Errores from "../excepcicones/Errores";
 import Arbol from "../simbolo/Arbol";
+import Ast from "../simbolo/AST";
 import Simbolo from "../simbolo/Simbolo";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from '../simbolo/Tipo'
@@ -53,7 +54,38 @@ export default class Defecto extends Instruccion{
     }
 
     ArbolAST(anterior: string): string {
-        return ''
+        let bandera = Ast.getInstancia();
+        let result = "";
+
+        let declaciones = `n${bandera.get()}`;
+        let identif = `n${bandera.get()}`;
+
+        let conjuntoID = [];
+        for(let i= 0; i < this.identificador.length; i++){
+            conjuntoID.push(`n${bandera.get()}`);
+        }
+
+        let puntocoma = `n${bandera.get()}`;
+
+        result += ` ${declaciones}[label="DECLARION"];\n`;
+        result += ` ${identif}[label="SINNOMBRE"];\n`;
+
+        for(let i= 0; i < this.identificador.length; i++){
+            result += ` ${conjuntoID[i]} [label = "${this.identificador[i]}"];\n`;
+        }
+
+        result += `${puntocoma}[label=";"];\n`;
+
+        result += `${anterior} -> ${declaciones};\n`;
+        result += `${declaciones} -> ${identif};\n`;
+
+        for(let i= 0; i < this.identificador.length; i++){
+            result += `${identif} -> ${conjuntoID[i]};\n`;
+        }
+
+        result += `${declaciones} -> ${puntocoma};\n`;
+
+        return result;
     }
 
 }
