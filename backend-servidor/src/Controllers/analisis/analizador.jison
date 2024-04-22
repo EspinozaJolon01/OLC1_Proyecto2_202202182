@@ -212,14 +212,16 @@ INSTRUCCION : IMPRESION             {$$=$1;}
 ;
 
 IMPRESION : IMPRIMIR DOBLEMAYOR EXPRESION VERIFAR   { if($4 == true){
-                                                        $$= new Print.default($3, @1.first_line, @1.first_column);
-                                                        }
                                                         $$= new Print.default($3, @1.first_line, @1.first_column,"\n");
+                                                        }else{
+                                                        $$= new Print.default($3, @1.first_line, @1.first_column,"");
+
+                                                        }
                                                 }
 ;
 
-VERIFAR : PUNTOCOMA     {$$ = true;}
-        | DOBLEMAYOR ENDL PUNTOCOMA {$$ = false;}
+VERIFAR : PUNTOCOMA     {$$ = false;}
+        | DOBLEMAYOR ENDL PUNTOCOMA {$$ =true ;}
 ;
 
 DECLARACION : TIPOS DECLA VERIFICARDECLARACION    {
