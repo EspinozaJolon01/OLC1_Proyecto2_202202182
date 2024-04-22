@@ -20,8 +20,15 @@ export default class Case extends Instruccion {
     
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
+
+
+        let nuevaTabla = new tablaSimbolo(tabla)
+        nuevaTabla.setNombre("tabla case")
+        Arbol.listSimbolo.push(nuevaTabla)
+        
         for (const instruccion of this.instrucciones) {
-            const resultado = instruccion.interpretar(arbol, tabla);
+            if (instruccion instanceof Break) return instruccion;
+            const resultado = instruccion.interpretar(arbol, nuevaTabla);
             if (resultado instanceof Errores) return resultado;
             if (resultado instanceof Break) return resultado;
         }
