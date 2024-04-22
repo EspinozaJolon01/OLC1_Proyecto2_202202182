@@ -24,6 +24,7 @@ export default class Execute extends Instruccion{
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         let buscar = arbol.getFuncion(this.id)
+        Arbol.listSimbolo.push(tabla)
         if(buscar == null){       
             arbol.Print("--> Error Semantico:"+"Funciones no existe" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
 

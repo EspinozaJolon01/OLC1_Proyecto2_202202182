@@ -43,6 +43,7 @@ export default class funDoWhile extends Instruccion{
         do{
             let newTabla = new tablaSimbolo(tabla)
             newTabla.setNombre("Sentencia do while")
+            Arbol.listSimbolo.push(newTabla)
             for (let i of this.intrucciones) {
                 if (i instanceof Break) return;
                 if (i instanceof funContinue) break;

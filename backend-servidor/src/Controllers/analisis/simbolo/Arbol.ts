@@ -10,6 +10,7 @@ export default class Arbol {
     private tablaGlobal: tablaSimbolo
     private errores: Array<Errores>
     private funciones: Array<Instruccion>
+    public static listSimbolo: Array<tablaSimbolo> = new Array<tablaSimbolo>();
 
     constructor(instrucciones: Array<Instruccion>) {
         this.instrucciones = instrucciones

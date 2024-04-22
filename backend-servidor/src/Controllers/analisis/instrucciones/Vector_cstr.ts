@@ -24,7 +24,10 @@ export default class VectorCSTS extends Instruccion{
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         console.log("holaaa")
+        //modificar  = var1
         let dato = tabla.getVariable(this.modifica.toLocaleLowerCase());
+        console.log(dato)
+        console.log("esto el this ",this.id)
         console.log("aqui estoy")
         if (dato == null) {
             console.log("VARIABLE NO EXISTE");
@@ -39,10 +42,13 @@ export default class VectorCSTS extends Instruccion{
         
 
             for(let i=0;i<dato.getValor().length;i++){
+                console.log(dato.getValor().charAt(i))
                 arry[i] = dato.getValor().charAt(i);            
             }
+            console.log(arry)
             
-            if (!tabla.setVariable(new Simbolo(this.tipo1, this.id, arry))){
+            
+            if (!tabla.setVariable(new Simbolo(this.tipoDato, this.id, arry))){
                 arbol.Print("--> Error Semantico:"+"No se puede declarar variable porque ya existia" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
 
                 return new Errores("SEMANTICO", "No se puede declarar variable porque ya existia", this.linea, this.col)

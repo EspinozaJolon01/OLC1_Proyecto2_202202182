@@ -278,8 +278,8 @@ FUNFOR : FOR PAR1 VEFICACION PUNTOCOMA EXPRESION PUNTOCOMA ASIGNACION PAR2 LLAVE
 
 DECARREGLO: TIPOS ID CORCHETE1 CORCHETE2 IGUAL NEW TIPOS CORCHETE1 EXPRESION CORCHETE2 {$$ = new Vectores.default($1,$2,@1.first_line, @1.first_column,$7,$9,undefined);}
         | TIPOS ID  CORCHETE1 CORCHETE2 IGUAL CORCHETE1 LISTAVALORES CORCHETE2  {$$ = new Vectores.default($1,$2,@1.first_line, @1.first_column,undefined,undefined,$7);}
-        | TIPOS CORCHETE1 CORCHETE2 EXPRESION IGUAL ID PUNTO CSTR PAR1 PAR2  {$$ = new Vector_cstr.default($1,$4,$6,@1.first_line, @1.first_column,undefined,undefined,$7);}
-        
+        | TIPOS CORCHETE1 CORCHETE2 ID IGUAL ID PUNTO CSTR PAR1 PAR2  {$$ = new Vector_cstr.default($1,$4,$6,@1.first_line, @1.first_column);}
+        //constructor(tipo1:Tipo,id:string,modifica:string,linea:number,col:number){
 ;
 
 LISTAVALORES : LISTAVALORES COMA EXPRESION {$1.push($3); $$=$1;}

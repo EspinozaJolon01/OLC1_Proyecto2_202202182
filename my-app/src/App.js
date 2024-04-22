@@ -7,6 +7,7 @@ function App() {
     const editorRef = useRef(null);
     const consolaRef = useRef(null);
     const [AST, obtenerAst] = useState("");
+    const [reporte, obtenerReporte] = useState([]);
 
     const [archivos, setArchivos] = useState([]); // Estado para mantener los archivos
     const [archivoActual, setArchivoActual] = useState(null); // Estado para mantener el archivo actual
@@ -19,7 +20,28 @@ function App() {
         }
     }
 
-    function reporteAST(){
+
+
+    function reporteSimbolos(){
+        fetch('http://localhost:4000/getReportes', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(response => response.json())
+          .then(data => {
+            obtenerReporte(data.rep);
+            console.log(data.rep);
+            //consolaRef.current.setValue(data.message);
+          })
+          .catch((error) => {
+            alert("Error al interpretar el archivo.")
+            console.error('Error:', error);
+          });
+      }
+
+    function ArbolAST(){
         fetch('http://localhost:4000/getAST', {
           method: 'GET',
           headers: {
@@ -140,7 +162,7 @@ function App() {
                 </div>
             </div>
 
-            <button class="btn btn-primary" onClick={reporteAST}>Generar Arbol AST</button>
+            <button class="btn btn-primary" onClick={ArbolAST}>Generar Arbol AST</button>
             {AST && <Graphviz dot={AST} options={{zoom:true}} />}
 
             <footer>

@@ -36,6 +36,7 @@ export default class funcWhile extends Instruccion {
         while (this.condicion.interpretar(arbol, tabla)) {
             let newTabla = new tablaSimbolo(tabla)
             newTabla.setNombre("Sentencia While")
+            Arbol.listSimbolo.push(newTabla)
             for (let i of this.instrucciones) {
                 if (i instanceof Break) return;
                 if (i instanceof funContinue) break;

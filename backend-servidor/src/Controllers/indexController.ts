@@ -8,9 +8,13 @@ import Llamada from './analisis/instrucciones/Excute';
 import Execute from './analisis/instrucciones/Excute';
 import Funcion from './analisis/instrucciones/Funciones';
 import Ast from './analisis/simbolo/AST';
+import Reportes from './analisis/simbolo/Reportes';
+import { tipoDato } from './analisis/simbolo/Tipo';
 
 //errores
 export let errores_list: Array<Errores> = []
+export let simbolos_tabla: Array<Reportes> = [];
+
 
 var AstDot: string
 
@@ -24,6 +28,8 @@ class controller {
     public interpretar(req: Request, res: Response) {
 
         errores_list =  new Array<Errores>
+        simbolos_tabla =  new Array<Reportes>
+        Arbol.listSimbolo =  []
         try {
             AstDot = ""
             let parser = require('./analisis/analizador')
@@ -31,6 +37,7 @@ class controller {
             let tabla = new tablaSimbolo()
             tabla.setNombre("Ejemplo1")
             ast.setTablaGlobal(tabla)
+            Arbol.listSimbolo.push(tabla)
             ast.setConsola("")
 
             let execute = null;
@@ -79,6 +86,9 @@ class controller {
 
 
 
+
+
+
             // for (let i of ast.getInstrucciones()) {
 
             //     if(i instanceof Errores){
@@ -101,6 +111,34 @@ class controller {
                 console.log(tip.getTipoError())
                 console.log(tip.getDescp)
             }
+
+
+            for(let i of Arbol.listSimbolo){
+                let nombreAmbito = i.getNombre();
+                let ident:any = [];
+                let tipoD: any = [];
+                let valor: any =  [];
+                
+                i.getTabla().forEach((value, key) => {
+                    ident.push(value.getId());
+                    if(value.getTipo().getTipo() == tipoDato.BOOL){
+                        tipoD.push("BOOL");
+                    }else if(value.getTipo().getTipo() == tipoDato.DECIMAL){
+                        tipoD.push("DOUBLE");
+                    }else if(value.getTipo().getTipo() == tipoDato.CADENA){
+                        tipoD.push("STD::STRING");
+                    }else if(value.getTipo().getTipo() == tipoDato.ENTERO){
+                        tipoD.push("ENTERO");
+                    }
+
+                    valor.push(value.getValor());
+                        
+                });
+
+                for(let i =0; i<ident.length; i++){
+                    simbolos_tabla.push(new Reportes(ident[i], "variable", tipoD[i], nombreAmbito));
+                }
+            }
         } catch (err: any) {
             
             res.send({ "Error": "Ya no sale compi1" })
@@ -110,6 +148,10 @@ class controller {
 
     public ast(req: Request, res: Response) {
         res.json({ AST: AstDot })
+    }
+
+    public reporte(req: Request, res: Response) {
+        res.json({ rep: simbolos_tabla })
     }
 
 }

@@ -30,6 +30,7 @@ export default class Llamada extends Instruccion {
             let met = <Metodo>Bandera
             let nuevaTbala = new tablaSimbolo(tabla)
             nuevaTbala.setNombre("Llamada met: "+this.id)
+            Arbol.listSimbolo.push(nuevaTbala)
 
             if(met.parametros.length < this.params.length) new Errores("SEMANTICO", "Se han recibido más parámetros de los que se esperaban", this.linea, this.col)
             if(met.parametros.length > this.params.length) new Errores("SEMANTICO", "Se han recibido menos parámetros de los que se esperaban", this.linea, this.col)
@@ -54,6 +55,7 @@ export default class Llamada extends Instruccion {
             let func  = <Funcion>Bandera
             let nuevaTbala = new tablaSimbolo(tabla)
             nuevaTbala.setNombre("Llamada func : "+this.id)
+            Arbol.listSimbolo.push(nuevaTbala)
             
             if(func .parametros.length < this.params.length) new Errores("SEMANTICO", "Se recibieron mas parametros de los que se esperaban", this.linea, this.col)
             if(func .parametros.length > this.params.length) new Errores("SEMANTICO", "Se recibieron menos parametros de los que se esperaban", this.linea, this.col)

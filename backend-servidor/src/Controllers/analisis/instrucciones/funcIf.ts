@@ -1,6 +1,6 @@
 import { Instruccion } from "../abstracto/Instruccion";
 import Errores from "../excepcicones/Errores";
-import Arbol from "../simbolo/Arbol";
+import Arbol from '../simbolo/Arbol';
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./funBreak";
@@ -40,6 +40,7 @@ export default class funcIf extends Instruccion {
             console.log("entre a este if")
             let newTabla = new tablaSimbolo(tabla);
             newTabla.setNombre("Sentencia IF");
+            Arbol.listSimbolo.push(newTabla)
             for (let i of this.instrucciones) {
                 // if (i instanceof Break) return i;
                 // if (i instanceof funContinue) return i;
@@ -56,6 +57,7 @@ export default class funcIf extends Instruccion {
             if (this.instruccioneselse != undefined) {
                 let newTabla1 = new tablaSimbolo(tabla);
                 newTabla1.setNombre("Sentencia ELSE");
+                Arbol.listSimbolo.push(newTabla1)
                 for (let i of this.instruccioneselse) {
                     // if (i instanceof Break) return i;
                     // if (i instanceof funContinue) return i;

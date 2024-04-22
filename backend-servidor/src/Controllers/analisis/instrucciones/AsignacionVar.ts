@@ -17,6 +17,7 @@ export default class AsignacionVar extends Instruccion {
     }
 
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
+        Arbol.listSimbolo.push(tabla)
         let NewValor = this.exp.interpretar(arbol, tabla)
         if (NewValor instanceof Errores) return NewValor
 

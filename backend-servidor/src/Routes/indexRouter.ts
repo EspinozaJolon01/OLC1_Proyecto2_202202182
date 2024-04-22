@@ -11,6 +11,7 @@ class router {
         this.router.get('/',indexController.prueba);
         this.router.post('/interpretar', indexController.interpretar)
         this.router.get('/getAST', indexController.ast)
+        this.router.get('/getReportes', indexController.reporte)
         
     }
 }
