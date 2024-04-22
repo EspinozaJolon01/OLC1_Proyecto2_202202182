@@ -21,7 +21,10 @@ export default class Llamada extends Instruccion {
     interpretar(arbol: Arbol, tabla: tablaSimbolo) {
         let Bandera = arbol.getFuncion(this.id)
 
-        if(Bandera == null) return new Errores("SEMANTICO", "La func  con id: "+this.id+" no existe.", this.linea, this.col)
+        if(Bandera == null){
+            arbol.Print("--> Error Semantico:"+"La func  con id: "+this.id+" no existe." + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
+            return new Errores("SEMANTICO", "La func  con id: "+this.id+" no existe.", this.linea, this.col)
+        } 
 
         this.tipoDato = Bandera.tipoDato
         
@@ -79,11 +82,15 @@ export default class Llamada extends Instruccion {
 
                 if(variable != null) {
                     if(variable.getTipo().getTipo() != this.params[i].tipoDato.getTipo()) {
+                        arbol.Print("--> Error Semantico:"+"Parametro "+i+" es de diferente tipo al que se esperaba" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
+
                         return new Errores("SEMANTICO", "Parametro "+i+" es de diferente tipo al que se esperaba", this.linea, this.col) 
                     }else{
                         variable.setValor(dat)
                     }
                 }else {
+                    arbol.Print("--> Error Semantico:"+"Varible con ID "+func .parametros[i].id[0]+" no existe" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
+
                     return new Errores("SEMANTICO", "Varible con ID "+func .parametros[i].id[0]+" no existe", this.linea, this.col)
                 }
                 

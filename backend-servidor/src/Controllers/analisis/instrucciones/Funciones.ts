@@ -28,12 +28,19 @@ export default class Funcion extends Instruccion {
             
             if(nuevoDato instanceof funReturn) {
                 if(nuevoDato.valor != null){
-                    if(this.tipoDato.getTipo() != nuevoDato.tipoDato.getTipo()) return new Errores("SEMANTICO", "El tipo de la función y el tipo del valor de retorno son diferentes.", this.linea, this.col)
+                    if(this.tipoDato.getTipo() != nuevoDato.tipoDato.getTipo()){
+                        arbol.Print("--> Error Semantico:"+"El tipo de la función y el tipo del valor de retorno son diferentes" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
+
+                        return new Errores("SEMANTICO", "El tipo de la función y el tipo del valor de retorno son diferentes.", this.linea, this.col)
+                    } 
                     return nuevoDato.valor
                 }
             } 
             
-            if(i == this.instrucciones.length - 1) return new Errores("SEMANTICO", "Debe devolver un valor.", this.linea, this.col)
+            if(i == this.instrucciones.length - 1){
+                arbol.Print("--> Error Semantico:"+"Debe devolver un valor" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
+                return new Errores("SEMANTICO", "Debe devolver un valor.", this.linea, this.col)
+            } 
 
             
         }

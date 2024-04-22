@@ -36,6 +36,7 @@ export default class VectorCSTS extends Instruccion{
         }
 
         if(dato.getTipo().getTipo() != tipoDato.CADENA){
+            arbol.Print("--> Error Semantico:"+"La modificación del vector debe ser una cadena de texto" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
             return new Errores("SEMANTICO", "La modificación del vector debe ser una cadena de texto", this.linea, this.col);
         }
         let arry: any = [];

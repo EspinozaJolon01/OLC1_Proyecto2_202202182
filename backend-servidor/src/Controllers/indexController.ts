@@ -30,7 +30,9 @@ class controller {
         errores_list =  new Array<Errores>
         simbolos_tabla =  new Array<Reportes>
         Arbol.listSimbolo =  []
+        
         try {
+            let bandera = true
             AstDot = ""
             let parser = require('./analisis/analizador')
             let ast = new Arbol(parser.parse(req.body.entrada))
@@ -53,6 +55,13 @@ class controller {
                     // manejo de errores
                 }
                 if (i instanceof Execute){
+                    if(!bandera){
+                        ast.Print("Error Semantico: Solo se permite una instancia de Execute");
+                        
+                        break;
+
+                    }
+                    bandera = false
                     execute = i
                 }
 
