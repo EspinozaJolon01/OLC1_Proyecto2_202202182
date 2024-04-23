@@ -20,6 +20,25 @@ function App() {
     }
   }
 
+
+  function reporteSimbols() {
+    fetch("http://localhost:4000/getReportes", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        obtenerReporte(data.rep);
+        console.log(data.rep);
+      })
+      .catch((error) => {
+        alert("Error al interpretar el archivo.");
+        console.error("Error:", error);
+      });
+  }
+
   function ArbolAST() {
     fetch("http://localhost:4000/getAST", {
       method: "GET",
@@ -147,7 +166,7 @@ function App() {
             </a>
           </li>
           <li>
-            <a href="#">Reportes</a>
+            <a href="#" onClick={reporteSimbols}>Reportes</a>
           </li>
         </ul>
       </nav>
@@ -187,6 +206,38 @@ function App() {
           <Graphviz dot={AST} options={{ zoom: true }} />
         </div>
       )}
+
+
+    <h1>Reportes</h1>
+
+    <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">ID</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Entorno</th>
+          </tr>
+        </thead>
+        <tbody>
+          {reporte.map((sim, i) => (
+            <tr key={i}>
+              <th scope="row">{i + 1}</th>
+              <td>{sim.id}</td>
+              <td>{sim.tipoVar}</td>
+              <td>{sim.tipoDato}</td>
+              <td>{sim.entorno}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+
+
+
+
+
 
       <footer>
         <div className="programador-info">
