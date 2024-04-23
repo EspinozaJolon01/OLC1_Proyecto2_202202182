@@ -1,6 +1,7 @@
 import { Instruccion } from "../abstracto/Instruccion";
 import Errores from "../excepcicones/Errores";
 import Arbol from '../simbolo/Arbol';
+import Ast from "../simbolo/AST";
 import tablaSimbolo from "../simbolo/tablaSimbolos";
 import Tipo, { tipoDato } from "../simbolo/Tipo";
 import Break from "./funBreak";
@@ -81,7 +82,126 @@ export default class funcIf extends Instruccion {
     }
 
     ArbolAST(anterior: string): string {
-        return ''
+        let BANDERA = Ast.getInstancia();
+        let ObtenerDatos = "";
+
+        let ELSEINSTRU = [];
+        let INTRUC = [];
+        
+        
+        let elseLLave2 ="";
+        let ELSECIF = "";
+        let INSELSEIF = "";
+        let ElseL = "";
+        let cabezaElse = "";
+        let Else = "";
+        
+
+        let rIf = `n${BANDERA.get()}`;
+        let par1 = `n${BANDERA.get()}`;
+        let cond = `n${BANDERA.get()}`;
+        let par2 = `n${BANDERA.get()}`;
+        let llav1 = `n${BANDERA.get()}`;
+        let padreInstIf = `n${BANDERA.get()}`;
+
+        for(let i = 0; i < this.instrucciones.length; i++){
+            INTRUC.push(`n${BANDERA.get()}`);
+        }
+
+        let llav2 = `n${BANDERA.get()}`;
+
+        if(this.instruccioneselse != undefined){
+            Else = `n${BANDERA.get()}`;
+            ElseL = `n${BANDERA.get()}`;
+            cabezaElse = `n${BANDERA.get()}`;
+            for(let i = 0; i < this.instruccioneselse.length; i++){
+                ELSEINSTRU.push(`n${BANDERA.get()}`);
+            }
+            elseLLave2 = `n${BANDERA.get()}`;
+        }
+
+        if(this.condicion_ifelse != undefined){
+            INSELSEIF = `n${BANDERA.get()}`;
+            ELSECIF = `n${BANDERA.get()}`;
+        }
+
+        ObtenerDatos += `${rIf}[label="IF"];\n`;
+        ObtenerDatos += `${par1}[label="("];\n`;
+        ObtenerDatos += `${cond}[label="EXPRESION"];\n`;
+        ObtenerDatos += `${par2}[label=")"];\n`;
+        ObtenerDatos += `${llav1}[label="{"];\n`;
+        ObtenerDatos += `${padreInstIf}[label="INTRUCCION"];\n`;
+
+        for(let i = 0; i < INTRUC.length; i++){
+            ObtenerDatos += `${INTRUC[i]}[label="INTRUCCION"];\n`;
+        }
+
+        ObtenerDatos += `${llav2}[label="}"];\n`;
+
+        if(this.instruccioneselse != undefined){
+
+            ObtenerDatos += `${Else}[label="ELSE"];\n`;
+            ObtenerDatos += `${ElseL}[label="{"];\n`;
+            ObtenerDatos += `${cabezaElse}[label="INTRUCCIONES"];\n`;
+
+            for(let i = 0; i < ELSEINSTRU.length; i++){
+                ObtenerDatos += `${ELSEINSTRU[i]}[label="INSTRUCCION"];\n`;
+            }
+
+            ObtenerDatos += `${elseLLave2}[label="}"];\n`;
+
+        }
+
+        if(this.condicion_ifelse != undefined){
+            ObtenerDatos += `${INSELSEIF}[label="ELSEIF"];\n`;
+        }
+
+        ObtenerDatos += `${anterior} -> ${rIf};\n`;
+        ObtenerDatos += `${anterior} -> ${par1};\n`;
+        ObtenerDatos += `${anterior} -> ${cond};\n`;
+        ObtenerDatos += `${anterior} -> ${par2};\n`;
+        ObtenerDatos += `${anterior} -> ${llav1};\n`;
+        ObtenerDatos += `${anterior} -> ${padreInstIf};\n`;
+
+        for(let i = 0; i < INTRUC.length; i++){
+            ObtenerDatos += `${padreInstIf} -> ${INTRUC[i]};\n`;
+        }
+
+        if(this.instruccioneselse != undefined){
+            ObtenerDatos += `${anterior} -> ${Else};\n`;
+            ObtenerDatos += `${anterior} -> ${ElseL};\n`;
+            ObtenerDatos += `${anterior} -> ${cabezaElse};\n`;
+
+            for(let i = 0; i < ELSEINSTRU.length; i++){
+                ObtenerDatos += `${cabezaElse} -> ${ELSEINSTRU[i]};\n`;
+            }
+
+            ObtenerDatos += `${anterior} -> ${elseLLave2};\n`;
+        }
+
+        if(this.condicion_ifelse != undefined){
+            ObtenerDatos += `${anterior} -> ${INSELSEIF};\n`;
+        }
+
+        ObtenerDatos += `${anterior} -> ${llav2};\n`;
+
+        ObtenerDatos += this.condicion.ArbolAST(cond);
+
+        for(let i = 0; i < INTRUC.length; i++){
+            ObtenerDatos += this.instrucciones[i].ArbolAST(INTRUC[i]);
+        }
+
+        if(this.instruccioneselse != undefined){
+            for(let i = 0; i < ELSEINSTRU.length; i++){
+                ObtenerDatos += this.instruccioneselse[i].ArbolAST(ELSEINSTRU[i]);
+            }
+        }
+
+        if(this.condicion_ifelse != undefined){
+            ObtenerDatos += this.condicion_ifelse.ArbolAST(INSELSEIF);
+        }
+
+        return ObtenerDatos;
     }
 }
 

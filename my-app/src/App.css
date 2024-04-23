@@ -150,3 +150,28 @@ footer {
   color: black; /* Cambia el color del enlace */
   text-decoration: none;
 }
+
+
+/* App.css */
+.btn-generar {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #094067;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-generar:hover {
+  background-color: #0056b3;
+}
+
+.graph-container {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+}
