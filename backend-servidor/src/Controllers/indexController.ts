@@ -37,7 +37,7 @@ class controller {
             let parser = require('./analisis/analizador')
             let ast = new Arbol(parser.parse(req.body.entrada))
             let tabla = new tablaSimbolo()
-            tabla.setNombre("Ejemplo1")
+            tabla.setNombre("Control")
             ast.setTablaGlobal(tabla)
             Arbol.listSimbolo.push(tabla)
             ast.setConsola("")

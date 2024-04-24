@@ -35,6 +35,8 @@ export default class FuncFor extends Instruccion{
 
         const nuevaTabla1 = new tablaSimbolo(tabla);
             nuevaTabla1.setNombre("intrucciones del  For");
+            Arbol.listSimbolo.push(nuevaTabla1)
+            
         // Ejecutar inicialización
         const resultadoInicializacion = this.declaracion.interpretar(arbol, nuevaTabla1);
         if (resultadoInicializacion instanceof Errores) return resultadoInicializacion;

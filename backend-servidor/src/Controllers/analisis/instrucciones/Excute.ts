@@ -33,6 +33,7 @@ export default class Execute extends Instruccion{
         if(buscar instanceof Metodo){
             let nuevaTabla =  new tablaSimbolo(arbol.getTablaGlobal())
             nuevaTabla.setNombre("LLAMADA")
+            Arbol.listSimbolo.push(nuevaTabla)
             
             if(buscar.parametros.length != this.parametros.length){
                 arbol.Print("--> Error Semantico:"+"Los paramaetros de la llamada son invalidos" + "linea: " + this.linea + "columna:" + (this.col+1)+"\n")
