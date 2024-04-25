@@ -10,6 +10,8 @@ import Funcion from './analisis/instrucciones/Funciones';
 import Ast from './analisis/simbolo/AST';
 import Reportes from './analisis/simbolo/Reportes';
 import { tipoDato } from './analisis/simbolo/Tipo';
+import VectoresDOS from './analisis/instrucciones/VectorDos';
+import Vectores from './analisis/instrucciones/VectorUna';
 
 //errores
 export let errores_list: Array<Errores> = []
@@ -50,10 +52,12 @@ class controller {
                     i.id = i.id.toLocaleLowerCase()
                     ast.agregarFunciones(i)
                 }
-                if(i instanceof Declaracion){
+                if(i instanceof Declaracion ||i instanceof VectoresDOS || i instanceof Vectores){
                     i.interpretar(ast, tabla)
+                    
                     // manejo de errores
                 }
+                
                 if (i instanceof Execute){
                     if(!bandera){
                         ast.Print("Error Semantico: Solo se permite una instancia de Execute");
