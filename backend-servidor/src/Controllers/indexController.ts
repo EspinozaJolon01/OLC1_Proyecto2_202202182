@@ -154,7 +154,7 @@ class controller {
             }
         } catch (err: any) {
             
-            res.send({ "Error": "Ya no sale compi1" })
+            res.send({ "Error": "ERRRO SINTACTICO" })
             console.log(err)
         }
     }
